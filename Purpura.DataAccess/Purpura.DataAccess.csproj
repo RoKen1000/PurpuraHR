@@ -15,4 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Purpura.Models\Purpura.Models.csproj" />
+  </ItemGroup>
+
 </Project>
