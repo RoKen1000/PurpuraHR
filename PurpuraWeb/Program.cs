@@ -1,7 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using Purpura.DataAccess.DataContext;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<PurpuraDbContext>(
+        options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    );
 
 var app = builder.Build();
 
