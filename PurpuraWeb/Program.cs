@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Purpura.DataAccess.DataContext;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<PurpuraDbContext>(
         options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
+
+builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<PurpuraDbContext>();
 
 var app = builder.Build();
 
@@ -23,8 +26,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
