@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Purpura.DataAccess.DataContext;
 using Microsoft.AspNetCore.Identity;
+using PurpuraWeb.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 builder.Services.AddDbContext<PurpuraDbContext>(
         options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
@@ -28,7 +30,6 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapRazorPages();
 
 app.MapControllerRoute(
