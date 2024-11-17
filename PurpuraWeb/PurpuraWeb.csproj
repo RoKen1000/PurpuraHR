@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Purpura.DataAccess\Purpura.DataAccess.csproj" />
     <ProjectReference Include="..\Purpura.Models\Purpura.Models.csproj" />
+    <ProjectReference Include="..\Purpura.Utility\Purpura.Utility.csproj" />
   </ItemGroup>
 
 </Project>

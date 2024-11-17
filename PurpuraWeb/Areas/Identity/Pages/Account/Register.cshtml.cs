@@ -16,8 +16,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Purpura.Utility;
 using PurpuraWeb.Models.Entities;
 
 namespace PurpuraWeb.Areas.Identity.Pages.Account
@@ -30,13 +32,15 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +48,7 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -98,11 +103,29 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            public string? Role { get; set; }
+            public IEnumerable<SelectListItem> RoleList { get; set; }
         }
 
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            if (!_roleManager.RoleExistsAsync(UserRoles.EmployeeRole).GetAwaiter().GetResult())
+            {
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.EmployeeRole));
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.ManagerRole));
+            }
+
+            Input = new InputModel()
+            {
+                RoleList = _roleManager.Roles.Select(r => r.Name).Select(s => new SelectListItem
+                {
+                    Text = s,
+                    Value = s
+                })
+            };
+
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -122,6 +145,15 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    if(!String.IsNullOrEmpty(Input.Role))
+                    {
+                        await _userManager.AddToRoleAsync(user, Input.Role);
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, UserRoles.EmployeeRole);
+                    }
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -152,6 +184,16 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+
+            Input = new InputModel()
+            {
+                RoleList = _roleManager.Roles.Select(r => r.Name).Select(s => new SelectListItem
+                {
+                    Text = s,
+                    Value = s
+                })
+            };
+
             return Page();
         }
 

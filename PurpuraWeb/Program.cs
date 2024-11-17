@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Purpura.DataAccess.DataContext;
 using Microsoft.AspNetCore.Identity;
 using PurpuraWeb.Models;
+using Purpura.Utility;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +14,9 @@ builder.Services.AddDbContext<PurpuraDbContext>(
         options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
 
-builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<PurpuraDbContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<PurpuraDbContext>().AddDefaultTokenProviders();
+
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 
