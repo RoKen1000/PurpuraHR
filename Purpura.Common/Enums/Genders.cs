@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace Purpura.Common.Enums
         Male,
         Female,
         Transgender,
-        [Display(Name = "Non-Binary")]
+        [Description("Non-Binary")]
         NonBinary,
         Other
     }

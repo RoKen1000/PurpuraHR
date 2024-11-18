@@ -19,7 +19,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Purpura.Common.Enums;
 using Purpura.Utility;
+using Purpura.Utility.Helpers;
 using PurpuraWeb.Models.Entities;
 
 namespace PurpuraWeb.Areas.Identity.Pages.Account
@@ -106,6 +108,26 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
 
             public string? Role { get; set; }
             public IEnumerable<SelectListItem> RoleList { get; set; }
+
+            [Required]
+            public string FirstName { get; set; }
+            public string? MiddleName { get; set; }
+            [Required]
+            public string LastName { get; set; }
+            public DateTime DateOfBirth { get; set; }
+            public string Address { get; set; }
+            [Required]
+            public string PostCode { get; set; }
+            [Required]
+            public string AddressLine1 { get; set; }
+            public string AddressLine2 { get; set; }
+            public string AddressLine3 { get; set; }
+            [Required]
+            public Genders Gender { get; set; }
+            public IEnumerable<SelectListItem> GenderList { get; set; }
+            [Required]
+            public Titles Title { get; set; }
+            public IEnumerable<SelectListItem> TitleList { get; set; }
         }
 
 
@@ -123,6 +145,16 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
                 {
                     Text = s,
                     Value = s
+                }),
+                GenderList = Enum.GetValues(typeof(Genders)).Cast<Genders>().Select(g => new SelectListItem
+                {
+                    Text = EnumHelpers.GetEnumDescription(g),
+                    Value = Enum.Parse<Genders>(g.ToString()).ToString()
+                }),
+                TitleList = Enum.GetValues(typeof(Titles)).Cast<Titles>().Select(t => new SelectListItem
+                {
+                    Text = Enum.GetName(t),
+                    Value = Enum.Parse<Titles>(t.ToString()).ToString()
                 })
             };
 
