@@ -29,13 +29,12 @@
             </div>
             <div class="form-floating mb-3">
                 <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
-                    <option disabled selected>SELECT A ROLE</option>
+                    <option disabled selected>Select a role...</option>
                 </select>
             </div>
 
             <div class="form-floating mb-3">
-                <select asp-for="Input.Title" asp-items="@Model.Input.TitleList" class="form-select">
-                    <option disabled selected>SELECT A GENDER</option>
+                <select asp-for="Input.Title" asp-items="@Model.Input.TitleList" class="form-select" id="title-select">
                 </select>
                 <span asp-validation-for="Input.Title" class="text-danger"></span>
             </div>
@@ -55,13 +54,12 @@
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.DateOfBirth" class="form-control" aria-required="true" />
+                <input asp-for="Input.DateOfBirth" class="form-control" aria-required="true" id="dob-picker" />
                 <label asp-for="Input.DateOfBirth">Date of Birth</label>
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <select asp-for="Input.Gender" asp-items="@Model.Input.GenderList" class="form-select">
-                    <option disabled selected>SELECT A GENDER</option>
+                <select asp-for="Input.Gender" asp-items="@Model.Input.GenderList" class="form-select" id="gender-select">
                 </select>
                 <span asp-validation-for="Input.Gender" class="text-danger"></span>
             </div>
@@ -87,6 +85,12 @@
                 <span asp-validation-for="Input.PostCode" class="text-danger"></span>
             </div>
 
+            <div class="form-floating mb-3">
+                <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="" />
+                <label asp-for="Input.PhoneNumber">Phone Number</label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
@@ -94,4 +98,14 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $("#title-select").prepend("<option disabled selected value=''>Select a title...</option>");
+        $("#gender-select").prepend("<option disabled selected value=''>Select a gender...</option>");
+
+        $("#dob-picker").datepicker({
+            dateFormat: "dd/MM/yyy",
+            changeYear: true
+        })
+    </script>
 }

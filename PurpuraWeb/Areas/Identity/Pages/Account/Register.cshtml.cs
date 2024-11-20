@@ -114,7 +114,9 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
             public string? MiddleName { get; set; }
             [Required]
             public string LastName { get; set; }
-            public DateTime DateOfBirth { get; set; }
+
+            [DataType(DataType.Date)]
+            public DateTime DateOfBirth { get; set; } = DateTime.Now;
             public string Address { get; set; }
             [Required]
             public string PostCode { get; set; }
@@ -128,6 +130,9 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
             [Required]
             public Titles Title { get; set; }
             public IEnumerable<SelectListItem> TitleList { get; set; }
+
+            [DataType(DataType.PhoneNumber)]
+            public string PhoneNumber { get; set; }
         }
 
 
@@ -146,12 +151,12 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
                     Text = s,
                     Value = s
                 }),
-                GenderList = Enum.GetValues(typeof(Genders)).Cast<Genders>().Select(g => new SelectListItem
+                GenderList = Enum.GetValues(typeof(Genders)).Cast<Genders>().Where(g => g != Genders.Unknown).Select(g => new SelectListItem
                 {
                     Text = EnumHelpers.GetEnumDescription(g),
                     Value = Enum.Parse<Genders>(g.ToString()).ToString()
                 }),
-                TitleList = Enum.GetValues(typeof(Titles)).Cast<Titles>().Select(t => new SelectListItem
+                TitleList = Enum.GetValues(typeof(Titles)).Cast<Titles>().Where(t => t != Titles.Unknown).Select(t => new SelectListItem
                 {
                     Text = Enum.GetName(t),
                     Value = Enum.Parse<Titles>(t.ToString()).ToString()
@@ -166,9 +171,22 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            this.Input.Address = ConstructAddress(new string[4] {this.Input.AddressLine1, this.Input.AddressLine2, this.Input.AddressLine3, this.Input.PostCode});
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+
+                user.Address = this.Input.Address;
+                user.Email = this.Input.Email;
+                user.FirstName = this.Input.FirstName;
+                user.MiddleName = this.Input.MiddleName;
+                user.LastName = this.Input.LastName;
+                user.Gender = this.Input.Gender;
+                user.Title = this.Input.Title;
+                user.PhoneNumber = this.Input.PhoneNumber;
+                user.DateOfBirth = this.Input.DateOfBirth;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -223,6 +241,16 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
                 {
                     Text = s,
                     Value = s
+                }),
+                GenderList = Enum.GetValues(typeof(Genders)).Cast<Genders>().Where(g => g != Genders.Unknown).Select(g => new SelectListItem
+                {
+                    Text = EnumHelpers.GetEnumDescription(g),
+                    Value = Enum.Parse<Genders>(g.ToString()).ToString()
+                }),
+                TitleList = Enum.GetValues(typeof(Titles)).Cast<Titles>().Where(t => t != Titles.Unknown).Select(t => new SelectListItem
+                {
+                    Text = Enum.GetName(t),
+                    Value = Enum.Parse<Titles>(t.ToString()).ToString()
                 })
             };
 
@@ -250,6 +278,21 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
+        }
+
+        private string ConstructAddress(string[] addressStrings)
+        {
+            var completeAddressString = "";
+
+            for(int i = 0; i < addressStrings.Length; i++)
+            {
+                completeAddressString += $"{addressStrings[i]}";
+
+                if(i < addressStrings.Length - 1) 
+                    completeAddressString += ", ";
+            }
+
+            return completeAddressString;
         }
     }
 }
