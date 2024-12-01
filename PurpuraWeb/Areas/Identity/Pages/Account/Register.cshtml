@@ -1,99 +1,94 @@
 ﻿@page
 @model RegisterModel
-@{
-    ViewData["Title"] = "Register";
-}
 
 <h1>@ViewData["Title"]</h1>
 
-<div class="row">
-    <div class="col-md-6">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email">Email</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.Password">Password</label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
-                    <option disabled selected>Select a role...</option>
-                </select>
-            </div>
+<div class="row" id="register-container">
+    <form id="register-form" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <h2>Create a new account.</h2>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+        <div class="form-floating mb-3">
+            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+            <label asp-for="Input.Email">Email</label>
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
+        <div class="form-floating mb-3">
+            <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+            <label asp-for="Input.Password">Password</label>
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+        </div>
+        <div class="form-floating mb-3">
+            <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+            <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+        </div>
+        <div class="form-floating mb-3">
+            <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
+                <option disabled selected>Select a role...</option>
+            </select>
+        </div>
 
-            <div class="form-floating mb-3">
-                <select asp-for="Input.Title" asp-items="@Model.Input.TitleList" class="form-select" id="title-select">
-                </select>
-                <span asp-validation-for="Input.Title" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.FirstName" class="form-control" aria-required="true" />
-                <label asp-for="Input.FirstName">First Name</label>
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.MiddleName" class="form-control" aria-required="true" />
-                <label asp-for="Input.MiddleName">Middle Name(s)</label>
-                <span asp-validation-for="Input.MiddleName" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.LastName" class="form-control" aria-required="true" />
-                <label asp-for="Input.LastName">Last Name</label>
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.DateOfBirth" class="form-control" aria-required="true" id="dob-picker" />
-                <label asp-for="Input.DateOfBirth">Date of Birth</label>
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <select asp-for="Input.Gender" asp-items="@Model.Input.GenderList" class="form-select" id="gender-select">
-                </select>
-                <span asp-validation-for="Input.Gender" class="text-danger"></span>
-            </div>
+        <div class="form-floating mb-3">
+            <select asp-for="Input.Title" asp-items="@Model.Input.TitleList" class="form-select" id="title-select">
+            </select>
+            <span asp-validation-for="Input.Title" class="text-danger"></span>
+        </div>
+        <div class="form-floating mb-3">
+            <input asp-for="Input.FirstName" class="form-control" aria-required="true" />
+            <label asp-for="Input.FirstName">First Name</label>
+            <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-floating mb-3">
+            <input asp-for="Input.MiddleName" class="form-control" aria-required="true" />
+            <label asp-for="Input.MiddleName">Middle Name(s)</label>
+            <span asp-validation-for="Input.MiddleName" class="text-danger"></span>
+        </div>
+        <div class="form-floating mb-3">
+            <input asp-for="Input.LastName" class="form-control" aria-required="true" />
+            <label asp-for="Input.LastName">Last Name</label>
+            <span asp-validation-for="Input.LastName" class="text-danger"></span>
+        </div>
+        <div class="form-floating mb-3">
+            <input asp-for="Input.DateOfBirth" class="form-control" aria-required="true" id="dob-picker" />
+            <label asp-for="Input.DateOfBirth">Date of Birth</label>
+            <span asp-validation-for="Input.LastName" class="text-danger"></span>
+        </div>
+        <div class="form-floating mb-3">
+            <select asp-for="Input.Gender" asp-items="@Model.Input.GenderList" class="form-select" id="gender-select">
+            </select>
+            <span asp-validation-for="Input.Gender" class="text-danger"></span>
+        </div>
 
-            <div class="form-floating mb-3">
-                <input asp-for="Input.AddressLine1" class="form-control" aria-required="true" placeholder="" />
-                <label asp-for="Input.AddressLine1">Address Line 1</label>
-                <span asp-validation-for="Input.AddressLine1" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.AddressLine2" class="form-control" aria-required="true" placeholder="" />
-                <label asp-for="Input.AddressLine2">Address Line 2</label>
-                <span asp-validation-for="Input.AddressLine2" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.AddressLine3" class="form-control" aria-required="true" placeholder="" />
-                <label asp-for="Input.AddressLine3">Address Line 3</label>
-                <span asp-validation-for="Input.AddressLine3" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.PostCode" class="form-control" aria-required="true" placeholder="" />
-                <label asp-for="Input.PostCode">Postcode</label>
-                <span asp-validation-for="Input.PostCode" class="text-danger"></span>
-            </div>
+        <div class="form-floating mb-3">
+            <input asp-for="Input.AddressLine1" class="form-control" aria-required="true" placeholder="" />
+            <label asp-for="Input.AddressLine1">Address Line 1</label>
+            <span asp-validation-for="Input.AddressLine1" class="text-danger"></span>
+        </div>
+        <div class="form-floating mb-3">
+            <input asp-for="Input.AddressLine2" class="form-control" aria-required="true" placeholder="" />
+            <label asp-for="Input.AddressLine2">Address Line 2</label>
+            <span asp-validation-for="Input.AddressLine2" class="text-danger"></span>
+        </div>
+        <div class="form-floating mb-3">
+            <input asp-for="Input.AddressLine3" class="form-control" aria-required="true" placeholder="" />
+            <label asp-for="Input.AddressLine3">Address Line 3</label>
+            <span asp-validation-for="Input.AddressLine3" class="text-danger"></span>
+        </div>
+        <div class="form-floating mb-3">
+            <input asp-for="Input.PostCode" class="form-control" aria-required="true" placeholder="" />
+            <label asp-for="Input.PostCode">Postcode</label>
+            <span asp-validation-for="Input.PostCode" class="text-danger"></span>
+        </div>
 
-            <div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="" />
-                <label asp-for="Input.PhoneNumber">Phone Number</label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
+        <div class="form-floating mb-3">
+            <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="" />
+            <label asp-for="Input.PhoneNumber">Phone Number</label>
+            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+        </div>
 
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </form>
-    </div>
+        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+    </form>
 </div>
 
 @section Scripts {

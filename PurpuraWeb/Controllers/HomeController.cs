@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using PurpuraWeb.Models;
 using System.Diagnostics;
 
@@ -13,9 +14,14 @@ namespace PurpuraWeb.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Login()
         {
             return Redirect("/Identity/Account/Login");
+        }
+
+        public IActionResult Index()
+        {
+            return View();
         }
 
         public IActionResult Privacy()

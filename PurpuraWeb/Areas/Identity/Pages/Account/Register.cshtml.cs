@@ -163,13 +163,13 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
                 })
             };
 
-            ReturnUrl = returnUrl;
+            //ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/Home/Index");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             this.Input.Address = ConstructAddress(new string[4] {this.Input.AddressLine1, this.Input.AddressLine2, this.Input.AddressLine3, this.Input.PostCode});

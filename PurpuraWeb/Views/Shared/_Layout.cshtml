@@ -1,5 +1,12 @@
 ﻿@{
     var path = ViewContext.RouteData.Values["page"] as string;
+
+    var authenticationPaths = new List<string>
+    {
+        "/Account/Login",
+        "/Account/Register",
+        "/Account/Logout"
+    };
 }
 
 <!DOCTYPE html>
@@ -10,11 +17,11 @@
     <title>PurpuraWeb</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/login.css" />
+    <link rel="stylesheet" href="~/css/UserAuthentication.css" />
     <link rel="stylesheet" href="~/PurpuraWeb.styles.css" asp-append-version="true" />
 </head>
-<body style="@(path == "/Account/Login" ? "background: linear-gradient(white, mediumpurple);" : "")">
-    @if (path != "/Account/Login")
+<body style="@(authenticationPaths.Contains(path) ? "background: linear-gradient(white, mediumpurple);" : "")">
+    @if (!authenticationPaths.Contains(path))
     {
         <header>
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -45,7 +52,7 @@
         </main>
     </div>
 
-    @if (path != "/Account/Login")
+    @if (!authenticationPaths.Contains(path))
     {
         <footer class="border-top footer text-muted">
             <div class="container">
