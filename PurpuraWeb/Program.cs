@@ -4,12 +4,14 @@ using Microsoft.AspNetCore.Identity;
 using PurpuraWeb.Models;
 using Purpura.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Purpura.MappingProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddAutoMapper(typeof(ApplicationUserMappingProfile));
 builder.Services.AddDbContext<PurpuraDbContext>(
         options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
