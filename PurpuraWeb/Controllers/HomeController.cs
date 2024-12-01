@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using PurpuraWeb.Models;
 using System.Diagnostics;
 
@@ -11,6 +12,11 @@ namespace PurpuraWeb.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+        }
+
+        public IActionResult Login()
+        {
+            return Redirect("/Identity/Account/Login");
         }
 
         public IActionResult Index()

@@ -1,0 +1,17 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Purpura.Common.Enums;
+using System.ComponentModel.DataAnnotations;
+
+namespace PurpuraWeb.Models.Entities
+{
+    public class ApplicationUser : IdentityUser
+    {
+        public string FirstName { get; set; }
+        public string? MiddleName { get; set; }
+        public string LastName { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string Address { get; set; }
+        public Genders Gender { get; set; }
+        public Titles Title { get; set; }
+    }
+}
