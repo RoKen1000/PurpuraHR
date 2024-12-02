@@ -1,0 +1,89 @@
+﻿@model ApplicationUserViewModel;
+
+<partial name="_UserManagementSideBar" />
+
+<div class="user-management-content">
+    <h1>Edit User Details</h1>
+
+    <form method="post" asp-controller="UserManagement" asp-action="EditUserDetails">
+        <div class="form-floating mb-3">
+            <select class="form-select" asp-for="@Model.Title" asp-items="@Model.TitleList" name="Title"></select>
+            <label asp-for="@Model.Title">Title</label>
+            @* <span asp-validation-for="@Model.Title" class="text-danger"></span> *@
+        </div>
+
+        <div class="form-floating mb-3">
+            <input class="form-control" value="@Model.FirstName" name="FirstName" />
+            <label asp-for="@Model.FirstName">First Name</label>
+            <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input class="form-control" value="@Model.MiddleName" name="MiddleName" />
+            <label asp-for="@Model.MiddleName">Middle Name(s)</label>
+            <span asp-validation-for="@Model.MiddleName" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input class="form-control" value="@Model.LastName" name="LastName" />
+            <label asp-for="@Model.LastName">Last Name</label>
+            <span asp-validation-for="@Model.LastName" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input class="form-control" value="@Model.DateOfBirth.ToShortDateString()" name="DateOfBirth" />
+            <label asp-for="@Model.DateOfBirth">Date of Birth</label>
+            <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input class="form-control" value="@Model.AddressLine1" name="AddressLine1" />
+            <label asp-for="@Model.AddressLine1">Address Line 1</label>
+            <span asp-validation-for="@Model.AddressLine1" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input class="form-control" value="@Model.AddressLine2" name="AddressLine2" />
+            <label asp-for="@Model.AddressLine2">Address Line 2</label>
+            <span asp-validation-for="@Model.AddressLine2" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input class="form-control" value="@Model.AddressLine3" name="AddressLine3" />
+            <label asp-for="@Model.AddressLine3">Address Line 3</label>
+            <span asp-validation-for="@Model.AddressLine3" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input class="form-control" value="@Model.Postcode" name="Postcode" />
+            <label asp-for="@Model.Postcode">Postcode</label>
+            <span asp-validation-for="@Model.Postcode" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <select class="form-select" asp-for="@Model.Gender" asp-items="@Model.GenderList" name="Gender"></select>
+            <label asp-for="@Model.Gender">Gender</label>
+            @* <span asp-validation-for="@Model.Gender" class="text-danger"></span> *@
+        </div>
+
+        <div class="form-floating mb-3">
+            <input class="form-control" value="@Model.Email" name="Email" />
+            <label asp-for="@Model.Email">Email</label>
+            <span asp-validation-for="@Model.Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input class="form-control" value="@Model.PhoneNumber" name="PhoneNumber" />
+            <label asp-for="@Model.PhoneNumber">Phone Number</label>
+            <span asp-validation-for="@Model.PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-success">Edit Details</button>
+            <a class="btn btn-secondary" asp-controller="UserManagement" asp-action="Details" asp-route-userId="@Model.Id">Cancel</a>
+        </div>
+
+        <input type="hidden" value="@Model.Id" name="Id" />
+    </form>
+
+</div>

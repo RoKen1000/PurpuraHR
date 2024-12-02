@@ -30,13 +30,22 @@ namespace Purpura.Repositories
             return _mapper.Map<ApplicationUserViewModel>(user);
         }
 
-        public async Task UpdateUser(ApplicationUserViewModel user)
+        public async Task UpdateUser(ApplicationUserViewModel userViewModel)
         {
-            var userEntity = _mapper.Map<ApplicationUser>(user);
+            var userEntity = await _dbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.Id == userViewModel.Id);
 
-            _dbContext.ApplicationUsers.Update(userEntity);
+            if(userEntity != null)
+            {
+                _mapper.Map<ApplicationUserViewModel, ApplicationUser>(userViewModel, userEntity);
 
-            await _dbContext.SaveChangesAsync();
+                _dbContext.ApplicationUsers.Update(userEntity);
+
+                await _dbContext.SaveChangesAsync();
+
+                return;
+            }
+
+            throw new NullReferenceException();
         }
     }
 }
