@@ -9,6 +9,7 @@ namespace Purpura.MappingProfiles
         public ApplicationUserMappingProfile()
         {
             CreateMap<ApplicationUser, ApplicationUserViewModel>();
+            CreateMap<ApplicationUserViewModel, ApplicationUser>();
         }
     }
 }
