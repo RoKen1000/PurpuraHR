@@ -122,7 +122,9 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
             public string PostCode { get; set; }
             [Required]
             public string AddressLine1 { get; set; }
+            [Required]
             public string AddressLine2 { get; set; }
+            [Required]
             public string AddressLine3 { get; set; }
             [Required]
             public Genders Gender { get; set; }
@@ -146,21 +148,9 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
 
             Input = new InputModel()
             {
-                RoleList = _roleManager.Roles.Select(r => r.Name).Select(s => new SelectListItem
-                {
-                    Text = s,
-                    Value = s
-                }),
-                GenderList = Enum.GetValues(typeof(Genders)).Cast<Genders>().Where(g => g != Genders.Unknown).Select(g => new SelectListItem
-                {
-                    Text = EnumHelpers.GetEnumDescription(g),
-                    Value = Enum.Parse<Genders>(g.ToString()).ToString()
-                }),
-                TitleList = Enum.GetValues(typeof(Titles)).Cast<Titles>().Where(t => t != Titles.Unknown).Select(t => new SelectListItem
-                {
-                    Text = Enum.GetName(t),
-                    Value = Enum.Parse<Titles>(t.ToString()).ToString()
-                })
+                RoleList = GenerateRoleSelectList(),
+                GenderList = EnumHelpers.GenerateGenderSelectList(),
+                TitleList = EnumHelpers.GenerateTitleSelectList()
             };
 
             //ReturnUrl = returnUrl;
@@ -172,7 +162,7 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/Home/Index");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-            this.Input.Address = ConstructAddress(new string[4] {this.Input.AddressLine1, this.Input.AddressLine2, this.Input.AddressLine3, this.Input.PostCode});
+            this.Input.Address = AddressHelpers.ConstructAddressString(new string[4] {this.Input.AddressLine1, this.Input.AddressLine2, this.Input.AddressLine3, this.Input.PostCode});
 
             if (ModelState.IsValid)
             {
@@ -237,21 +227,9 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
 
             Input = new InputModel()
             {
-                RoleList = _roleManager.Roles.Select(r => r.Name).Select(s => new SelectListItem
-                {
-                    Text = s,
-                    Value = s
-                }),
-                GenderList = Enum.GetValues(typeof(Genders)).Cast<Genders>().Where(g => g != Genders.Unknown).Select(g => new SelectListItem
-                {
-                    Text = EnumHelpers.GetEnumDescription(g),
-                    Value = Enum.Parse<Genders>(g.ToString()).ToString()
-                }),
-                TitleList = Enum.GetValues(typeof(Titles)).Cast<Titles>().Where(t => t != Titles.Unknown).Select(t => new SelectListItem
-                {
-                    Text = Enum.GetName(t),
-                    Value = Enum.Parse<Titles>(t.ToString()).ToString()
-                })
+                RoleList = GenerateRoleSelectList(),
+                GenderList = EnumHelpers.GenerateGenderSelectList(),
+                TitleList = EnumHelpers.GenerateTitleSelectList()
             };
 
             return Page();
@@ -280,19 +258,13 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
             return (IUserEmailStore<IdentityUser>)_userStore;
         }
 
-        private string ConstructAddress(string[] addressStrings)
+        private IEnumerable<SelectListItem> GenerateRoleSelectList()
         {
-            var completeAddressString = "";
-
-            for(int i = 0; i < addressStrings.Length; i++)
+            return _roleManager.Roles.Select(r => r.Name).Select(s => new SelectListItem
             {
-                completeAddressString += $"{addressStrings[i]}";
-
-                if(i < addressStrings.Length - 1) 
-                    completeAddressString += ", ";
-            }
-
-            return completeAddressString;
+                Text = s,
+                Value = s
+            });
         }
     }
 }

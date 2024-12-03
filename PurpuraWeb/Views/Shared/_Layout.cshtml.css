@@ -44,5 +44,39 @@ button.accept-policy {
   bottom: 0;
   width: 100%;
   white-space: nowrap;
-  line-height: 60px;
+}
+
+#page-container {
+    padding-bottom: 50px;
+}
+
+#footer-flex-container {
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+}
+
+#footer-flex-container a{
+    height: 30px;
+    vertical-align: middle;
+}
+
+#footer-name {
+    padding-left: 20px;
+    line-height: 50px;
+}
+
+@media screen and (min-width: 500px) {
+    #footer-flex-container a{
+        padding-right: 20px;
+    }
+    #footer-name {
+        padding-left: 30px;
+    }
+}
+
+@media screen and (min-width: 750px) {
+    #footer-flex-container, #footer-name {
+        padding-left: 80px;
+    }
 }

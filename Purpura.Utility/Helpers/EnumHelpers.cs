@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Purpura.Common.Enums;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Purpura.Utility.Helpers
 {
@@ -22,5 +19,24 @@ namespace Purpura.Utility.Helpers
 
             return value.ToString();
         }
+
+        public static IEnumerable<SelectListItem> GenerateGenderSelectList()
+        {
+            return Enum.GetValues(typeof(Genders)).Cast<Genders>().Where(g => g != Genders.Unknown).Select(g => new SelectListItem
+            {
+                Text = EnumHelpers.GetEnumDescription(g),
+                Value = Enum.Parse<Genders>(g.ToString()).ToString(),
+            });
+        }
+
+        public static IEnumerable<SelectListItem> GenerateTitleSelectList()
+        {
+            return Enum.GetValues(typeof(Titles)).Cast<Titles>().Where(t => t != Titles.Unknown).Select(t => new SelectListItem
+            {
+                Text = Enum.GetName(t),
+                Value = Enum.Parse<Titles>(t.ToString()).ToString()
+            });
+        }
+
     }
 }

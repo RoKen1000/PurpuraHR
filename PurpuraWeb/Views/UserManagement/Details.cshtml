@@ -1,0 +1,38 @@
+﻿@model ApplicationUserViewModel;
+
+<partial name="_UserManagementSideBar" />
+
+<div class="user-management-content">
+    <h1>User Details</h1>
+
+    <dl>
+        <dt>Title</dt>
+        <dd>@Model.Title</dd>
+
+        <dt>First Name</dt>
+        <dd>@Model.FirstName</dd>
+
+        <dt>Middle Name(s)</dt>
+        <dd>@Model.MiddleName</dd>
+
+        <dt>Last Name</dt>
+        <dd>@Model.LastName</dd>
+
+        <dt>Date of Birth</dt>
+        <dd>@Model.DateOfBirth.ToShortDateString()</dd>
+
+        <dt>Address</dt>
+        <dd>@Model.Address</dd>
+
+        <dt>Gender</dt>
+        <dd>@Model.Gender</dd>
+
+        <dt>Email</dt>
+        <dd>@Model.Email</dd>
+
+        <dt>Phone Number</dt>
+        <dd>@Model.PhoneNumber</dd>
+    </dl>
+
+    <a class="btn btn-primary" asp-controller="UserManagement" asp-action="EditUserDetails" asp-route-userId="@Model.Id">Edit Details</a>
+</div>
