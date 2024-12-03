@@ -9,7 +9,6 @@
         <div class="form-floating mb-3">
             <select class="form-select" asp-for="@Model.Title" asp-items="@Model.TitleList" name="Title"></select>
             <label asp-for="@Model.Title">Title</label>
-            @* <span asp-validation-for="@Model.Title" class="text-danger"></span> *@
         </div>
 
         <div class="form-floating mb-3">
@@ -31,9 +30,9 @@
         </div>
 
         <div class="form-floating mb-3">
-            <input class="form-control" value="@Model.DateOfBirth.ToShortDateString()" name="DateOfBirth" />
+            <input class="form-control" type="date" name="DateOfBirth" value="@Model.DateOfBirth.ToString("yyyy-MM-dd")" />
             <label asp-for="@Model.DateOfBirth">Date of Birth</label>
-            <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
+            <span asp-validation-for="@Model.DateOfBirth" class="text-danger"></span>
         </div>
 
         <div class="form-floating mb-3">
@@ -63,7 +62,6 @@
         <div class="form-floating mb-3">
             <select class="form-select" asp-for="@Model.Gender" asp-items="@Model.GenderList" name="Gender"></select>
             <label asp-for="@Model.Gender">Gender</label>
-            @* <span asp-validation-for="@Model.Gender" class="text-danger"></span> *@
         </div>
 
         <div class="form-floating mb-3">

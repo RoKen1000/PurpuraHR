@@ -11,21 +11,15 @@ namespace PurpuraWeb.Controllers
 {
     public class UserManagementController : Controller
     {
-        private readonly PurpuraDbContext _dbContext;
-        private readonly IMapper _mapper;
         private readonly IUserManagementRepository _userManagementRepository;
 
-        public UserManagementController(PurpuraDbContext dbContext, 
-            IMapper mapper, 
-            IUserManagementRepository userManagementRepository)
+        public UserManagementController(IUserManagementRepository userManagementRepository)
         {
-            _dbContext = dbContext;
-            _mapper = mapper;
             _userManagementRepository = userManagementRepository;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string userId)
+        public IActionResult Index()
         {
             return View();
         }
@@ -68,7 +62,7 @@ namespace PurpuraWeb.Controllers
 
                 await _userManagementRepository.UpdateUser(viewModel);
 
-                return RedirectToAction("EditUserDetails");
+                return RedirectToAction($"Details", new { userId = viewModel.Id });
             }
 
             viewModel.GenderList = EnumHelpers.GenerateGenderSelectList();
