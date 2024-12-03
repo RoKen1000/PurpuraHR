@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Purpura.Models.Entities
 {
-    public class BookedTimeOff : BaseEntity
+    public class AnnualLeave : BaseEntity
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

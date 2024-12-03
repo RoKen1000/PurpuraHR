@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Purpura.DataAccess.DataContext;
 using Purpura.Models.Entities;
 using Purpura.Models.ViewModels;
@@ -11,28 +12,28 @@ using System.Threading.Tasks;
 
 namespace Purpura.Repositories
 {
-    public class BookTimeOffRepository : IBookTimeOffRepository
+    public class AnnualLeaveRepository : IAnnualLeaveRepository
     {
         private readonly IMapper _mapper;
         private readonly PurpuraDbContext _dbContext;
 
-        public BookTimeOffRepository(IMapper mapper,
+        public AnnualLeaveRepository(IMapper mapper,
             PurpuraDbContext dbContext)
         {
             _mapper = mapper;
             _dbContext = dbContext;
         }
 
-        public async Task<bool> BookTimeOff(BookedTimeOffViewModel bookedTimePeriod)
+        public async Task<bool> BookTimeOff(AnnualLeaveViewModel bookedTimePeriod)
         {
             try
             {
                 var amountOfDays = (bookedTimePeriod.EndDate - bookedTimePeriod.StartDate).Days;
-                var newEntities = new List<BookedTimeOff>();
+                var newEntities = new List<AnnualLeave>();
 
                 for(var i = amountOfDays; i != amountOfDays + 1; i++)
                 {
-                    var bookedTimeOffEntity = _mapper.Map<BookedTimeOff>(bookedTimePeriod);
+                    var bookedTimeOffEntity = _mapper.Map<AnnualLeave>(bookedTimePeriod);
                     bookedTimeOffEntity.DateCreated = DateTime.Now;
                     newEntities.Add(bookedTimeOffEntity);
                 }
@@ -46,6 +47,21 @@ namespace Purpura.Repositories
             {
                 return false;
             }
+        }
+
+        public async Task<int> GetUserAnnualLeaveCount(string userId)
+        {
+            var user = await _dbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                throw new NullReferenceException("User not found.");
+            }
+
+            if(user.AnnualLeaveDays == null || user.AnnualLeaveDays == 0)
+                return 0;
+
+            return user.AnnualLeaveDays;
         }
     }
 }

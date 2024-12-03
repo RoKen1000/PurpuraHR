@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Purpura.MappingProfiles
 {
-    public class BookedTimeOffMappingProfile : Profile
+    public class AnnualLeaveMappingProfile : Profile
     {
-        public BookedTimeOffMappingProfile()
+        public AnnualLeaveMappingProfile()
         {
-            CreateMap<BookedTimeOffViewModel, BookedTimeOff>();
-            CreateMap<BookedTimeOff, BookedTimeOffViewModel>();
+            CreateMap<AnnualLeaveViewModel, AnnualLeave>();
+            CreateMap<AnnualLeave, AnnualLeaveViewModel>();
         }
     }
 }

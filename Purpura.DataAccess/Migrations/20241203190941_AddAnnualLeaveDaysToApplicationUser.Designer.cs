@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Purpura.DataAccess.DataContext;
 
@@ -11,9 +12,11 @@ using Purpura.DataAccess.DataContext;
 namespace Purpura.DataAccess.Migrations
 {
     [DbContext(typeof(PurpuraDbContext))]
-    partial class PurpuraDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241203190941_AddAnnualLeaveDaysToApplicationUser")]
+    partial class AddAnnualLeaveDaysToApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,7 +232,7 @@ namespace Purpura.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Purpura.Models.Entities.AnnualLeave", b =>
+            modelBuilder.Entity("Purpura.Models.Entities.BookedTimeOff", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -270,7 +273,7 @@ namespace Purpura.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AnnualLeave");
+                    b.ToTable("BookedTimeOff");
                 });
 
             modelBuilder.Entity("PurpuraWeb.Models.Entities.ApplicationUser", b =>
@@ -358,7 +361,7 @@ namespace Purpura.DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Purpura.Models.Entities.AnnualLeave", b =>
+            modelBuilder.Entity("Purpura.Models.Entities.BookedTimeOff", b =>
                 {
                     b.HasOne("PurpuraWeb.Models.Entities.ApplicationUser", "User")
                         .WithMany()

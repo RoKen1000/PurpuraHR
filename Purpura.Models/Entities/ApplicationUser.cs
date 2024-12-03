@@ -13,5 +13,7 @@ namespace PurpuraWeb.Models.Entities
         public string Address { get; set; }
         public Genders Gender { get; set; }
         public Titles Title { get; set; }
+
+        public int AnnualLeaveDays { get; set; }
     }
 }

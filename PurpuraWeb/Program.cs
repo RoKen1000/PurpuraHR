@@ -12,7 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-builder.Services.AddAutoMapper(typeof(ApplicationUserMappingProfile));
+builder.Services.AddAutoMapper(
+    typeof(ApplicationUserMappingProfile), 
+    typeof(AnnualLeaveMappingProfile)
+);
 builder.Services.AddDbContext<PurpuraDbContext>(
         options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
@@ -20,7 +23,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkSto
 
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IUserManagementRepository, UserManagementRepository>();
-builder.Services.AddScoped<IBookTimeOffRepository, BookTimeOffRepository>();
+builder.Services.AddScoped<IAnnualLeaveRepository, AnnualLeaveRepository>();
 
 var app = builder.Build();
 

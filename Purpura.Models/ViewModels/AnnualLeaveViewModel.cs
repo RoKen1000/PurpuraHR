@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Purpura.Models.ViewModels
 {
-    public class BookedTimeOffViewModel
+    public class AnnualLeaveViewModel
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

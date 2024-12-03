@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Purpura.Repositories.Interfaces
 {
-    public interface IBookTimeOffRepository
+    public interface IAnnualLeaveRepository
     {
-        Task<bool> BookTimeOff(BookedTimeOffViewModel bookedTimePeriod);
+        Task<bool> BookTimeOff(AnnualLeaveViewModel bookedTimePeriod);
+        Task<int> GetUserAnnualLeaveCount(string userId);  
     }
 }
