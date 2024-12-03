@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Purpura.Models.Entities;
 using PurpuraWeb.Models.Entities;
 
 namespace Purpura.DataAccess.DataContext
@@ -13,6 +14,7 @@ namespace Purpura.DataAccess.DataContext
         }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<BookedTimeOff> BookedTimeOff { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
