@@ -64,6 +64,22 @@ namespace Purpura.Repositories
             }
         }
 
+        public async Task<List<AnnualLeaveViewModel>> GetBookedLeave(string userId)
+        {
+            var bookedLeaveList = new List<AnnualLeaveViewModel>();
+            var bookedLeave = _dbContext.AnnualLeave.Where(al => al.UserId == userId);
+
+            if (bookedLeave.Any())
+            {
+                foreach (var leave in bookedLeave)
+                {
+                    bookedLeaveList.Add(_mapper.Map<AnnualLeaveViewModel>(leave));
+                }
+            }
+
+            return bookedLeaveList;
+        }
+
         public async Task<int> GetUserAnnualLeaveCount(string userId)
         {
             var user = await _dbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.Id == userId);

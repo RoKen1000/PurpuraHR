@@ -10,6 +10,7 @@ namespace Purpura.Repositories.Interfaces
     public interface IAnnualLeaveRepository
     {
         Task<bool> BookTimeOff(AnnualLeaveViewModel bookedTimePeriod);
-        Task<int> GetUserAnnualLeaveCount(string userId);  
+        Task<int> GetUserAnnualLeaveCount(string userId);
+        Task<List<AnnualLeaveViewModel>> GetBookedLeave(string userId);
     }
 }

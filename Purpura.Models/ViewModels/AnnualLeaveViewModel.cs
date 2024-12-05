@@ -15,7 +15,7 @@ namespace Purpura.Models.ViewModels
         public DateTime EndDate { get; set; } = DateTime.Now.AddDays(1);
 
         [Required]
-        public LeaveTypes LeaveType { get; set; }
+        public LeaveTypes Type { get; set; }
         public IEnumerable<SelectListItem> LeaveTypeSelectList { get; set; }
         public string? Details { get; set; }
     }

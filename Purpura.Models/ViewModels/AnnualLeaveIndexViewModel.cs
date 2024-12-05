@@ -10,5 +10,6 @@ namespace Purpura.Models.ViewModels
     {
         public int AnnualLeaveDaysRemaining { get; set; }
         public int AnnualLeaveDaysUsed { get; set; }
+        public List<AnnualLeaveViewModel> BookedLeave { get; set; }
     }
 }

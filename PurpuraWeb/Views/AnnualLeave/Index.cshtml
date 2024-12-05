@@ -1,6 +1,36 @@
-﻿
+﻿@using Purpura.Utility.Helpers
+
+@model AnnualLeaveIndexViewModel;
+
+<h1>Annual Leave</h1>
+
 <div id="day-count-container" data-get-day-count="@Url.Action("_IndexDayCount", "AnnualLeave")">
 </div>
+
+@if(Model.BookedLeave.Any())
+{
+    <table class="table booked-leave-table">
+        <thead>
+            <tr>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Leave Type</th>
+                <th>Detaild</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var leave in Model.BookedLeave)
+            {
+                <tr>
+                    <td>@leave.StartDate.ToShortDateString()</td>
+                    <td>@leave.EndDate.ToShortDateString()</td>
+                    <td>@EnumHelpers.GetEnumDescription(leave.Type)</td>
+                    <td>@leave.Details</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#book-time-off-modal">
     Book Time Off

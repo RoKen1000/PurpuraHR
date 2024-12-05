@@ -22,13 +22,19 @@ namespace PurpuraWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View();
+            var viewModel = new AnnualLeaveIndexViewModel
+            {
+                BookedLeave = await _annualLeaveRepository.GetBookedLeave(_userManager.GetUserId(User))
+            };
+
+            return View(viewModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> _IndexDayCount()
         {
-            var currentUserAnnualLeave = await _annualLeaveRepository.GetUserAnnualLeaveCount(_userManager.GetUserId(User));
+            var currentUserId = _userManager.GetUserId(User);
+            var currentUserAnnualLeave = await _annualLeaveRepository.GetUserAnnualLeaveCount(currentUserId);
 
             var viewModel = new AnnualLeaveIndexViewModel
             {

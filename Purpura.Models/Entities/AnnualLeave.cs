@@ -2,6 +2,7 @@
 using PurpuraWeb.Models.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,5 +16,6 @@ namespace Purpura.Models.Entities
         public LeaveTypes Type { get; set; }
         public string? Details { get; set; }
         public ApplicationUser User { get; set; }
+        public string UserId { get; set; }
     }
 }
