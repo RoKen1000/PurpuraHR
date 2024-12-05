@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Purpura.Models.ViewModels;
 using Purpura.Repositories.Interfaces;
 using Purpura.Utility.Helpers;
+using Purpura.Utility.Resolvers;
 
 namespace PurpuraWeb.Controllers
 {
@@ -21,12 +22,21 @@ namespace PurpuraWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> _IndexDayCount()
+        {
+            var currentUserAnnualLeave = await _annualLeaveRepository.GetUserAnnualLeaveCount(_userManager.GetUserId(User));
+
             var viewModel = new AnnualLeaveIndexViewModel
             {
-                AnnualLeaveDays = await _annualLeaveRepository.GetUserAnnualLeaveCount(_userManager.GetUserId(User)),
+                AnnualLeaveDaysRemaining = currentUserAnnualLeave,
+                AnnualLeaveDaysUsed = AnnualLeaveResolver.WorkOutNumberOfDaysUsed(currentUserAnnualLeave)
             };
 
-            return View(viewModel);
+            return PartialView(viewModel);
         }
 
         [HttpGet]

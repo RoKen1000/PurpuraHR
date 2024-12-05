@@ -8,6 +8,7 @@ namespace Purpura.Models.ViewModels
 {
     public class AnnualLeaveIndexViewModel : BaseViewModel
     {
-        public int AnnualLeaveDays { get; set; }
+        public int AnnualLeaveDaysRemaining { get; set; }
+        public int AnnualLeaveDaysUsed { get; set; }
     }
 }

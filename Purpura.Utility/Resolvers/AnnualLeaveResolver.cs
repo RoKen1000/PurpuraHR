@@ -22,5 +22,12 @@ namespace Purpura.Utility.Resolvers
 
             return true;
         }
+
+        public static int WorkOutNumberOfDaysUsed(int userCurrentTotal)
+        {
+            var daysUsed = 28 - userCurrentTotal;
+
+            return daysUsed <= 28 ? daysUsed : 28;
+        }
     }
 }

@@ -1,13 +1,12 @@
 ﻿
-@model AnnualLeaveIndexViewModel;
-
-<p>You currently have @(Model.AnnualLeaveDays > 0 ? $"{Model.AnnualLeaveDays} days left of annual leave!" : "no annual leave to take.")</p>
+<div id="day-count-container" data-get-day-count="@Url.Action("_IndexDayCount", "AnnualLeave")">
+</div>
 
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#book-time-off-modal">
     Book Time Off
 </button>
 
-<div class="modal fade" id="book-time-off-modal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="book-time-off-modal" data-get-modal-content="@Url.Action("_BookTimeOff", "AnnualLeave")" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -15,7 +14,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -24,11 +22,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts{
-    <script>
-        $.get("@Url.Action("_BookTimeOff", "AnnualLeave")", function (data) {
-            $('.modal-body').html(data);
-        });
-    </script>
-}

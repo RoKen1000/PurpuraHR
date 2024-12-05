@@ -1,0 +1,5 @@
+﻿
+@model AnnualLeaveIndexViewModel;
+
+<p>You currently have @(Model.AnnualLeaveDaysRemaining > 0 ? $"{Model.AnnualLeaveDaysRemaining} days left of annual leave!" : "no annual leave to take.")</p>
+<p>You have used @Model.AnnualLeaveDaysUsed days.</p>
