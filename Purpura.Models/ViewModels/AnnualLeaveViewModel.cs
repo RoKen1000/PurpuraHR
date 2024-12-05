@@ -1,19 +1,22 @@
-﻿using Purpura.Common.Enums;
-using PurpuraWeb.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Purpura.Common.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Purpura.Models.ViewModels
 {
-    public class AnnualLeaveViewModel
+    public class AnnualLeaveViewModel : BaseViewModel
     {
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public TimeOffTypes Type { get; set; }
-        public string Details { get; set; }
-        public string UserId { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime StartDate { get; set; } = DateTime.Now;
+
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime EndDate { get; set; } = DateTime.Now.AddDays(1);
+
+        [Required]
+        public LeaveTypes LeaveType { get; set; }
+        public IEnumerable<SelectListItem> LeaveTypeSelectList { get; set; }
+        public string? Details { get; set; }
     }
 }

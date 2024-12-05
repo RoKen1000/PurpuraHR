@@ -3,6 +3,9 @@
 
 <p>You currently have @(Model.AnnualLeaveDays > 0 ? $"{Model.AnnualLeaveDays} days left of annual leave!" : "no annual leave to take.")</p>
 
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#book-time-off-modal">
+    Book Time Off
+</button>
 
 <div class="modal fade" id="book-time-off-modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
@@ -11,24 +14,23 @@
                 <h1 class="modal-title fs-5">Book Annual Leave</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form>
-                <div class="modal-body">
-                    <
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="save-changes-button" type="button" class="btn btn-primary">Save changes</button>
+            </div>
         </div>
     </div>
 </div>
 
-
-@section Scripts {
+@section Scripts{
     <script>
-        $("#book-time-off-modal").on("show.bs.modal", function(){
-            console.log("hello")
-        })
+        $.get("@Url.Action("_BookTimeOff", "AnnualLeave")", function (data) {
+            $('.modal-body').html(data);
+        });
+
+        
     </script>
 }

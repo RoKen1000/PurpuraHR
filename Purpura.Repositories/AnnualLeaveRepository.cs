@@ -16,29 +16,34 @@ namespace Purpura.Repositories
     {
         private readonly IMapper _mapper;
         private readonly PurpuraDbContext _dbContext;
+        private readonly IUserManagementRepository _userManagementRepository;
 
         public AnnualLeaveRepository(IMapper mapper,
-            PurpuraDbContext dbContext)
+            PurpuraDbContext dbContext,
+            IUserManagementRepository userManagementRepository)
         {
             _mapper = mapper;
             _dbContext = dbContext;
+            _userManagementRepository = userManagementRepository;
         }
 
-        public async Task<bool> BookTimeOff(AnnualLeaveViewModel bookedTimePeriod)
+        public async Task<bool> BookTimeOff(AnnualLeaveViewModel annualLeavePeriod)
         {
             try
             {
-                var amountOfDays = (bookedTimePeriod.EndDate - bookedTimePeriod.StartDate).Days;
-                var newEntities = new List<AnnualLeave>();
+                var daysUsed = (annualLeavePeriod.EndDate - annualLeavePeriod.StartDate).Days;
+                var user = await _userManagementRepository.GetUserEntity(u => u.Id == annualLeavePeriod.UserId);
 
-                for(var i = amountOfDays; i != amountOfDays + 1; i++)
-                {
-                    var bookedTimeOffEntity = _mapper.Map<AnnualLeave>(bookedTimePeriod);
-                    bookedTimeOffEntity.DateCreated = DateTime.Now;
-                    newEntities.Add(bookedTimeOffEntity);
-                }
+                if (user == null)
+                    return false;
 
-                _dbContext.AddRange(newEntities);
+                var annualLeaveEntity = _mapper.Map<AnnualLeave>(annualLeavePeriod);
+
+                annualLeaveEntity.DateCreated = DateTime.Now;
+                annualLeaveEntity.ExternalReference = Guid.NewGuid().ToString();
+                annualLeaveEntity.User = user;
+
+                _dbContext.Add(annualLeaveEntity);
                 await _dbContext.SaveChangesAsync();
 
                 return true;

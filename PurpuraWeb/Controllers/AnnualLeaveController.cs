@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Purpura.Models.ViewModels;
 using Purpura.Repositories.Interfaces;
+using Purpura.Utility.Helpers;
 
 namespace PurpuraWeb.Controllers
 {
@@ -22,8 +23,7 @@ namespace PurpuraWeb.Controllers
         {
             var viewModel = new AnnualLeaveIndexViewModel
             {
-                UserId = _userManager.GetUserId(User),
-                AnnualLeaveDays = await _annualLeaveRepository.GetUserAnnualLeaveCount(_userManager.GetUserId(User))
+                AnnualLeaveDays = await _annualLeaveRepository.GetUserAnnualLeaveCount(_userManager.GetUserId(User)),
             };
 
             return View(viewModel);
@@ -32,9 +32,13 @@ namespace PurpuraWeb.Controllers
         [HttpGet]
         public IActionResult _BookTimeOff()
         {
+            var viewModel = new AnnualLeaveViewModel
+            {
+                LeaveTypeSelectList = EnumHelpers.GenerateLeaveTypeSelectList(),
+                UserId = _userManager.GetUserId(User)
+            };
 
-
-            return View();
+            return PartialView(viewModel);
         }
 
         [HttpPost]

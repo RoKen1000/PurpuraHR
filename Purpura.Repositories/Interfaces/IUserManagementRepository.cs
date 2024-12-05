@@ -12,6 +12,7 @@ namespace Purpura.Repositories.Interfaces
     public interface IUserManagementRepository
     {
         Task<ApplicationUserViewModel> GetUser(Expression<Func<ApplicationUser, bool>> filter);
+        Task<ApplicationUser> GetUserEntity(Expression<Func<ApplicationUser, bool>> filter);
         Task UpdateUser(ApplicationUserViewModel user);
     }
 }

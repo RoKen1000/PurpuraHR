@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Purpura.Common.Enums
 {
-    public enum TimeOffTypes
+    public enum LeaveTypes
     {
         Unknown,
         Holiday,

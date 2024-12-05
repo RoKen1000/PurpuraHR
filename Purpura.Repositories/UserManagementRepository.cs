@@ -30,6 +30,16 @@ namespace Purpura.Repositories
             return _mapper.Map<ApplicationUserViewModel>(user);
         }
 
+        public async Task<ApplicationUser> GetUserEntity(Expression<Func<ApplicationUser, bool>> filter)
+        {
+            var user = await _dbContext.ApplicationUsers.FirstOrDefaultAsync(filter);
+
+            if (user == null)
+                return null;
+
+            return user;
+        }
+
         public async Task UpdateUser(ApplicationUserViewModel userViewModel)
         {
             var userEntity = await _dbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.Id == userViewModel.Id);

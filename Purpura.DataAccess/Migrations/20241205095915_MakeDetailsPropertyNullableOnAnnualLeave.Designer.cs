@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Purpura.DataAccess.DataContext;
 
@@ -11,9 +12,11 @@ using Purpura.DataAccess.DataContext;
 namespace Purpura.DataAccess.Migrations
 {
     [DbContext(typeof(PurpuraDbContext))]
-    partial class PurpuraDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241205095915_MakeDetailsPropertyNullableOnAnnualLeave")]
+    partial class MakeDetailsPropertyNullableOnAnnualLeave
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,6 +239,9 @@ namespace Purpura.DataAccess.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CurrentDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
