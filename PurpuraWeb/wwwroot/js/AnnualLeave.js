@@ -8,8 +8,10 @@ $("#save-changes-button").on("click", function () {
         var url = $form.data("action-url");
 
         $.post(url, $form.serialize(), function (success) {
-            if (success) alert("success!")
-            else alert("failure...")
+            $("#book-time-off-modal").modal("hide");
+
+            if (success) toastr.success('Time off successfully booked!');
+            else toastr.error('Something went wrong...');
         })
     });
 

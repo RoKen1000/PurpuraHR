@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="~/css/UserAuthentication.css" />
     <link rel="stylesheet" href="~/css/UserManagement.css" />
     <link rel="stylesheet" href="~/PurpuraWeb.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css" />
 </head>
 <body style="@(authenticationPaths.Contains(path) ? "background: linear-gradient(white, mediumpurple);" : "")">
     <div id="page-container">
@@ -69,6 +70,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/AnnualLeave.js" ></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

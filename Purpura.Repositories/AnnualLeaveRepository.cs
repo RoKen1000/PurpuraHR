@@ -4,6 +4,7 @@ using Purpura.DataAccess.DataContext;
 using Purpura.Models.Entities;
 using Purpura.Models.ViewModels;
 using Purpura.Repositories.Interfaces;
+using Purpura.Utility.Resolvers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,10 +32,16 @@ namespace Purpura.Repositories
         {
             try
             {
-                var daysUsed = (annualLeavePeriod.EndDate - annualLeavePeriod.StartDate).Days;
                 var user = await _userManagementRepository.GetUserEntity(u => u.Id == annualLeavePeriod.UserId);
 
                 if (user == null)
+                    return false;
+
+                var daysUsed = (annualLeavePeriod.EndDate - annualLeavePeriod.StartDate).Days;
+                var newAnnualLeaveTotal = AnnualLeaveResolver.WorkOutNumberOfDaysLeft(user.AnnualLeaveDays, daysUsed);
+                var isValidBooking = AnnualLeaveResolver.IsValidBooking(user.AnnualLeaveDays, newAnnualLeaveTotal);
+
+                if (!isValidBooking)
                     return false;
 
                 var annualLeaveEntity = _mapper.Map<AnnualLeave>(annualLeavePeriod);
@@ -42,8 +49,11 @@ namespace Purpura.Repositories
                 annualLeaveEntity.DateCreated = DateTime.Now;
                 annualLeaveEntity.ExternalReference = Guid.NewGuid().ToString();
                 annualLeaveEntity.User = user;
-
                 _dbContext.Add(annualLeaveEntity);
+
+                user.AnnualLeaveDays = newAnnualLeaveTotal;
+                _dbContext.Update(user);
+
                 await _dbContext.SaveChangesAsync();
 
                 return true;
