@@ -15,7 +15,7 @@ namespace Purpura.Utility.Resolvers
 
         public static bool IsValidBooking(int currentDays, int newTotal)
         {
-            if (currentDays <= 0 || newTotal <= 0)
+            if (currentDays <= 0 || newTotal < 0)
             {
                 return false;
             }

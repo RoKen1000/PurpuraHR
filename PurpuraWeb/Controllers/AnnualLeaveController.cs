@@ -22,12 +22,7 @@ namespace PurpuraWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var viewModel = new AnnualLeaveIndexViewModel
-            {
-                BookedLeave = await _annualLeaveRepository.GetBookedLeave(_userManager.GetUserId(User))
-            };
-
-            return View(viewModel);
+            return View();
         }
 
         [HttpGet]
@@ -61,6 +56,17 @@ namespace PurpuraWeb.Controllers
         public async Task<bool> BookTimeOff(AnnualLeaveViewModel bookedOffPeriod)
         {
             return await _annualLeaveRepository.BookTimeOff(bookedOffPeriod);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> _BookedLeaveTable()
+        {
+            var viewModel = new AnnualLeaveIndexViewModel 
+            { 
+                BookedLeave = await _annualLeaveRepository.GetBookedLeave(_userManager.GetUserId(User)) 
+            };
+
+            return PartialView(viewModel);
         }
     }
 }
