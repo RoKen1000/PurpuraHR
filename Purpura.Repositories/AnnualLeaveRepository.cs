@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Purpura.Common;
 using Purpura.DataAccess.DataContext;
 using Purpura.Models.Entities;
 using Purpura.Models.ViewModels;
@@ -28,21 +29,21 @@ namespace Purpura.Repositories
             _userManagementRepository = userManagementRepository;
         }
 
-        public async Task<bool> BookTimeOff(AnnualLeaveViewModel annualLeavePeriod)
+        public async Task<Result> BookTimeOff(AnnualLeaveViewModel annualLeavePeriod)
         {
             try
             {
                 var user = await _userManagementRepository.GetUserEntity(u => u.Id == annualLeavePeriod.UserId);
 
                 if (user == null)
-                    return false;
+                    return Result.Failure("User not found.");
 
                 var daysUsed = (annualLeavePeriod.EndDate - annualLeavePeriod.StartDate).Days;
                 var newAnnualLeaveTotal = AnnualLeaveResolver.WorkOutNumberOfDaysLeft(user.AnnualLeaveDays, daysUsed);
                 var isValidBooking = AnnualLeaveResolver.IsValidBooking(user.AnnualLeaveDays, newAnnualLeaveTotal);
 
                 if (!isValidBooking)
-                    return false;
+                    return Result.Failure("Booking is invalid and would either exceed remaining leave or there is no more leave to take.");
 
                 var annualLeaveEntity = _mapper.Map<AnnualLeave>(annualLeavePeriod);
 
@@ -56,11 +57,11 @@ namespace Purpura.Repositories
 
                 await _dbContext.SaveChangesAsync();
 
-                return true;
+                return Result.Success();
             }
             catch (Exception ex)
             {
-                return false;
+                return Result.Failure(ex.Message);
             }
         }
 

@@ -41,15 +41,15 @@ $("#save-changes-button").on("click", function () {
 
         $(".spinner-container").html(spinnerHtml);
 
-        $.post(postFormUrl, $form.serialize(), function (success) {
+        $.post(postFormUrl, $form.serialize(), function (result) {
             $("#book-time-off-modal").modal("hide");
 
-            if (success) {
+            if (result.success) {
                 toastr.success('Time off successfully booked!');
                 refreshPartials();
             }
             else {
-                toastr.error('Something went wrong...');
+                toastr.error(result.error);
                 $(".spinner-container").html("");
             }
 

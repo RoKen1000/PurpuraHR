@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Purpura.Common;
 using Purpura.Models.ViewModels;
 using Purpura.Repositories.Interfaces;
 using Purpura.Utility.Helpers;
@@ -53,7 +54,7 @@ namespace PurpuraWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> BookTimeOff(AnnualLeaveViewModel bookedOffPeriod)
+        public async Task<Result> BookTimeOff(AnnualLeaveViewModel bookedOffPeriod)
         {
             return await _annualLeaveRepository.BookTimeOff(bookedOffPeriod);
         }
