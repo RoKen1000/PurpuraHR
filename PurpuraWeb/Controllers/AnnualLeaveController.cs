@@ -96,5 +96,26 @@ namespace PurpuraWeb.Controllers
 
             return Result.Failure("Fields are missing.");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> _Delete(string externalReference)
+        {
+            var viewModel = await _annualLeaveRepository.GetByExternalReference(externalReference);
+            viewModel.LeaveTypeSelectList = EnumHelpers.GenerateLeaveTypeSelectList();
+
+            return PartialView("_BookTimeOffForm", viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<Result> _Delete(AnnualLeaveViewModel bookedOffPeriod)
+        {
+            if (ModelState.IsValid)
+            {
+                return await _annualLeaveRepository.Delete(bookedOffPeriod);
+            }
+
+            return Result.Failure("Delete failed.");
+        }
     }
 }

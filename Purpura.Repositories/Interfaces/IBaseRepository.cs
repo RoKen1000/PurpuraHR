@@ -12,5 +12,6 @@ namespace Purpura.Repositories.Interfaces
     {
         Task<TEntity> GetByExternalReference(Expression<Func<TEntity, bool>> filter);
         Task<Result> Edit(TEntity entity);
+        Task<Result> Delete(TEntity entity);
     }
 }

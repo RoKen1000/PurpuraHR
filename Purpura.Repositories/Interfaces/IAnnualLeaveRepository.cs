@@ -1,10 +1,5 @@
 ﻿using Purpura.Common;
 using Purpura.Models.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Purpura.Repositories.Interfaces
 {
@@ -15,5 +10,6 @@ namespace Purpura.Repositories.Interfaces
         Task<List<AnnualLeaveViewModel>> GetBookedLeave(string userId);
         Task<AnnualLeaveViewModel> GetByExternalReference(string externalReference);
         Task<Result> Edit(AnnualLeaveViewModel viewModel);
+        Task<Result> Delete(AnnualLeaveViewModel viewModel);
     }
 }

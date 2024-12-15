@@ -1,7 +1,7 @@
 ﻿
 @model AnnualLeaveViewModel;
 
-<form id="leave-form" method="post" data-crud-method="" data-create-url="@Url.Action("_Create", "AnnualLeave")" data-edit-url="@Url.Action("_Edit", "AnnualLeave")">
+<form id="leave-form" method="post" data-crud-method="" data-create-url="@Url.Action("_Create", "AnnualLeave")" data-edit-url="@Url.Action("_Edit", "AnnualLeave")" data-delete-url="@Url.Action("_Delete", "AnnualLeave")">
     <div class="modal-body">
         
         <div class="form-floating mb-3">
@@ -22,10 +22,12 @@
         </div>
 
         <div class="form-floating mb-3">
-            <textarea id="test" class="form-control" name="Details" asp-for="Details">@Model.Details</textarea>
+            <textarea class="form-control" name="Details" asp-for="Details">@Model.Details</textarea>
             <label asp-for="Details">Details</label>
             <span asp-validation-for="Details" class="text-danger"></span>
         </div>
+
+        <div id="delete-warning"></div>
 
         <input type="hidden" value="@Model.UserId" name="UserId" />
         <input type="hidden" value="@Model.ExternalReference" name="ExternalReference" />

@@ -113,5 +113,15 @@ namespace Purpura.Repositories
 
             return await base.Edit(updatedEntity);
         }
+
+        public async Task<Result> Delete(AnnualLeaveViewModel viewModel)
+        {
+            var annualLeaveEntity = await base.GetByExternalReference(e => e.ExternalReference == viewModel.ExternalReference);
+
+            if (annualLeaveEntity == null)
+                return Result.Failure("Annual Leave not found.");
+
+            return await base.Delete(annualLeaveEntity);
+        }
     }
 }

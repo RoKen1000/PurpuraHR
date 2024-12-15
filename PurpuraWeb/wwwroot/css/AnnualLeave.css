@@ -16,3 +16,7 @@
 #leave-form textarea{
     height: 250px;
 }
+
+.edit-buttons:hover, .delete-buttons:hover{
+    cursor: pointer;
+}

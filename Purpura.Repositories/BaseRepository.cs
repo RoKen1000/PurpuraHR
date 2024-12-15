@@ -39,5 +39,14 @@ namespace Purpura.Repositories
 
             return Result.Success();
         }
+
+        public async Task<Result> Delete(TEntity entity)
+        {
+            dbSet.Remove(entity);
+
+            await _dbContext.SaveChangesAsync();
+
+            return Result.Success();
+        }
     }
 }
