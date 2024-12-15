@@ -20,7 +20,7 @@ namespace Purpura.Repositories
             _mapper = mapper;
         }
 
-        public async Task<TEntity> GetByExternalReference(Expression<Func<TEntity, bool>> filter)
+        public async Task<TEntity> GetSingle(Expression<Func<TEntity, bool>> filter)
         {
             IQueryable<TEntity> query = dbSet;
 
@@ -47,6 +47,15 @@ namespace Purpura.Repositories
             await _dbContext.SaveChangesAsync();
 
             return Result.Success();
+        }
+
+        public async Task<IEnumerable<TEntity>> GetAll(Expression<Func<TEntity, bool>> filter)
+        {
+            IQueryable<TEntity> query = dbSet;
+
+            query = query.Where(filter);
+
+            return await query.ToListAsync();
         }
     }
 }

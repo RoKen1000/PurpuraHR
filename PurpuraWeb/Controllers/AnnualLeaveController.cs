@@ -59,6 +59,9 @@ namespace PurpuraWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (bookedOffPeriod.HasOverlap)
+                    return Result.Failure("Overlapping leave periods can not be submitted.");
+
                 return await _annualLeaveRepository.BookTimeOff(bookedOffPeriod);
             }
 
@@ -91,6 +94,9 @@ namespace PurpuraWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (bookedOffPeriod.HasOverlap)
+                    return Result.Failure("Overlapping leave periods can not be submitted.");
+
                 return await _annualLeaveRepository.Edit(bookedOffPeriod);
             }
 
@@ -110,12 +116,20 @@ namespace PurpuraWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<Result> _Delete(AnnualLeaveViewModel bookedOffPeriod)
         {
+            ModelState.Remove("HasOverlap");
+
             if (ModelState.IsValid)
             {
                 return await _annualLeaveRepository.Delete(bookedOffPeriod);
             }
 
             return Result.Failure("Delete failed.");
+        }
+
+        [HttpPost]
+        public async Task<Result> CheckForLeaveOverlaps(string userId, DateTime startDate, DateTime endDate, string? leaveExtRef)
+        {
+            return await _annualLeaveRepository.CheckForLeaveOverlaps(userId, startDate, endDate, leaveExtRef);
         }
     }
 }

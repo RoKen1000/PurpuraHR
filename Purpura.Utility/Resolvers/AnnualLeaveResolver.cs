@@ -13,14 +13,20 @@ namespace Purpura.Utility.Resolvers
             return currentCount - daysBeingTaken;
         }
 
-        public static bool IsValidBooking(int currentDays, int newTotal)
+        public static string IsValidBooking(int currentDays, int newTotal, DateTime startDate, DateTime endDate)
         {
+            var errorString = "";
+
             if (currentDays <= 0 || newTotal < 0)
+                errorString += "Booking is invalid and would either exceed remaining leave or there is no more leave to take.";
+
+            if (endDate < startDate)
             {
-                return false;
+                var endLessThanStartError = "End date can not be before the start date.";
+                errorString += !String.IsNullOrEmpty(errorString) ? " " + endLessThanStartError : endLessThanStartError;
             }
 
-            return true;
+            return errorString;
         }
 
         public static int WorkOutNumberOfDaysUsed(int userCurrentTotal)

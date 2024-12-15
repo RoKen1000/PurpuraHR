@@ -11,5 +11,6 @@ namespace Purpura.Repositories.Interfaces
         Task<AnnualLeaveViewModel> GetByExternalReference(string externalReference);
         Task<Result> Edit(AnnualLeaveViewModel viewModel);
         Task<Result> Delete(AnnualLeaveViewModel viewModel);
+        Task<Result> CheckForLeaveOverlaps(string userId, DateTime startDate, DateTime endDate, string? leaveExtRef);
     }
 }

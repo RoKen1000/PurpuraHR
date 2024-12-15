@@ -18,5 +18,6 @@ namespace Purpura.Models.ViewModels
         public LeaveTypes Type { get; set; }
         public IEnumerable<SelectListItem>? LeaveTypeSelectList { get; set; }
         public string? Details { get; set; }
+        public bool HasOverlap { get; set; }
     }
 }

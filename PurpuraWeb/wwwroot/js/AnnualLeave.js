@@ -4,6 +4,7 @@ let getEditModalFormUrl = $("#annual-leave-form-modal").data("get-edit-modal-con
 let getDeleteModalFormUrl = $("#annual-leave-form-modal").data("get-delete-modal-content");
 let getDayCountUrl = $("#day-count-container").data("get-day-count");
 let getBookedLeaveTableUrl = $("#booked-leave-table-container").data("get-booked-leave-container");
+let checkLeavePeriodOverlapUrl = $("#annual-leave-form-modal").data("check-overlap-url");
 
 let spinnerHtml = `<div class="d-flex justify-content-center">
                         <div class="spinner-border" style="color: mediumpurple;" role="status"></div>
@@ -42,7 +43,23 @@ $("#annual-leave-form-modal").on("show.bs.modal", function (e) {
             $(".modal-title").text("Book Annual Leave");
             $('.modal-body').html(data);
             $("#leave-form").attr("data-crud-method", "create");
-            alterSubmitButton($("#save-changes-button"), false)
+            alterSubmitButton($("#save-changes-button"), false);
+
+            $("#start-date, #end-date").off().on("change", function () {
+                let startTime = $("#start-date").val();
+                let endTime = $("#end-date").val();
+
+                $.post(checkLeavePeriodOverlapUrl, { startDate: startTime, endDate: endTime, userId: $("#user-id").val() }, function (result) {
+                    if (result.isSuccess) {
+                        $("#has-overlap").val(false);
+                        $("#overlap-warning").html("");
+                    }
+                    else {
+                        $("#has-overlap").val(true);
+                        $("#overlap-warning").html(`<p style='color: red; text-align: center;'><i class='bi bi-exclamation-octagon'></i> ${result.error} </p>`);
+                    }
+                });
+            });
         });
     }
     else if (crudMethod === "edit") {
@@ -50,7 +67,25 @@ $("#annual-leave-form-modal").on("show.bs.modal", function (e) {
             $(".modal-title").text("Edit Annual Leave");
             $('.modal-body').html(data);
             $("#leave-form").attr("data-crud-method", "edit");
-            alterSubmitButton($("#save-changes-button"), false)
+            alterSubmitButton($("#save-changes-button"), false);
+
+            $("#start-date, #end-date").off().on("change", function () {
+                let startTime = $("#start-date").val();
+                let endTime = $("#end-date").val();
+
+                var test = $("#user-id").val();
+
+                $.post(checkLeavePeriodOverlapUrl, { startDate: startTime, endDate: endTime, leaveExtRef: $("#ext-ref").val(), userId: $("#user-id").val() }, function (result) {
+                    if (result.isSuccess) {
+                        $("#has-overlap").val(false);
+                        $("#overlap-warning").html("");
+                    }
+                    else {
+                        $("#has-overlap").val(true);
+                        $("#overlap-warning").html(`<p style='color: red; text-align: center;'><i class='bi bi-exclamation-octagon'></i> ${result.error} </p>`);
+                    }
+                });
+            });
         });
     }
     else if (crudMethod === "delete") {
@@ -85,7 +120,7 @@ $("#annual-leave-form-modal #save-changes-button").on("click", function () {
     let $form = $("#leave-form");
     let crudMethod = $form.data("crud-method");
 
-    $form.on("submit", function (e) {
+    $form.off().on("submit", function (e) {
         e.preventDefault();
 
         let postFormUrl, successMessage;
@@ -124,4 +159,3 @@ $("#annual-leave-form-modal #save-changes-button").on("click", function () {
 
     $form.trigger("submit");
 })
-

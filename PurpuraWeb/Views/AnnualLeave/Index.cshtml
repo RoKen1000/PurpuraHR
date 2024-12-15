@@ -14,7 +14,7 @@
 <div id="booked-leave-table-container" data-get-booked-leave-container="@Url.Action("_BookedLeaveTable", "AnnualLeave")">
 </div>
 
-<div class="modal fade" id="annual-leave-form-modal" data-get-modal-content="@Url.Action("_Create", "AnnualLeave")" data-get-edit-modal-content="@Url.Action("_Edit", "AnnualLeave")" data-get-delete-modal-content="@Url.Action("_Delete", "AnnualLeave")" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="annual-leave-form-modal" data-get-modal-content="@Url.Action("_Create", "AnnualLeave")" data-get-edit-modal-content="@Url.Action("_Edit", "AnnualLeave")" data-get-delete-modal-content="@Url.Action("_Delete", "AnnualLeave")" data-check-overlap-url="@Url.Action("CheckForLeaveOverlaps", "AnnualLeave")" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
