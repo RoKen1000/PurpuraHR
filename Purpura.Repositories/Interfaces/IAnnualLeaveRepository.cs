@@ -13,5 +13,7 @@ namespace Purpura.Repositories.Interfaces
         Task<Result> BookTimeOff(AnnualLeaveViewModel bookedTimePeriod);
         Task<int> GetUserAnnualLeaveCount(string userId);
         Task<List<AnnualLeaveViewModel>> GetBookedLeave(string userId);
+        Task<AnnualLeaveViewModel> GetByExternalReference(string externalReference);
+        Task<Result> Edit(AnnualLeaveViewModel viewModel);
     }
 }

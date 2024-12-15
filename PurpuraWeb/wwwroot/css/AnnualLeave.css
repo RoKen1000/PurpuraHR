@@ -12,3 +12,7 @@
 .booked-leave-table th {
     padding: 5px;
 }
+
+#leave-form textarea{
+    height: 250px;
+}

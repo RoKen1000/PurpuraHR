@@ -16,7 +16,7 @@ namespace Purpura.Models.ViewModels
 
         [Required]
         public LeaveTypes Type { get; set; }
-        public IEnumerable<SelectListItem> LeaveTypeSelectList { get; set; }
+        public IEnumerable<SelectListItem>? LeaveTypeSelectList { get; set; }
         public string? Details { get; set; }
     }
 }

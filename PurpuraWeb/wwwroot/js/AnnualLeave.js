@@ -1,5 +1,6 @@
 ﻿
-let getModalFormUrl = $("#book-time-off-modal").data("get-modal-content");
+let getModalFormUrl = $("#annual-leave-form-modal").data("get-modal-content");
+let getEditModalFormUrl = $("#annual-leave-form-modal").data("get-edit-modal-content");
 let getDayCountUrl = $("#day-count-container").data("get-day-count");
 let getBookedLeaveTableUrl = $("#booked-leave-table-container").data("get-booked-leave-container");
 
@@ -19,33 +20,55 @@ function refreshPartials() {
     })
 }
 
-$("#book-time-off-modal").on("show.bs.modal", function () {
+$("#annual-leave-form-modal").on("show.bs.modal", function (e) {
     $('.modal-body').html(spinnerHtml);
 
-    $.get(getModalFormUrl, function (data) {
-        $('.modal-body').html(data);
-    });
+    let crudMethod = $(e.relatedTarget).data("crud-method");
+
+    if (crudMethod === "create") {
+        $.get(getModalFormUrl, function (data) {
+            $(".modal-title").text("Book Annual Leave");
+            $('.modal-body').html(data);
+            $("#leave-form").attr("data-crud-method", "create");
+        });
+    }
+    else if (crudMethod === "edit") {
+        $.get(getEditModalFormUrl, { externalReference: $(e.relatedTarget).data("external-reference") }, function (data) {
+            $(".modal-title").text("Edit Annual Leave");
+            $('.modal-body').html(data);
+            $("#leave-form").attr("data-crud-method", "edit");
+        });
+    }
+
 })
 
-$("#book-time-off-modal").on("hide.bs.modal", function () {
+$("#annual-leave-form-modal").on("hide.bs.modal", function () {
     $('.modal-body').html("");
 })
 
-$("#save-changes-button").on("click", function () {
+$("#annual-leave-form-modal #save-changes-button").on("click", function () {
     let $form = $("#leave-form");
+    let crudMethod = $form.data("crud-method");
 
     $form.on("submit", function (e) {
         e.preventDefault();
 
-        let postFormUrl = $form.data("action-url");
+        let postFormUrl;
+
+        if (crudMethod === "create") {
+            postFormUrl = $form.data("create-url");
+        }
+        else if (crudMethod === "edit") {
+            postFormUrl = $form.data("edit-url");
+        }
 
         $(".spinner-container").html(spinnerHtml);
 
         $.post(postFormUrl, $form.serialize(), function (result) {
-            $("#book-time-off-modal").modal("hide");
 
-            if (result.success) {
-                toastr.success('Time off successfully booked!');
+            if (result.isSuccess) {
+                $("#annual-leave-form-modal").modal("hide");
+                toastr.success('Time off successfully edited!');
                 refreshPartials();
             }
             else {
@@ -58,3 +81,4 @@ $("#save-changes-button").on("click", function () {
 
     $form.trigger("submit");
 })
+

@@ -1,0 +1,34 @@
+﻿
+@model AnnualLeaveViewModel;
+
+<form id="leave-form" method="post" data-crud-method="" data-create-url="@Url.Action("_Create", "AnnualLeave")" data-edit-url="@Url.Action("_Edit", "AnnualLeave")">
+    <div class="modal-body">
+        
+        <div class="form-floating mb-3">
+            <input class="form-control" type="date" name="StartDate" asp-for="StartDate" />
+            <label asp-for="StartDate">Start Date</label>
+            <span asp-validation-for="StartDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input class="form-control" type="date" name="EndDate"  asp-for="EndDate" />
+            <label asp-for="EndDate">End Date</label>
+            <span asp-validation-for="EndDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <select class="form-select" asp-for="Type" asp-items="@Model.LeaveTypeSelectList" name="Type"></select>
+            <label asp-for="Type">Leave Type</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <textarea id="test" class="form-control" name="Details" asp-for="Details">@Model.Details</textarea>
+            <label asp-for="Details">Details</label>
+            <span asp-validation-for="Details" class="text-danger"></span>
+        </div>
+
+        <input type="hidden" value="@Model.UserId" name="UserId" />
+        <input type="hidden" value="@Model.ExternalReference" name="ExternalReference" />
+    </div>
+    
+</form>

@@ -42,7 +42,7 @@ namespace PurpuraWeb.Controllers
         }
 
         [HttpGet]
-        public IActionResult _BookTimeOff()
+        public IActionResult _Create()
         {
             var viewModel = new AnnualLeaveViewModel
             {
@@ -50,13 +50,19 @@ namespace PurpuraWeb.Controllers
                 UserId = _userManager.GetUserId(User)
             };
 
-            return PartialView(viewModel);
+            return PartialView("_BookTimeOffForm", viewModel);
         }
 
         [HttpPost]
-        public async Task<Result> BookTimeOff(AnnualLeaveViewModel bookedOffPeriod)
+        [ValidateAntiForgeryToken]
+        public async Task<Result> _Create(AnnualLeaveViewModel bookedOffPeriod)
         {
-            return await _annualLeaveRepository.BookTimeOff(bookedOffPeriod);
+            if (ModelState.IsValid)
+            {
+                return await _annualLeaveRepository.BookTimeOff(bookedOffPeriod);
+            }
+
+            return Result.Failure("Fields are missing.");
         }
 
         [HttpGet]
@@ -68,6 +74,27 @@ namespace PurpuraWeb.Controllers
             };
 
             return PartialView(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> _Edit(string externalReference)
+        {
+            var viewModel = await _annualLeaveRepository.GetByExternalReference(externalReference);
+            viewModel.LeaveTypeSelectList = EnumHelpers.GenerateLeaveTypeSelectList();
+
+            return PartialView("_BookTimeOffForm", viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<Result> _Edit(AnnualLeaveViewModel bookedOffPeriod)
+        {
+            if (ModelState.IsValid)
+            {
+                return await _annualLeaveRepository.Edit(bookedOffPeriod);
+            }
+
+            return Result.Failure("Fields are missing.");
         }
     }
 }

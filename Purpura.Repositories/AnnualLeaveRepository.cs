@@ -6,15 +6,10 @@ using Purpura.Models.Entities;
 using Purpura.Models.ViewModels;
 using Purpura.Repositories.Interfaces;
 using Purpura.Utility.Resolvers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Purpura.Repositories
 {
-    public class AnnualLeaveRepository : IAnnualLeaveRepository
+    public class AnnualLeaveRepository : BaseRepository<AnnualLeave>, IAnnualLeaveRepository
     {
         private readonly IMapper _mapper;
         private readonly PurpuraDbContext _dbContext;
@@ -22,7 +17,7 @@ namespace Purpura.Repositories
 
         public AnnualLeaveRepository(IMapper mapper,
             PurpuraDbContext dbContext,
-            IUserManagementRepository userManagementRepository)
+            IUserManagementRepository userManagementRepository) : base(dbContext, mapper)
         {
             _mapper = mapper;
             _dbContext = dbContext;
@@ -65,6 +60,16 @@ namespace Purpura.Repositories
             }
         }
 
+        public async Task<AnnualLeaveViewModel> GetByExternalReference(string externalReference)
+        {
+            var entity = await base.GetByExternalReference(e => e.ExternalReference == externalReference);
+
+            if(entity == null)
+                throw new NullReferenceException("Annual Leave not found.");
+
+            return _mapper.Map<AnnualLeave, AnnualLeaveViewModel>(entity);
+        }
+
         public async Task<List<AnnualLeaveViewModel>> GetBookedLeave(string userId)
         {
             var bookedLeaveList = new List<AnnualLeaveViewModel>();
@@ -94,6 +99,19 @@ namespace Purpura.Repositories
                 return 0;
 
             return user.AnnualLeaveDays;
+        }
+
+        public async Task<Result> Edit(AnnualLeaveViewModel viewModel)
+        {
+            var annualLeaveEntity = await base.GetByExternalReference(e => e.ExternalReference == viewModel.ExternalReference);
+
+            if (annualLeaveEntity == null)
+                return Result.Failure("Annual Leave not found.");
+
+            var updatedEntity = _mapper.Map<AnnualLeaveViewModel, AnnualLeave>(viewModel, annualLeaveEntity);
+            updatedEntity.DateEdited = DateTime.Now;
+
+            return await base.Edit(updatedEntity);
         }
     }
 }
