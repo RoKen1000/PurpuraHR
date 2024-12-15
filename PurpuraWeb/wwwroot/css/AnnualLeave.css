@@ -1,0 +1,22 @@
+﻿
+.booked-leave-table {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.booked-leave-table tr:nth-child(even) {
+    background-color: #bf7de8;
+    color: white;
+}
+
+.booked-leave-table th {
+    padding: 5px;
+}
+
+#leave-form textarea{
+    height: 250px;
+}
+
+.edit-buttons:hover, .delete-buttons:hover{
+    cursor: pointer;
+}

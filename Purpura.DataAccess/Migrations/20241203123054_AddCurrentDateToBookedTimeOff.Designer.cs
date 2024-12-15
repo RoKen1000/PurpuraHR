@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Purpura.DataAccess.DataContext;
 
@@ -11,9 +12,11 @@ using Purpura.DataAccess.DataContext;
 namespace Purpura.DataAccess.Migrations
 {
     [DbContext(typeof(PurpuraDbContext))]
-    partial class PurpuraDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241203123054_AddCurrentDateToBookedTimeOff")]
+    partial class AddCurrentDateToBookedTimeOff
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,13 +232,16 @@ namespace Purpura.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Purpura.Models.Entities.AnnualLeave", b =>
+            modelBuilder.Entity("Purpura.Models.Entities.BookedTimeOff", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CurrentDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
@@ -244,6 +250,7 @@ namespace Purpura.DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Details")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")
@@ -260,14 +267,13 @@ namespace Purpura.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AnnualLeave");
+                    b.ToTable("BookedTimeOff");
                 });
 
             modelBuilder.Entity("PurpuraWeb.Models.Entities.ApplicationUser", b =>
@@ -277,9 +283,6 @@ namespace Purpura.DataAccess.Migrations
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("AnnualLeaveDays")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -355,13 +358,11 @@ namespace Purpura.DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Purpura.Models.Entities.AnnualLeave", b =>
+            modelBuilder.Entity("Purpura.Models.Entities.BookedTimeOff", b =>
                 {
                     b.HasOne("PurpuraWeb.Models.Entities.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });

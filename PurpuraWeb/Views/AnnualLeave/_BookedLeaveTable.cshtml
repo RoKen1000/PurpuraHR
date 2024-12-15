@@ -1,0 +1,42 @@
+﻿@using Purpura.Utility.Helpers
+
+@model AnnualLeaveIndexViewModel;
+
+@if (Model.BookedLeave.Any())
+{
+    <div style="overflow-x: auto;">
+        <table class="table booked-leave-table">
+            <thead>
+                <tr>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Leave Type</th>
+                    <th>Details</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var leave in Model.BookedLeave)
+                {
+                    <tr>
+                        <td>@leave.StartDate.ToShortDateString()</td>
+                        <td>@leave.EndDate.ToShortDateString()</td>
+                        <td>@EnumHelpers.GetEnumDescription(leave.Type)</td>
+                        <td>@(leave.Details != null && leave.Details.Length > 15 ? leave.Details.Substring(0, 15) + "..." : leave.Details)</td>
+                        <td>
+                            <a class="edit-buttons" data-crud-method="edit" data-external-reference="@leave.ExternalReference" data-bs-toggle="modal" data-bs-target="#annual-leave-form-modal">
+                                <i class="bi bi-pencil-square" style="color: darkkhaki;"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a class="delete-buttons" data-external-reference="@leave.ExternalReference" data-crud-method="delete" data-bs-toggle="modal" data-bs-target="#annual-leave-form-modal">
+                                <i class="bi bi-trash-fill" style="color: darkred;"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

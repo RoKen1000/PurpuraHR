@@ -1,0 +1,32 @@
+﻿
+<h1>Annual Leave</h1>
+
+<div class="spinner-container">
+</div>
+
+<div id="day-count-container" data-get-day-count="@Url.Action("_IndexDayCount", "AnnualLeave")">
+</div>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#annual-leave-form-modal" data-crud-method="create">
+    Book Time Off
+</button>
+
+<div id="booked-leave-table-container" data-get-booked-leave-container="@Url.Action("_BookedLeaveTable", "AnnualLeave")">
+</div>
+
+<div class="modal fade" id="annual-leave-form-modal" data-get-modal-content="@Url.Action("_Create", "AnnualLeave")" data-get-edit-modal-content="@Url.Action("_Edit", "AnnualLeave")" data-get-delete-modal-content="@Url.Action("_Delete", "AnnualLeave")" data-check-overlap-url="@Url.Action("CheckForLeaveOverlaps", "AnnualLeave")" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="save-changes-button" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

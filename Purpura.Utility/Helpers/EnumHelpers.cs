@@ -38,5 +38,14 @@ namespace Purpura.Utility.Helpers
             });
         }
 
+        public static IEnumerable<SelectListItem> GenerateLeaveTypeSelectList()
+        {
+            return Enum.GetValues(typeof(LeaveTypes)).Cast<LeaveTypes>().Where(l => l != LeaveTypes.Unknown).Select(l => new SelectListItem
+            {
+                Text = EnumHelpers.GetEnumDescription(l),
+                Value = Enum.Parse<LeaveTypes>(l.ToString()).ToString()
+            });
+        }
+
     }
 }
