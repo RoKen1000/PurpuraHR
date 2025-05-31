@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Purpura.Common;
 using Purpura.DataAccess.DataContext;
 using Purpura.Repositories.Interfaces;
@@ -11,13 +10,11 @@ namespace Purpura.Repositories
     {
         private readonly PurpuraDbContext _dbContext;
         internal DbSet<TEntity> dbSet;
-        private readonly IMapper _mapper;
 
-        public BaseRepository(PurpuraDbContext dbContext, IMapper mapper)
+        public BaseRepository(PurpuraDbContext dbContext)
         {
             _dbContext = dbContext;
             this.dbSet = _dbContext.Set<TEntity>();
-            _mapper = mapper;
         }
 
         public async Task<TEntity> GetSingle(Expression<Func<TEntity, bool>> filter)
