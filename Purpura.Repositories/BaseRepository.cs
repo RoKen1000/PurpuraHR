@@ -28,22 +28,9 @@ namespace Purpura.Repositories
             return entity;
         }
 
-        public async Task<Result> Edit(TEntity entity)
-        {
-            dbSet.Update(entity);
-
-            await _dbContext.SaveChangesAsync();
-
-            return Result.Success();
-        }
-
-        public async Task<Result> Delete(TEntity entity)
+        public void Delete(TEntity entity)
         {
             dbSet.Remove(entity);
-
-            await _dbContext.SaveChangesAsync();
-
-            return Result.Success();
         }
 
         public async Task<IEnumerable<TEntity>> GetAll(Expression<Func<TEntity, bool>> filter)
@@ -53,6 +40,16 @@ namespace Purpura.Repositories
             query = query.Where(filter);
 
             return await query.ToListAsync();
+        }
+
+        public void Update(TEntity entity)
+        {
+            dbSet.Update(entity);
+        }
+
+        public void Create(TEntity entity)
+        {
+            _dbContext.Add(entity);
         }
     }
 }

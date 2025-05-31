@@ -7,7 +7,8 @@ namespace Purpura.Repositories.Interfaces
     {
         Task<TEntity> GetSingle(Expression<Func<TEntity, bool>> filter);
         Task<IEnumerable<TEntity>> GetAll(Expression<Func<TEntity, bool>> filter);
-        Task<Result> Edit(TEntity entity);
-        Task<Result> Delete(TEntity entity);
+        void Delete(TEntity entity);
+        void Update(TEntity entity);
+        void Create(TEntity entity);
     }
 }

@@ -1,19 +1,32 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Purpura.Common;
+using Purpura.DataAccess.DataContext;
 using Purpura.Models.Entities;
 using Purpura.Models.ViewModels;
+using Purpura.Repositories;
+using Purpura.Repositories.Interfaces;
 using Purpura.Services.Interfaces;
 using Purpura.Utility.Resolvers;
 
 namespace Purpura.Services
 {
-    public class AnnualLeaveService : IAnnualLeaveService
+    public class AnnualLeaveService : BaseService<AnnualLeave>, IAnnualLeaveService
     {
-        public async Task<Result> BookTimeOff(AnnualLeaveViewModel bookedTimePeriod)
+        private readonly IUserManagementRepository _userManagementRepository;
+
+        public AnnualLeaveService(IUserManagementRepository userManagementRepository, 
+            IMapper mapper, 
+            IBaseRepository<AnnualLeave> baseRepository) : base(mapper, baseRepository)
+        {
+            _userManagementRepository = userManagementRepository;
+        }
+
+        public async Task<Result> BookTimeOff(AnnualLeaveViewModel annualLeavePeriod)
         {
             try
             {
-                var user = await _userManagementRepository.GetUserEntity(u => u.Id == annualLeavePeriod.UserId);
+                var user = await _userManagementRepository.GetSingle(u => u.Id == annualLeavePeriod.UserId);
 
                 if (user == null)
                     return Result.Failure("User not found.");
@@ -30,7 +43,7 @@ namespace Purpura.Services
                 annualLeaveEntity.DateCreated = DateTime.Now;
                 annualLeaveEntity.ExternalReference = Guid.NewGuid().ToString();
                 annualLeaveEntity.User = user;
-                _dbContext.Add(annualLeaveEntity);
+                base.Create(annualLeaveEntity);
 
                 user.AnnualLeaveDays = newAnnualLeaveTotal;
                 _dbContext.Update(user);
