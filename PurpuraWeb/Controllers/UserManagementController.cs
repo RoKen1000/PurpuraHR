@@ -1,21 +1,17 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Purpura.Common.Enums;
-using Purpura.DataAccess.DataContext;
+﻿using Microsoft.AspNetCore.Mvc;
 using Purpura.Models.ViewModels;
-using Purpura.Repositories.Interfaces;
+using Purpura.Services.Interfaces;
 using Purpura.Utility.Helpers;
 
 namespace PurpuraWeb.Controllers
 {
     public class UserManagementController : Controller
     {
-        private readonly IUserManagementRepository _userManagementRepository;
+        private readonly IUserManagementService _userManagementService;
 
-        public UserManagementController(IUserManagementRepository userManagementRepository)
+        public UserManagementController(IUserManagementService userManagementService)
         {
-            _userManagementRepository = userManagementRepository;
+            _userManagementService = userManagementService;
         }
 
         [HttpGet]
@@ -28,7 +24,7 @@ namespace PurpuraWeb.Controllers
         [Route("Details/{userId}")]
         public async Task<IActionResult> Details(string userId)
         {
-            var userViewModel = await _userManagementRepository.GetUser(u => u.Id == userId);
+            var userViewModel = await _userManagementService.GetUser(u => u.Id == userId);
 
             if (userViewModel == null)
                 return NotFound();
@@ -40,7 +36,7 @@ namespace PurpuraWeb.Controllers
         [Route("Edit/{userId}")]
         public async Task<IActionResult> EditUserDetails(string userId)
         {
-            var userViewModel = await _userManagementRepository.GetUser(u => u.Id == userId);
+            var userViewModel = await _userManagementService.GetUser(u => u.Id == userId);
 
             if (userViewModel == null)
                 return NotFound();
@@ -60,7 +56,7 @@ namespace PurpuraWeb.Controllers
             {
                 viewModel.Address = AddressHelpers.ConstructAddressString(new string[4] { viewModel.AddressLine1, viewModel.AddressLine2, viewModel.AddressLine3, viewModel.Postcode });
 
-                await _userManagementRepository.UpdateUser(viewModel);
+                await _userManagementService.UpdateUser(viewModel);
 
                 return RedirectToAction($"Details", new { userId = viewModel.Id });
             }
