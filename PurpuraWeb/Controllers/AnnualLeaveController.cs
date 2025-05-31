@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Purpura.Common;
 using Purpura.Models.ViewModels;
-using Purpura.Repositories.Interfaces;
+using Purpura.Services.Interfaces;
 using Purpura.Utility.Helpers;
 using Purpura.Utility.Resolvers;
 
@@ -10,10 +10,10 @@ namespace PurpuraWeb.Controllers
 {
     public class AnnualLeaveController : Controller
     {
-        private readonly IAnnualLeaveRepository _annualLeaveRepository;
+        private readonly IAnnualLeaveService _annualLeaveService;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public AnnualLeaveController(IAnnualLeaveRepository annualLeaveRepository,
+        public AnnualLeaveController(IAnnualLeaveService annualLeaveService,
             UserManager<IdentityUser> userManager)
         {
             _annualLeaveRepository = annualLeaveRepository;

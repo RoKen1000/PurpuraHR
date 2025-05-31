@@ -14,52 +14,13 @@ namespace Purpura.Services
     public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : class
     {
         protected readonly IMapper _mapper;
-        private readonly IBaseRepository<TEntity> _baseRepository;
+        protected readonly IUnitOfWork _unitOfWork;
 
-        public BaseService(IMapper mapper, IBaseRepository<TEntity> baseRepository)
+        public BaseService(IMapper mapper, 
+            IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
-            _baseRepository = baseRepository;
-        }
-
-        public async Task<Result> Delete(TEntity viewmodel)
-        {
-            var result = await _baseRepository.Delete(viewmodel);
-
-            if (result > 0)
-                return Result.Success();
-            else 
-                return Result.Failure("Delete failed.");
-        }
-
-        public async Task<Result> Edit(TEntity viewmodel)
-        {
-            var result = _baseRepository.Update(viewmodel);
-
-            if (result > 0)
-                return Result.Success();
-            else
-                return Result.Failure("Delete failed.");
-        }
-
-        public async Task<Result> Create(TEntity viewmodel)
-        {
-            var result = _baseRepository.Create(viewmodel);
-
-            if (result > 0)
-                return Result.Success();
-            else
-                return Result.Failure("Delete failed.");
-        }
-
-        public Task<IEnumerable<TEntity>> GetAll(System.Linq.Expressions.Expression<Func<TEntity, bool>> filter)
-        {
-            return _baseRepository.GetAll(filter);
-        }
-
-        public Task<TEntity> GetSingle(System.Linq.Expressions.Expression<Func<TEntity, bool>> filter)
-        {
-            return _baseRepository.GetSingle(filter);
+            _unitOfWork = unitOfWork;
         }
     }
 }

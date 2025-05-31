@@ -13,20 +13,18 @@ namespace Purpura.Services
 {
     public class AnnualLeaveService : BaseService<AnnualLeave>, IAnnualLeaveService
     {
-        private readonly IUserManagementRepository _userManagementRepository;
 
-        public AnnualLeaveService(IUserManagementRepository userManagementRepository, 
+        public AnnualLeaveService(
             IMapper mapper, 
-            IBaseRepository<AnnualLeave> baseRepository) : base(mapper, baseRepository)
+            IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
         {
-            _userManagementRepository = userManagementRepository;
         }
 
         public async Task<Result> BookTimeOff(AnnualLeaveViewModel annualLeavePeriod)
         {
             try
             {
-                var user = await _userManagementRepository.GetSingle(u => u.Id == annualLeavePeriod.UserId);
+                var user = await _unitOfWork.UserManagementRepository.GetSingle(u => u.Id == annualLeavePeriod.UserId);
 
                 if (user == null)
                     return Result.Failure("User not found.");
@@ -43,12 +41,12 @@ namespace Purpura.Services
                 annualLeaveEntity.DateCreated = DateTime.Now;
                 annualLeaveEntity.ExternalReference = Guid.NewGuid().ToString();
                 annualLeaveEntity.User = user;
-                base.Create(annualLeaveEntity);
+                _unitOfWork.AnnualLeaveRepository.Create(annualLeaveEntity);
 
                 user.AnnualLeaveDays = newAnnualLeaveTotal;
-                _dbContext.Update(user);
+                _unitOfWork.UserManagementRepository.Update(user);
 
-                await _dbContext.SaveChangesAsync();
+                await _unitOfWork.SaveChangesAsync();
 
                 return Result.Success();
             }
@@ -58,7 +56,7 @@ namespace Purpura.Services
             }
         }
 
-        public Task<Result> CheckForLeaveOverlaps(string userId, DateTime startDate, DateTime endDate, string? leaveExtRef)
+        public async Task<Result> CheckForLeaveOverlaps(string userId, DateTime startDate, DateTime endDate, string? leaveExtRef)
         {
             if (endDate < startDate)
             {
@@ -69,11 +67,11 @@ namespace Purpura.Services
 
             if (leaveExtRef == null) //check is being done from the create modal therefore all other exisiting leave needs to be checked
             {
-                userCurrentLeave = await base.GetAll(al => al.UserId == userId);
+                userCurrentLeave = await _unitOfWork.AnnualLeaveRepository.GetAll(al => al.UserId == userId);
             }
             else //if being called from edit then need to not include the entity being edited to avoid it comparing it against itself
             {
-                userCurrentLeave = await base.GetAll(al => al.ExternalReference != leaveExtRef && al.UserId == userId);
+                userCurrentLeave = await _unitOfWork.AnnualLeaveRepository.GetAll(al => al.ExternalReference != leaveExtRef && al.UserId == userId);
             }
 
             if (userCurrentLeave == null || !userCurrentLeave.Any())
@@ -92,20 +90,20 @@ namespace Purpura.Services
             return Result.Success();
         }
 
-        public Task<Result> Delete(AnnualLeaveViewModel viewModel)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<Result> Delete(AnnualLeaveViewModel viewModel)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public Task<Result> Edit(AnnualLeaveViewModel viewModel)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<Result> Edit(AnnualLeaveViewModel viewModel)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public Task<List<AnnualLeaveViewModel>> GetBookedLeave(string userId)
+        public async Task<List<AnnualLeaveViewModel>> GetBookedLeave(string userId)
         {
             var bookedLeaveList = new List<AnnualLeaveViewModel>();
-            var bookedLeave = await base.GetAll(al => al.UserId == userId);
+            var bookedLeave = await _unitOfWork.AnnualLeaveRepository.GetAll(al => al.UserId == userId);
 
             if (bookedLeave.Any())
             {
@@ -118,21 +116,28 @@ namespace Purpura.Services
             return bookedLeaveList;
         }
 
-        public Task<AnnualLeaveViewModel> GetByExternalReference(string externalReference)
+        public async Task<AnnualLeaveViewModel> GetByExternalReference(string externalReference)
         {
-            throw new NotImplementedException();
+            var annualLeaveEntity = await _unitOfWork.AnnualLeaveRepository.GetSingle(al => al.ExternalReference == externalReference);
+
+            if(annualLeaveEntity != null)
+            {
+                return _mapper.Map<AnnualLeaveViewModel>(annualLeaveEntity);
+            }
+
+            throw new NullReferenceException("Leave not found.");
         }
 
-        public Task<int> GetUserAnnualLeaveCount(string userId)
+        public async Task<int> GetUserAnnualLeaveCount(string userId)
         {
-            var user = await _dbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _unitOfWork.UserManagementRepository.GetSingle(u => u.Id == userId);
 
             if (user == null)
             {
                 throw new NullReferenceException("User not found.");
             }
 
-            if (user.AnnualLeaveDays == null || user.AnnualLeaveDays == 0)
+            if (user.AnnualLeaveDays == 0)
                 return 0;
 
             return user.AnnualLeaveDays;
