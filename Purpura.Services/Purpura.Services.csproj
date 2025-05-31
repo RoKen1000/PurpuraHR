@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Purpura.Common\Purpura.Common.csproj" />
-    <ProjectReference Include="..\Purpura.DataAccess\Purpura.DataAccess.csproj" />
     <ProjectReference Include="..\Purpura.Repositories\Purpura.Repositories.csproj" />
     <ProjectReference Include="..\Purpura.Utility\Purpura.Utility.csproj" />
   </ItemGroup>

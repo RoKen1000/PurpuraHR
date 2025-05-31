@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Purpura.Common;
-using Purpura.DataAccess.DataContext;
 using Purpura.Models.Entities;
 using Purpura.Models.ViewModels;
-using Purpura.Repositories;
 using Purpura.Repositories.Interfaces;
 using Purpura.Services.Interfaces;
 using Purpura.Utility.Resolvers;
@@ -90,15 +87,27 @@ namespace Purpura.Services
             return Result.Success();
         }
 
-        //public Task<Result> Delete(AnnualLeaveViewModel viewModel)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<Result> Delete(AnnualLeaveViewModel viewModel)
+        {
+            _unitOfWork.AnnualLeaveRepository.Delete(_mapper.Map<AnnualLeave>(viewModel));
+            var result = await _unitOfWork.SaveChangesAsync();
 
-        //public Task<Result> Edit(AnnualLeaveViewModel viewModel)
-        //{
-        //    throw new NotImplementedException();
-        //}
+            if (result > 0)
+                return Result.Success();
+            else
+                return Result.Failure("");
+        }
+
+        public async Task<Result> Edit(AnnualLeaveViewModel viewModel)
+        {
+            _unitOfWork.AnnualLeaveRepository.Delete(_mapper.Map<AnnualLeave>(viewModel));
+            var result = await _unitOfWork.SaveChangesAsync();
+
+            if (result > 0)
+                return Result.Success();
+            else
+                return Result.Failure("");
+        }
 
         public async Task<List<AnnualLeaveViewModel>> GetBookedLeave(string userId)
         {

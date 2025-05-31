@@ -16,7 +16,7 @@ namespace PurpuraWeb.Controllers
         public AnnualLeaveController(IAnnualLeaveService annualLeaveService,
             UserManager<IdentityUser> userManager)
         {
-            _annualLeaveRepository = annualLeaveRepository;
+            _annualLeaveService = annualLeaveService;
             _userManager = userManager;
         }
 
@@ -30,7 +30,7 @@ namespace PurpuraWeb.Controllers
         public async Task<IActionResult> _IndexDayCount()
         {
             var currentUserId = _userManager.GetUserId(User);
-            var currentUserAnnualLeave = await _annualLeaveRepository.GetUserAnnualLeaveCount(currentUserId);
+            var currentUserAnnualLeave = await _annualLeaveService.GetUserAnnualLeaveCount(currentUserId);
 
             var viewModel = new AnnualLeaveIndexViewModel
             {
@@ -62,7 +62,7 @@ namespace PurpuraWeb.Controllers
                 if (bookedOffPeriod.HasOverlap)
                     return Result.Failure("Overlapping leave periods can not be submitted.");
 
-                return await _annualLeaveRepository.BookTimeOff(bookedOffPeriod);
+                return await _annualLeaveService.BookTimeOff(bookedOffPeriod);
             }
 
             return Result.Failure("Fields are missing.");
@@ -73,7 +73,7 @@ namespace PurpuraWeb.Controllers
         {
             var viewModel = new AnnualLeaveIndexViewModel 
             { 
-                BookedLeave = await _annualLeaveRepository.GetBookedLeave(_userManager.GetUserId(User)) 
+                BookedLeave = await _annualLeaveService.GetBookedLeave(_userManager.GetUserId(User)) 
             };
 
             return PartialView(viewModel);
@@ -82,7 +82,7 @@ namespace PurpuraWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> _Edit(string externalReference)
         {
-            var viewModel = await _annualLeaveRepository.GetByExternalReference(externalReference);
+            var viewModel = await _annualLeaveService.GetByExternalReference(externalReference);
             viewModel.LeaveTypeSelectList = EnumHelpers.GenerateLeaveTypeSelectList();
 
             return PartialView("_BookTimeOffForm", viewModel);
@@ -97,7 +97,7 @@ namespace PurpuraWeb.Controllers
                 if (bookedOffPeriod.HasOverlap)
                     return Result.Failure("Overlapping leave periods can not be submitted.");
 
-                return await _annualLeaveRepository.Edit(bookedOffPeriod);
+                return await _annualLeaveService.Edit(bookedOffPeriod);
             }
 
             return Result.Failure("Fields are missing.");
@@ -106,7 +106,7 @@ namespace PurpuraWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> _Delete(string externalReference)
         {
-            var viewModel = await _annualLeaveRepository.GetByExternalReference(externalReference);
+            var viewModel = await _annualLeaveService.GetByExternalReference(externalReference);
             viewModel.LeaveTypeSelectList = EnumHelpers.GenerateLeaveTypeSelectList();
 
             return PartialView("_BookTimeOffForm", viewModel);
@@ -120,7 +120,7 @@ namespace PurpuraWeb.Controllers
 
             if (ModelState.IsValid)
             {
-                return await _annualLeaveRepository.Delete(bookedOffPeriod);
+                return await _annualLeaveService.Delete(bookedOffPeriod);
             }
 
             return Result.Failure("Delete failed.");
@@ -129,7 +129,7 @@ namespace PurpuraWeb.Controllers
         [HttpPost]
         public async Task<Result> CheckForLeaveOverlaps(string userId, DateTime startDate, DateTime endDate, string? leaveExtRef)
         {
-            return await _annualLeaveRepository.CheckForLeaveOverlaps(userId, startDate, endDate, leaveExtRef);
+            return await _annualLeaveService.CheckForLeaveOverlaps(userId, startDate, endDate, leaveExtRef);
         }
     }
 }
