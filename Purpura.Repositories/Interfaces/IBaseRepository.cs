@@ -1,10 +1,5 @@
 ﻿using Purpura.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Purpura.Repositories.Interfaces
 {
@@ -12,7 +7,8 @@ namespace Purpura.Repositories.Interfaces
     {
         Task<TEntity> GetSingle(Expression<Func<TEntity, bool>> filter);
         Task<IEnumerable<TEntity>> GetAll(Expression<Func<TEntity, bool>> filter);
-        Task<Result> Edit(TEntity entity);
-        Task<Result> Delete(TEntity entity);
+        void Delete(TEntity entity);
+        void Update(TEntity entity);
+        void Create(TEntity entity);
     }
 }

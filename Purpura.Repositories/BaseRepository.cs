@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Purpura.Common;
 using Purpura.DataAccess.DataContext;
 using Purpura.Repositories.Interfaces;
@@ -11,13 +10,11 @@ namespace Purpura.Repositories
     {
         private readonly PurpuraDbContext _dbContext;
         internal DbSet<TEntity> dbSet;
-        private readonly IMapper _mapper;
 
-        public BaseRepository(PurpuraDbContext dbContext, IMapper mapper)
+        public BaseRepository(PurpuraDbContext dbContext)
         {
             _dbContext = dbContext;
             this.dbSet = _dbContext.Set<TEntity>();
-            _mapper = mapper;
         }
 
         public async Task<TEntity> GetSingle(Expression<Func<TEntity, bool>> filter)
@@ -31,22 +28,9 @@ namespace Purpura.Repositories
             return entity;
         }
 
-        public async Task<Result> Edit(TEntity entity)
-        {
-            dbSet.Update(entity);
-
-            await _dbContext.SaveChangesAsync();
-
-            return Result.Success();
-        }
-
-        public async Task<Result> Delete(TEntity entity)
+        public void Delete(TEntity entity)
         {
             dbSet.Remove(entity);
-
-            await _dbContext.SaveChangesAsync();
-
-            return Result.Success();
         }
 
         public async Task<IEnumerable<TEntity>> GetAll(Expression<Func<TEntity, bool>> filter)
@@ -56,6 +40,16 @@ namespace Purpura.Repositories
             query = query.Where(filter);
 
             return await query.ToListAsync();
+        }
+
+        public void Update(TEntity entity)
+        {
+            dbSet.Update(entity);
+        }
+
+        public void Create(TEntity entity)
+        {
+            _dbContext.Add(entity);
         }
     }
 }

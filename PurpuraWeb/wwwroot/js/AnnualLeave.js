@@ -73,8 +73,6 @@ $("#annual-leave-form-modal").on("show.bs.modal", function (e) {
                 let startTime = $("#start-date").val();
                 let endTime = $("#end-date").val();
 
-                var test = $("#user-id").val();
-
                 $.post(checkLeavePeriodOverlapUrl, { startDate: startTime, endDate: endTime, leaveExtRef: $("#ext-ref").val(), userId: $("#user-id").val() }, function (result) {
                     if (result.isSuccess) {
                         $("#has-overlap").val(false);
