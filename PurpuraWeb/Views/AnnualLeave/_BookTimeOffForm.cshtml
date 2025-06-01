@@ -32,7 +32,7 @@
         <div id="delete-warning"></div>
 
         <input type="hidden" value="@Model.UserId" name="UserId" id="user-id"/>
-        <input type="hidden" value="@Model.HasOverlap" name="HasOverlap" id="has-overlap" />
+        <input type="hidden" value="@Model.HasOverlap.ToString().ToLower()" name="HasOverlap" id="has-overlap" />
         <input type="hidden" value="@Model.ExternalReference" name="ExternalReference" id="ext-ref" />
     </div>
     

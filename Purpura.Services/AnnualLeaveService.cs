@@ -43,9 +43,12 @@ namespace Purpura.Services
                 user.AnnualLeaveDays = newAnnualLeaveTotal;
                 _unitOfWork.UserManagementRepository.Update(user);
 
-                await _unitOfWork.SaveChangesAsync();
+                var result = await _unitOfWork.SaveChangesAsync();
 
-                return Result.Success();
+                if (result > 0)
+                    return Result.Success();
+                else
+                    return Result.Failure("Process failed.");
             }
             catch (Exception ex)
             {
@@ -100,7 +103,7 @@ namespace Purpura.Services
 
         public async Task<Result> Edit(AnnualLeaveViewModel viewModel)
         {
-            _unitOfWork.AnnualLeaveRepository.Delete(_mapper.Map<AnnualLeave>(viewModel));
+            _unitOfWork.AnnualLeaveRepository.Update(_mapper.Map<AnnualLeave>(viewModel));
             var result = await _unitOfWork.SaveChangesAsync();
 
             if (result > 0)
@@ -130,9 +133,7 @@ namespace Purpura.Services
             var annualLeaveEntity = await _unitOfWork.AnnualLeaveRepository.GetSingle(al => al.ExternalReference == externalReference);
 
             if(annualLeaveEntity != null)
-            {
                 return _mapper.Map<AnnualLeaveViewModel>(annualLeaveEntity);
-            }
 
             throw new NullReferenceException("Leave not found.");
         }
