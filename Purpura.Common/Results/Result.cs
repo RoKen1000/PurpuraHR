@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Purpura.Common
+namespace Purpura.Common.Results
 {
     public class Result
     {
@@ -51,7 +51,7 @@ namespace Purpura.Common
         protected Result(string error)
         {
             IsSuccess = false;
-            Data = default(T);
+            Data = default;
         }
 
         public static Result<T> Success(T data)

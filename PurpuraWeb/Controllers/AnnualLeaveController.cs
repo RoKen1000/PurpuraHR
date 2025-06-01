@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Purpura.Common;
+using Purpura.Common.Results;
 using Purpura.Models.ViewModels;
 using Purpura.Services.Interfaces;
 using Purpura.Utility.Helpers;
@@ -127,7 +127,7 @@ namespace PurpuraWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<Result> CheckForLeaveOverlaps(string userId, DateTime startDate, DateTime endDate, string? leaveExtRef)
+        public async Task<OverlapResult> CheckForLeaveOverlaps(string userId, DateTime startDate, DateTime endDate, string? leaveExtRef)
         {
             return await _annualLeaveService.CheckForLeaveOverlaps(userId, startDate, endDate, leaveExtRef);
         }
