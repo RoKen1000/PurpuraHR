@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Purpura.Common;
+using Purpura.Common.Results;
 using Purpura.Models.ViewModels;
 using Purpura.Services.Interfaces;
 using Purpura.Utility.Helpers;
@@ -50,6 +50,9 @@ namespace PurpuraWeb.Controllers
                 UserId = _userManager.GetUserId(User)
             };
 
+            var overlapPreCheck = await _annualLeaveService.CheckForLeaveOverlaps(viewModel.UserId, viewModel.StartDate, viewModel.EndDate, null);
+            viewModel.HasOverlap = overlapPreCheck.HasOverlap;
+
             return PartialView("_BookTimeOffForm", viewModel);
         }
 
@@ -84,6 +87,9 @@ namespace PurpuraWeb.Controllers
         {
             var viewModel = await _annualLeaveService.GetByExternalReference(externalReference);
             viewModel.LeaveTypeSelectList = EnumHelpers.GenerateLeaveTypeSelectList();
+
+            var overlapPreCheck = await _annualLeaveService.CheckForLeaveOverlaps(viewModel.UserId, viewModel.StartDate, viewModel.EndDate, viewModel.ExternalReference);
+            viewModel.HasOverlap = overlapPreCheck.HasOverlap;
 
             return PartialView("_BookTimeOffForm", viewModel);
         }
@@ -127,7 +133,7 @@ namespace PurpuraWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<Result> CheckForLeaveOverlaps(string userId, DateTime startDate, DateTime endDate, string? leaveExtRef)
+        public async Task<OverlapResult> CheckForLeaveOverlaps(string userId, DateTime startDate, DateTime endDate, string? leaveExtRef)
         {
             return await _annualLeaveService.CheckForLeaveOverlaps(userId, startDate, endDate, leaveExtRef);
         }

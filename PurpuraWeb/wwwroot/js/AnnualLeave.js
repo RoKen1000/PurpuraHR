@@ -50,13 +50,13 @@ $("#annual-leave-form-modal").on("show.bs.modal", function (e) {
                 let endTime = $("#end-date").val();
 
                 $.post(checkLeavePeriodOverlapUrl, { startDate: startTime, endDate: endTime, userId: $("#user-id").val() }, function (result) {
-                    if (result.isSuccess) {
-                        $("#has-overlap").val(false);
-                        $("#overlap-warning").html("");
-                    }
-                    else {
+                    if (result.hasOverlap) {
                         $("#has-overlap").val(true);
                         $("#overlap-warning").html(`<p style='color: red; text-align: center;'><i class='bi bi-exclamation-octagon'></i> ${result.error} </p>`);
+                    }
+                    else {
+                        $("#has-overlap").val(false);
+                        $("#overlap-warning").html("");
                     }
                 });
             });
@@ -74,13 +74,13 @@ $("#annual-leave-form-modal").on("show.bs.modal", function (e) {
                 let endTime = $("#end-date").val();
 
                 $.post(checkLeavePeriodOverlapUrl, { startDate: startTime, endDate: endTime, leaveExtRef: $("#ext-ref").val(), userId: $("#user-id").val() }, function (result) {
-                    if (result.isSuccess) {
-                        $("#has-overlap").val(false);
-                        $("#overlap-warning").html("");
-                    }
-                    else {
+                    if(result.hasOverlap) {
                         $("#has-overlap").val(true);
                         $("#overlap-warning").html(`<p style='color: red; text-align: center;'><i class='bi bi-exclamation-octagon'></i> ${result.error} </p>`);
+                    }
+                    else {
+                        $("#has-overlap").val(false);
+                        $("#overlap-warning").html("");
                     }
                 });
             });

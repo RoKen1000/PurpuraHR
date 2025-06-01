@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Purpura.Common;
+using Purpura.Common.Results;
 using Purpura.Models.Entities;
 using Purpura.Models.ViewModels;
 using Purpura.Repositories;
@@ -57,11 +57,15 @@ namespace Purpura.Services
             }
         }
 
-        public async Task<Result> CheckForLeaveOverlaps(string userId, DateTime startDate, DateTime endDate, string? leaveExtRef)
+        public async Task<OverlapResult> CheckForLeaveOverlaps(string userId, DateTime startDate, DateTime endDate, string? leaveExtRef)
         {
-            if (endDate < startDate)
+            var result = new OverlapResult();
+
+            if (endDate.Date <= startDate.Date)
             {
-                return Result.Failure("End date can not be before the start date.");
+                result.HasOverlap = true;
+                result.Error = "End date can not be before or the same day as the start date.";
+                return result;
             }
 
             IEnumerable<AnnualLeave> userCurrentLeave;
@@ -77,18 +81,22 @@ namespace Purpura.Services
 
             if (userCurrentLeave == null || !userCurrentLeave.Any())
             {
-                return Result.Success();
+                return result;
             }
 
             foreach (var leave in userCurrentLeave)
             {
-                var hasOverlap = startDate < leave.EndDate && leave.StartDate < endDate;
+                var hasOverlap = startDate.Date <= leave.EndDate.Date && leave.StartDate.Date <= endDate.Date;
 
                 if (hasOverlap)
-                    return Result.Failure("Current selection would cause an overlap in already-booked annual leave!");
+                {
+                    result.HasOverlap = true;
+                    result.Error = "Current selection would cause an overlap in already-booked annual leave!";
+                    return result;
+                }
             }
 
-            return Result.Success();
+            return result;
         }
 
         public async Task<Result> Delete(AnnualLeaveViewModel viewModel)
