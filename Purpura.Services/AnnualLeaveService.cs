@@ -61,10 +61,10 @@ namespace Purpura.Services
         {
             var result = new OverlapResult();
 
-            if (endDate < startDate)
+            if (endDate.Date <= startDate.Date)
             {
                 result.HasOverlap = true;
-                result.Error = "End date can not be before the start date.";
+                result.Error = "End date can not be before or the same day as the start date.";
                 return result;
             }
 
@@ -86,7 +86,7 @@ namespace Purpura.Services
 
             foreach (var leave in userCurrentLeave)
             {
-                var hasOverlap = startDate < leave.EndDate && leave.StartDate < endDate;
+                var hasOverlap = startDate.Date <= leave.EndDate.Date && leave.StartDate.Date <= endDate.Date;
 
                 if (hasOverlap)
                 {
