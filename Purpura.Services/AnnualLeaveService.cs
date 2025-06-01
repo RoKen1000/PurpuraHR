@@ -2,6 +2,7 @@
 using Purpura.Common;
 using Purpura.Models.Entities;
 using Purpura.Models.ViewModels;
+using Purpura.Repositories;
 using Purpura.Repositories.Interfaces;
 using Purpura.Services.Interfaces;
 using Purpura.Utility.Resolvers;
@@ -92,24 +93,48 @@ namespace Purpura.Services
 
         public async Task<Result> Delete(AnnualLeaveViewModel viewModel)
         {
-            _unitOfWork.AnnualLeaveRepository.Delete(_mapper.Map<AnnualLeave>(viewModel));
-            var result = await _unitOfWork.SaveChangesAsync();
+            var leaveEntity = await _unitOfWork.AnnualLeaveRepository.GetSingle(al => al.ExternalReference == viewModel.ExternalReference);
 
-            if (result > 0)
-                return Result.Success();
-            else
-                return Result.Failure("");
+            if(leaveEntity != null)
+            {
+                _unitOfWork.AnnualLeaveRepository.Delete(leaveEntity);
+                var result = await _unitOfWork.SaveChangesAsync();
+
+                if (result > 0)
+                    return Result.Success();
+            }
+
+            return Result.Failure("Entity not found.");
         }
 
         public async Task<Result> Edit(AnnualLeaveViewModel viewModel)
         {
-            _unitOfWork.AnnualLeaveRepository.Update(_mapper.Map<AnnualLeave>(viewModel));
+            var annualLeaveEntity = await _unitOfWork.AnnualLeaveRepository.GetSingle(e => e.ExternalReference == viewModel.ExternalReference);
+
+            if (annualLeaveEntity == null)
+                return Result.Failure("Annual Leave not found.");
+
+            var user = await _unitOfWork.UserManagementRepository.GetSingle(u => u.Id == viewModel.UserId);
+
+            if (user == null)
+                return Result.Failure("User not found.");
+
+            var daysUsed = (viewModel.EndDate - viewModel.StartDate).Days;
+            var newAnnualLeaveTotal = AnnualLeaveResolver.WorkOutNumberOfDaysLeft(user.AnnualLeaveDays, daysUsed);
+            var validBookingErrors = AnnualLeaveResolver.IsValidBooking(user.AnnualLeaveDays, newAnnualLeaveTotal, viewModel.StartDate, viewModel.EndDate);
+
+            if (!String.IsNullOrEmpty(validBookingErrors))
+                return Result.Failure(validBookingErrors);
+
+            var updatedEntity = _mapper.Map<AnnualLeaveViewModel, AnnualLeave>(viewModel, annualLeaveEntity);
+            updatedEntity.DateEdited = DateTime.Now;
+
             var result = await _unitOfWork.SaveChangesAsync();
 
             if (result > 0)
                 return Result.Success();
             else
-                return Result.Failure("");
+                return Result.Failure("Update failed.");
         }
 
         public async Task<List<AnnualLeaveViewModel>> GetBookedLeave(string userId)

@@ -42,7 +42,7 @@ namespace PurpuraWeb.Controllers
         }
 
         [HttpGet]
-        public IActionResult _Create()
+        public async Task<IActionResult> _Create()
         {
             var viewModel = new AnnualLeaveViewModel
             {
