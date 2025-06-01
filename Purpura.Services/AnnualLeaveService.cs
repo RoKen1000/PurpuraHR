@@ -63,6 +63,7 @@ namespace Purpura.Services
 
             if (endDate < startDate)
             {
+                result.HasOverlap = true;
                 result.Error = "End date can not be before the start date.";
                 return result;
             }
@@ -89,6 +90,7 @@ namespace Purpura.Services
 
                 if (hasOverlap)
                 {
+                    result.HasOverlap = true;
                     result.Error = "Current selection would cause an overlap in already-booked annual leave!";
                     return result;
                 }

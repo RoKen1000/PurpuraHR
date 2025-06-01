@@ -50,6 +50,9 @@ namespace PurpuraWeb.Controllers
                 UserId = _userManager.GetUserId(User)
             };
 
+            var overlapPreCheck = await _annualLeaveService.CheckForLeaveOverlaps(viewModel.UserId, viewModel.StartDate, viewModel.EndDate, null);
+            viewModel.HasOverlap = overlapPreCheck.HasOverlap;
+
             return PartialView("_BookTimeOffForm", viewModel);
         }
 
@@ -84,6 +87,9 @@ namespace PurpuraWeb.Controllers
         {
             var viewModel = await _annualLeaveService.GetByExternalReference(externalReference);
             viewModel.LeaveTypeSelectList = EnumHelpers.GenerateLeaveTypeSelectList();
+
+            var overlapPreCheck = await _annualLeaveService.CheckForLeaveOverlaps(viewModel.UserId, viewModel.StartDate, viewModel.EndDate, viewModel.ExternalReference);
+            viewModel.HasOverlap = overlapPreCheck.HasOverlap;
 
             return PartialView("_BookTimeOffForm", viewModel);
         }
