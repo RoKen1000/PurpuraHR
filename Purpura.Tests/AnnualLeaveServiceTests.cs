@@ -26,6 +26,7 @@ namespace Purpura.Tests
             _fixture = new Fixture();
             _mapperMock = new Mock<IMapper>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
+
             _annualLeaveRepositoryMock = new Mock<IAnnualLeaveRepository>();
             _userManagementRepositoryMock = new Mock<IUserManagementRepository>();
 
@@ -35,6 +36,46 @@ namespace Purpura.Tests
             _annualLeaveService = new AnnualLeaveService(
                 _mapperMock.Object,
                 _unitOfWorkMock.Object);
+        }
+
+        [Fact]
+        public async void Edit_WithMissingOrInvalidExtRef_ReturnsFailureResult()
+        {
+            //arrange
+            var annualLeaveWithRandomRef = _fixture.Create<AnnualLeaveViewModel>();
+            var annualLeaveWithNoRef = _fixture.Build<AnnualLeaveViewModel>()
+                .With(a => a.ExternalReference, (string)null)
+                .Create();
+
+            //act
+            var resultWithRandomRef = await _annualLeaveService.Edit(annualLeaveWithRandomRef);
+            var resultWithNoRef = await _annualLeaveService.Edit(annualLeaveWithNoRef);
+
+            //assert
+            Assert.True(resultWithRandomRef.IsSuccess == false);
+            Assert.Equal("Annual Leave not found.", resultWithRandomRef.Error);
+
+            Assert.True(resultWithNoRef.IsSuccess == false);
+            Assert.Equal("Annual Leave not found.", resultWithNoRef.Error);
+        }
+
+
+        [Fact]
+        public async void Edit_WithInvalidDatesViewModel_ReturnsFailureResult()
+        {
+            ////arrange
+            //var annualLeaveViewModel = _fixture.Build<AnnualLeaveViewModel>()
+            //    .With(p => p.StartDate, new DateTime(2025, 06, 15))
+            //    .With(p => p.EndDate, new DateTime(2025, 06, 10))
+            //    .Create();
+            //var annualLeaveViewModel = new AnnualLeaveViewModel();
+            //_annualLeaveServiceMock.Setup(s => s.Edit(It.IsAny<AnnualLeaveViewModel>())).ReturnsAsync(Result.Failure("End date can not be before the start date."));
+
+            ////act
+            //var editResult = await _annualLeaveService.Edit(annualLeaveViewModel);
+
+            ////assert
+            //Assert.True(editResult.IsSuccess == false);
         }
 
         [Fact]
@@ -63,24 +104,6 @@ namespace Purpura.Tests
 
             //assert
             Assert.True(editResult.IsSuccess == true);
-        }
-
-        [Fact]
-        public async void Edit_WithInvalidDatesViewModel_ReturnsFailureResult()
-        {
-            //arrange
-            //var annualLeaveViewModel = _fixture.Build<AnnualLeaveViewModel>()
-            //    .With(p => p.StartDate, new DateTime(2025, 06, 15))
-            //    .With(p => p.EndDate, new DateTime(2025, 06, 10))
-            //    .Create();
-            //var annualLeaveViewModel = new AnnualLeaveViewModel() ;
-            //_annualLeaveServiceMock.Setup(s => s.Edit(It.IsAny<AnnualLeaveViewModel>())).ReturnsAsync(Result.Failure("End date can not be before the start date."));
-
-            ////act
-            //var editResult = await _annualLeaveService.Edit(annualLeaveViewModel);
-
-            ////assert
-            //Assert.True(editResult.IsSuccess == false);
         }
     }
 }
