@@ -20,13 +20,21 @@ namespace Purpura.Utility.Resolvers
             if (currentDays <= 0 || newTotal < 0)
                 errorString += "Booking is invalid and would either exceed remaining leave or there is no more leave to take.";
 
+            var endBeforeStartOrSameDayError = "";
+
             if (endDate < startDate)
             {
-                var endLessThanStartError = "End date can not be before the start date.";
-                errorString += !String.IsNullOrEmpty(errorString) ? " " + endLessThanStartError : endLessThanStartError;
+                endBeforeStartOrSameDayError = "End date can not be before the start date.";
+            }
+            else if(endDate == startDate)
+            {
+                endBeforeStartOrSameDayError = "Start and end date can not be on the same day.";
             }
 
-            return errorString;
+            if(!String.IsNullOrEmpty(endBeforeStartOrSameDayError))
+                errorString += !String.IsNullOrEmpty(errorString) ? " " + endBeforeStartOrSameDayError : endBeforeStartOrSameDayError;
+
+                return errorString;
         }
 
         public static int WorkOutNumberOfDaysUsed(int userCurrentTotal)
