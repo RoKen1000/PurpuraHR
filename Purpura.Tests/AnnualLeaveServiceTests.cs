@@ -469,5 +469,105 @@ namespace Purpura.Tests
         }
 
         #endregion
+
+        #region Delete
+
+        [Fact]
+        public async void Delete_WithAnnualLeaveNotFound_ReturnsFailure()
+        {
+            //arrange
+            var annualLeave = _fixture.Create<AnnualLeaveViewModel>();
+
+            //act
+            var failureResult = await _annualLeaveService.Delete(annualLeave);
+
+            //assert
+            Assert.True(failureResult.IsSuccess == false);
+            Assert.Equal("Entity not found.", failureResult.Error);
+        }
+
+        [Fact]
+        public async void Delete_WithAnnualLeaveFound_ReturnsSuccess()
+        {
+            //arrange
+            var annualLeaveViewModel = _fixture.Build<AnnualLeaveViewModel>()
+                .With(a => a.ExternalReference, annualLeaveExtRef)
+                .Create();
+            var annualLeaveEntity = _fixture.Build<AnnualLeave>()
+                .With(a => a.ExternalReference, annualLeaveExtRef)
+                .Create();
+
+            _annualLeaveRepositoryMock.Setup(a => a.Delete(It.IsAny<AnnualLeave>()));
+            _unitOfWorkMock.Setup(a => a.SaveChangesAsync())
+                .ReturnsAsync(1);
+
+            //act
+            var successResult = await _annualLeaveService.Delete(annualLeaveViewModel);
+
+            //assert
+            Assert.True(successResult.IsSuccess == true);
+            Assert.Null(successResult.Error);
+        }
+
+        #endregion
+
+        #region GetBookedLeave
+
+        [Fact]
+        public async void GetBookedLeave_NoLeaveFound_ReturnsEmptyList()
+        {
+            //arrange
+            var annualLeaveList = new List<AnnualLeave>();
+
+            _annualLeaveRepositoryMock.Setup(a => a.GetAll(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
+                .ReturnsAsync((Expression<Func<AnnualLeave, bool>> predicate) =>
+                {
+                    var func = predicate.Compile();
+                    var list = annualLeaveList.Where(func);
+                    return list;
+                }); ;
+
+            //act
+            var emptyList = await _annualLeaveService.GetBookedLeave(userId);
+
+            //assert
+            Assert.Empty(emptyList);
+        }
+
+        [Fact]
+        public async void GetBookedLeave_LeaveFound_ReturnsPopulatedList()
+        {
+            //arrange
+            var annualLeaveList = new List<AnnualLeave>();
+
+            var annualLeave1 = _fixture.Build<AnnualLeave>()
+                .With(a => a.UserId, userId)
+                .Create();
+            var annualLeave2 = _fixture.Build<AnnualLeave>()
+                .With(a => a.UserId, userId)
+                .Create();
+
+            annualLeaveList.Add(annualLeave1);
+            annualLeaveList.Add(annualLeave2);
+
+            _annualLeaveRepositoryMock.Setup(a => a.GetAll(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
+                .ReturnsAsync((Expression<Func<AnnualLeave, bool>> predicate) =>
+                {
+                    var func = predicate.Compile();
+                    var list = annualLeaveList.Where(func);
+                    return list;
+                }); ;
+            _mapperMock.Setup(a => a.Map<AnnualLeaveViewModel>(It.IsAny<AnnualLeave>()));
+
+            //act
+            var populatedList = await _annualLeaveService.GetBookedLeave(userId);
+
+            //assert
+            Assert.NotNull(populatedList);
+            Assert.NotEmpty(populatedList);
+            Assert.Equal(2, populatedList.Count());
+        }
+
+        #endregion
     }
 }
