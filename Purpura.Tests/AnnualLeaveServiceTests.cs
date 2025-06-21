@@ -122,13 +122,6 @@ namespace Purpura.Tests
                 .With(a => a.ExternalReference, annualLeaveExtRef)
                 .With(a => a.UserId, userId)
                 .Create();
-            var annualLeaveWithSameStartAndEnd = _fixture.Build<AnnualLeaveViewModel>()
-                .With(a => a.StartDate, new DateTime(2025, 06, 17))
-                .With(a => a.EndDate, new DateTime(2025, 06, 17))
-                .With(a => a.ExternalReference, annualLeaveExtRef)
-                .With(a => a.UserId, userId)
-                .Create();
-            
 
             var noDaysRef = Guid.NewGuid().ToString();
             var withDaysRef = Guid.NewGuid().ToString();
@@ -163,13 +156,6 @@ namespace Purpura.Tests
                 .With(a => a.ExternalReference, annualLeaveExtRef)
                 .With(a => a.UserId, noDaysRef)
                 .Create();
-            var annualLeaveWithSameDatesAndExceedingDays = _fixture.Build<AnnualLeaveViewModel>()
-                .With(a => a.StartDate, new DateTime(2025, 06, 17))
-                .With(a => a.EndDate, new DateTime(2025, 06, 17))
-                .With(a => a.ExternalReference, annualLeaveExtRef)
-                .With(a => a.UserId, noDaysRef)
-                .Create();
-
 
             _userManagementRepositoryMock.Setup(r => r.GetSingle(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
                 .ReturnsAsync((Expression<Func<ApplicationUser, bool>> predicate) =>
@@ -188,25 +174,19 @@ namespace Purpura.Tests
 
             //act
             var invalidDateResult = await _annualLeaveService.Edit(annualLeaveWithEndBeforeStart);
-            var sameDayResult = await _annualLeaveService.Edit(annualLeaveWithSameStartAndEnd);
             var noDaysResult = await _annualLeaveService.Edit(validAnnualLeaveForNoDays);
             var exceedsDaysResult = await _annualLeaveService.Edit(validAnnualLeaveExceedingDays);
             var noDaysAndInvalidDatesResult = await _annualLeaveService.Edit(annualLeaveWithInvalidDatesAndExceedingDays);
-            var noDaysAndSameDatesResult = await _annualLeaveService.Edit(annualLeaveWithSameDatesAndExceedingDays);
 
             //assert
             Assert.True(invalidDateResult.IsSuccess == false);
             Assert.Equal("End date can not be before the start date.", invalidDateResult.Error);
-            Assert.True(sameDayResult.IsSuccess == false);
-            Assert.Equal("Start and end date can not be on the same day.", sameDayResult.Error);
             Assert.True(noDaysResult.IsSuccess == false);
             Assert.Equal("Booking is invalid and would either exceed remaining leave or there is no more leave to take.", noDaysResult.Error);
             Assert.True(exceedsDaysResult.IsSuccess == false);
             Assert.Equal("Booking is invalid and would either exceed remaining leave or there is no more leave to take.", exceedsDaysResult.Error);
             Assert.True(noDaysAndInvalidDatesResult.IsSuccess == false);
             Assert.Equal("Booking is invalid and would either exceed remaining leave or there is no more leave to take. End date can not be before the start date.", noDaysAndInvalidDatesResult.Error);
-            Assert.True(noDaysAndSameDatesResult.IsSuccess == false);
-            Assert.Equal("Booking is invalid and would either exceed remaining leave or there is no more leave to take. Start and end date can not be on the same day.", noDaysAndSameDatesResult.Error);
         }
 
         [Fact]
@@ -359,6 +339,133 @@ namespace Purpura.Tests
             //assert
             Assert.True(createResult.IsSuccess == false);
             Assert.Equal("Create failed.", createResult.Error);
+        }
+
+        #endregion
+
+        #region CheckForLeaveOverlaps
+
+        [Fact]
+        public async void CheckForLeaveOverlaps_WithEndDateBeforeStartDate_ReturnsOverlap()
+        {
+            //arrange
+            var startDate = new DateTime(2025, 6, 21);
+            var endDate = new DateTime(2025, 6, 18);
+
+            //act
+            var endBeforeStartResult = await _annualLeaveService.CheckForLeaveOverlaps(userId, startDate, endDate, annualLeaveExtRef);
+
+            //assert
+            Assert.True(endBeforeStartResult.HasOverlap == true);
+            Assert.Equal("End date can not be before or the same day as the start date.", endBeforeStartResult.Error);
+        }
+
+        [Fact]
+        public async void CheckForLeaveOverlaps_WithNoLeave_ReturnsNoOverlap()
+        {
+            //arrange
+            var startDate = new DateTime(2025, 6, 21);
+            var endDate = new DateTime(2025, 6, 22);
+
+            //act
+            var noOverlapResult = await _annualLeaveService.CheckForLeaveOverlaps(userId, startDate, endDate, annualLeaveExtRef);
+            var noOverlapResultWithNoLeaveRef = await _annualLeaveService.CheckForLeaveOverlaps(userId, startDate, endDate, null);
+
+            //assert
+            Assert.True(noOverlapResult.HasOverlap == false);
+            Assert.Null(noOverlapResult.Error);
+            Assert.True(noOverlapResultWithNoLeaveRef.HasOverlap == false);
+            Assert.Null(noOverlapResultWithNoLeaveRef.Error);
+        }
+
+        [Fact]
+        public async void CheckForLeaveOverLaps_HavingLeaveWithNoOverlaps_ReturnsNoOverlap()
+        {
+            //arrange
+            var startDate = new DateTime(2025, 6, 21);
+            var endDate = new DateTime(2025, 6, 23);
+
+            var annualLeavelist = new List<AnnualLeave>();
+
+            var annualLeaveEntity1 = _fixture.Build<AnnualLeave>()
+                .With(a => a.ExternalReference, Guid.NewGuid().ToString())
+                .With(a => a.StartDate, new DateTime(2025, 6, 5))
+                .With(a => a.EndDate, new DateTime(2025, 6, 5))
+                .With(a => a.UserId, userId)
+                .Create();
+            var annualLeaveEntity2 = _fixture.Build<AnnualLeave>()
+                .With(a => a.ExternalReference, annualLeaveExtRef)
+                .With(a => a.StartDate, new DateTime(2025, 6, 8))
+                .With(a => a.EndDate, new DateTime(2025, 6, 11))
+                .With(a => a.UserId, userId)
+                .Create();
+
+            annualLeavelist.Add(annualLeaveEntity1);
+            annualLeavelist.Add(annualLeaveEntity2);
+
+            _annualLeaveRepositoryMock.Setup(r => r.GetAll(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
+                .ReturnsAsync((Expression<Func<AnnualLeave, bool>> predicate) =>
+                {
+                    var func = predicate.Compile();
+                    var list = annualLeavelist.Where(func);
+                    return list;
+                });
+
+            //act
+            var noOverlapResult = await _annualLeaveService.CheckForLeaveOverlaps(userId, startDate, endDate, annualLeaveExtRef);
+            var noOverlapResultWithNoLeaveRef = await _annualLeaveService.CheckForLeaveOverlaps(userId, startDate, endDate, null);
+
+            //assert
+            Assert.True(noOverlapResult.HasOverlap == false);
+            Assert.Null(noOverlapResult.Error);
+            Assert.True(noOverlapResultWithNoLeaveRef.HasOverlap == false);
+            Assert.Null(noOverlapResultWithNoLeaveRef.Error);
+        }
+
+        [Fact]
+        public async void CheckForLeaveOverLaps_HavingLeaveWithOverlaps_ReturnsOverlap()
+        {
+            //arrange
+            var startDate = new DateTime(2025, 6, 21);
+            var endDate = new DateTime(2025, 6, 23);
+
+            var annualLeavelist = new List<AnnualLeave>();
+
+            var annualLeaveEntity1 = _fixture.Build<AnnualLeave>()
+                .With(a => a.ExternalReference, Guid.NewGuid().ToString())
+                .With(a => a.StartDate, new DateTime(2025, 6, 21))
+                .With(a => a.EndDate, new DateTime(2025, 6, 22))
+                .With(a => a.UserId, userId)
+                .Create();
+            var annualLeaveEntity2 = _fixture.Build<AnnualLeave>()
+                .With(a => a.ExternalReference, annualLeaveExtRef)
+                .With(a => a.StartDate, new DateTime(2025, 6, 5))
+                .With(a => a.EndDate, new DateTime(2025, 6, 5))
+                .With(a => a.UserId, userId)
+                .Create();
+
+            annualLeavelist.Add(annualLeaveEntity1);
+            annualLeavelist.Add(annualLeaveEntity2);
+
+            _annualLeaveRepositoryMock.Setup(r => r.GetAll(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
+                .ReturnsAsync((Expression<Func<AnnualLeave, bool>> predicate) =>
+                {
+                    var func = predicate.Compile();
+                    var list = annualLeavelist.Where(func);
+                    return list;
+                });
+
+            //act
+            var overlapResult = await _annualLeaveService.CheckForLeaveOverlaps(userId, startDate, endDate, annualLeaveExtRef);
+            var overlapResultWithNoLeaveRef = await _annualLeaveService.CheckForLeaveOverlaps(userId, startDate, endDate, null);
+
+            //assert
+            Assert.True(overlapResult.HasOverlap == true);
+            Assert.NotNull(overlapResult.Error);
+            Assert.Equal("Current selection would cause an overlap in already-booked annual leave!", overlapResult.Error);
+            Assert.True(overlapResultWithNoLeaveRef.HasOverlap == true);
+            Assert.NotNull(overlapResultWithNoLeaveRef.Error);
+            Assert.Equal("Current selection would cause an overlap in already-booked annual leave!", overlapResultWithNoLeaveRef.Error);
         }
 
         #endregion
