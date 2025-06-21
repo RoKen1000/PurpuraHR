@@ -45,7 +45,6 @@ namespace Purpura.Tests
                 .With(a => a.AnnualLeaveDays, 10)
                 .Create();
 
-
             _annualLeaveRepositoryMock.Setup(r => r.GetSingle(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
                 .ReturnsAsync((Expression<Func<AnnualLeave, bool>> predicate) =>
                 {
@@ -59,10 +58,13 @@ namespace Purpura.Tests
                     return func(userEntity) ? userEntity : null;
                 });
 
+
             _annualLeaveService = new AnnualLeaveService(
                 _mapperMock.Object,
                 _unitOfWorkMock.Object);
         }
+
+        #region Edit
 
         [Fact]
         public async void Edit_WithMissingOrInvalidAnnualLeaveExtRef_ReturnsFailureResult()
@@ -120,21 +122,91 @@ namespace Purpura.Tests
                 .With(a => a.ExternalReference, annualLeaveExtRef)
                 .With(a => a.UserId, userId)
                 .Create();
-
             var annualLeaveWithSameStartAndEnd = _fixture.Build<AnnualLeaveViewModel>()
                 .With(a => a.StartDate, new DateTime(2025, 06, 17))
                 .With(a => a.EndDate, new DateTime(2025, 06, 17))
                 .With(a => a.ExternalReference, annualLeaveExtRef)
                 .With(a => a.UserId, userId)
                 .Create();
+            
+
+            var noDaysRef = Guid.NewGuid().ToString();
+            var withDaysRef = Guid.NewGuid().ToString();
+            var userEntityWithNoDays = _fixture.Build<ApplicationUser>()
+                .With(a => a.Id, noDaysRef)
+                .With(a => a.AnnualLeaveDays, 0)
+                .Create();
+            var userEntityWithDays = _fixture.Build<ApplicationUser>()
+                .With(a => a.Id, withDaysRef)
+                .With(a => a.AnnualLeaveDays, 5)
+                .Create();
+            var userEntity = _fixture.Build<ApplicationUser>()
+                .With(a => a.Id, userId)
+                .With(a => a.AnnualLeaveDays, 10)
+                .Create();
+
+            var validAnnualLeaveForNoDays = _fixture.Build<AnnualLeaveViewModel>()
+                .With(a => a.StartDate, new DateTime(2025, 06, 17))
+                .With(a => a.EndDate, new DateTime(2025, 06, 27))
+                .With(a => a.ExternalReference, annualLeaveExtRef)
+                .With(a => a.UserId, noDaysRef)
+                .Create();
+            var validAnnualLeaveExceedingDays = _fixture.Build<AnnualLeaveViewModel>()
+                .With(a => a.StartDate, new DateTime(2025, 06, 17))
+                .With(a => a.EndDate, new DateTime(2025, 06, 27))
+                .With(a => a.ExternalReference, annualLeaveExtRef)
+                .With(a => a.UserId, withDaysRef)
+                .Create();
+            var annualLeaveWithInvalidDatesAndExceedingDays = _fixture.Build<AnnualLeaveViewModel>()
+                .With(a => a.StartDate, new DateTime(2025, 06, 17))
+                .With(a => a.EndDate, new DateTime(2025, 06, 12))
+                .With(a => a.ExternalReference, annualLeaveExtRef)
+                .With(a => a.UserId, noDaysRef)
+                .Create();
+            var annualLeaveWithSameDatesAndExceedingDays = _fixture.Build<AnnualLeaveViewModel>()
+                .With(a => a.StartDate, new DateTime(2025, 06, 17))
+                .With(a => a.EndDate, new DateTime(2025, 06, 17))
+                .With(a => a.ExternalReference, annualLeaveExtRef)
+                .With(a => a.UserId, noDaysRef)
+                .Create();
+
+
+            _userManagementRepositoryMock.Setup(r => r.GetSingle(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
+                .ReturnsAsync((Expression<Func<ApplicationUser, bool>> predicate) =>
+                {
+                    var func = predicate.Compile();
+
+                    if (func(userEntityWithNoDays))
+                        return userEntityWithNoDays;
+                    if (func(userEntityWithDays))
+                        return userEntityWithDays;
+                    if (func(userEntity))
+                        return userEntity;
+
+                    return null;
+                });
 
             //act
             var invalidDateResult = await _annualLeaveService.Edit(annualLeaveWithEndBeforeStart);
             var sameDayResult = await _annualLeaveService.Edit(annualLeaveWithSameStartAndEnd);
+            var noDaysResult = await _annualLeaveService.Edit(validAnnualLeaveForNoDays);
+            var exceedsDaysResult = await _annualLeaveService.Edit(validAnnualLeaveExceedingDays);
+            var noDaysAndInvalidDatesResult = await _annualLeaveService.Edit(annualLeaveWithInvalidDatesAndExceedingDays);
+            var noDaysAndSameDatesResult = await _annualLeaveService.Edit(annualLeaveWithSameDatesAndExceedingDays);
 
             //assert
             Assert.True(invalidDateResult.IsSuccess == false);
+            Assert.Equal("End date can not be before the start date.", invalidDateResult.Error);
             Assert.True(sameDayResult.IsSuccess == false);
+            Assert.Equal("Start and end date can not be on the same day.", sameDayResult.Error);
+            Assert.True(noDaysResult.IsSuccess == false);
+            Assert.Equal("Booking is invalid and would either exceed remaining leave or there is no more leave to take.", noDaysResult.Error);
+            Assert.True(exceedsDaysResult.IsSuccess == false);
+            Assert.Equal("Booking is invalid and would either exceed remaining leave or there is no more leave to take.", exceedsDaysResult.Error);
+            Assert.True(noDaysAndInvalidDatesResult.IsSuccess == false);
+            Assert.Equal("Booking is invalid and would either exceed remaining leave or there is no more leave to take. End date can not be before the start date.", noDaysAndInvalidDatesResult.Error);
+            Assert.True(noDaysAndSameDatesResult.IsSuccess == false);
+            Assert.Equal("Booking is invalid and would either exceed remaining leave or there is no more leave to take. Start and end date can not be on the same day.", noDaysAndSameDatesResult.Error);
         }
 
         [Fact]
@@ -158,6 +230,137 @@ namespace Purpura.Tests
 
             //assert
             Assert.True(editResult.IsSuccess == true);
+            Assert.Null(editResult.Error);
         }
+
+        [Fact]
+        public async void Edit_WhenUpdateFails_ReturnsFalureResult()
+        {
+            //arrange
+            var annualLeaveViewModel = _fixture.Build<AnnualLeaveViewModel>()
+                .With(a => a.ExternalReference, annualLeaveExtRef)
+                .With(a => a.UserId, userId)
+                .With(a => a.StartDate, new DateTime(2025, 6, 17))
+                .With(a => a.EndDate, new DateTime(2025, 6, 20))
+                .Create();
+
+            _mapperMock.Setup(m => m.Map<AnnualLeaveViewModel, AnnualLeave>(It.IsAny<AnnualLeaveViewModel>(), It.IsAny<AnnualLeave>()))
+                .Returns(new AnnualLeave());
+
+            //act
+            var editResult = await _annualLeaveService.Edit(annualLeaveViewModel);
+
+            //assert
+            Assert.True(editResult.IsSuccess == false);
+            Assert.Equal("Update failed.", editResult.Error);
+        }
+
+        #endregion
+
+        #region BookTimeOff
+
+        [Fact]
+        public async void BookTimeOff_WithInvalidUser_ReturnsFailureResult()
+        {
+            var annualLeaveWithRandomUserRef = _fixture.Create<AnnualLeaveViewModel>();
+            var annualLeaveWithNoUserRef = _fixture.Build<AnnualLeaveViewModel>()
+                .With(a => a.UserId, (string)null)
+                .Create();
+
+            var randomUserResult = await _annualLeaveService.BookTimeOff(annualLeaveWithRandomUserRef);
+            var noUserRefResult = await _annualLeaveService.BookTimeOff(annualLeaveWithNoUserRef);
+
+            Assert.True(randomUserResult.IsSuccess == false);
+            Assert.Equal("User not found.", randomUserResult.Error);
+            Assert.True(noUserRefResult.IsSuccess == false);
+            Assert.Equal("User not found.", noUserRefResult.Error);
+        }
+
+        [Fact]
+        public async void BookTimeOff_WithInvalidLeaveDays_ReturnsFailureResult()
+        {
+            //arrange
+            var annualLeaveWithEndBeforeStart = _fixture.Build<AnnualLeaveViewModel>()
+                .With(a => a.StartDate, new DateTime(2025, 06, 17))
+                .With(a => a.EndDate, new DateTime(2025, 06, 12))
+                .With(a => a.ExternalReference, annualLeaveExtRef)
+                .With(a => a.UserId, userId)
+                .Create();
+            var annualLeaveWithSameStartAndEnd = _fixture.Build<AnnualLeaveViewModel>()
+                .With(a => a.StartDate, new DateTime(2025, 06, 17))
+                .With(a => a.EndDate, new DateTime(2025, 06, 17))
+                .With(a => a.ExternalReference, annualLeaveExtRef)
+                .With(a => a.UserId, userId)
+                .Create();
+
+            //act
+            var invalidDateResult = await _annualLeaveService.BookTimeOff(annualLeaveWithEndBeforeStart);
+            var sameDayResult = await _annualLeaveService.BookTimeOff(annualLeaveWithSameStartAndEnd);
+
+            //assert
+            //Truncated tests for results. See Edit method tests for full testing of error messages.
+            Assert.True(invalidDateResult.IsSuccess == false);
+            Assert.True(sameDayResult.IsSuccess == false);
+        }
+
+        [Fact]
+        public async void BookTimeOff_WithValidAnnualLeave_AssignsProprtiesAndReturnsSuccessResult()
+        {
+            //arrange
+            var validAnnualLeave = _fixture.Build<AnnualLeaveViewModel>()
+                .With(a => a.StartDate, new DateTime(2025, 06, 17))
+                .With(a => a.EndDate, new DateTime(2025, 06, 20))
+                .With(a => a.ExternalReference, annualLeaveExtRef)
+                .With(a => a.UserId, userId)
+                .Create();
+            var userEntity = _fixture.Build<ApplicationUser>()
+                .With(a => a.Id, userId)
+                .With(a => a.AnnualLeaveDays, 10)
+                .Create();
+
+            var currentDateTime = DateTime.Now;
+
+            _mapperMock.Setup(m => m.Map<AnnualLeave>(It.IsAny<AnnualLeaveViewModel>()))
+                .Returns(new AnnualLeave());
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync())
+                .ReturnsAsync(1);
+
+            //act
+            var validResult = await _annualLeaveService.BookTimeOff(validAnnualLeave);
+
+            //assert
+            _annualLeaveRepositoryMock.Verify(r => r.Create(It.Is<AnnualLeave>(
+                al =>
+                al.DateCreated <= currentDateTime.AddSeconds(5) && al.DateCreated >= currentDateTime.AddSeconds(-5)
+                && al.ExternalReference != null
+                && al.User.Id == userEntity.Id
+                )), Times.Once);
+            Assert.True(validResult.IsSuccess == true);
+            Assert.Null(validResult.Error);
+        }
+
+        [Fact]
+        public async void BookTimeOff_WhenDatabaseUpdateFails_ReturnsFailureResult()
+        {
+            //arrange
+            var validAnnualLeave = _fixture.Build<AnnualLeaveViewModel>()
+                .With(a => a.StartDate, new DateTime(2025, 06, 17))
+                .With(a => a.EndDate, new DateTime(2025, 06, 20))
+                .With(a => a.ExternalReference, annualLeaveExtRef)
+                .With(a => a.UserId, userId)
+                .Create();
+
+            _mapperMock.Setup(m => m.Map<AnnualLeave>(It.IsAny<AnnualLeaveViewModel>()))
+                .Returns(new AnnualLeave());
+
+            //act
+            var createResult = await _annualLeaveService.BookTimeOff(validAnnualLeave);
+
+            //assert
+            Assert.True(createResult.IsSuccess == false);
+            Assert.Equal("Create failed.", createResult.Error);
+        }
+
+        #endregion
     }
 }

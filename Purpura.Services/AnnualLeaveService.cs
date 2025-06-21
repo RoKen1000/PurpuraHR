@@ -49,7 +49,7 @@ namespace Purpura.Services
                 if (result > 0)
                     return Result.Success();
                 else
-                    return Result.Failure("Process failed.");
+                    return Result.Failure("Create failed.");
             }
             catch (Exception ex)
             {

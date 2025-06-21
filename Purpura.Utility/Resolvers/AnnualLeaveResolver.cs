@@ -34,7 +34,7 @@ namespace Purpura.Utility.Resolvers
             if(!String.IsNullOrEmpty(endBeforeStartOrSameDayError))
                 errorString += !String.IsNullOrEmpty(errorString) ? " " + endBeforeStartOrSameDayError : endBeforeStartOrSameDayError;
 
-                return errorString;
+            return errorString;
         }
 
         public static int WorkOutNumberOfDaysUsed(int userCurrentTotal)
