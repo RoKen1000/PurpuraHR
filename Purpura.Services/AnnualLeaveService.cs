@@ -180,7 +180,7 @@ namespace Purpura.Services
                 throw new NullReferenceException("User not found.");
             }
 
-            if (user.AnnualLeaveDays == 0)
+            if (user.AnnualLeaveDays < 0)
                 return 0;
 
             return user.AnnualLeaveDays;

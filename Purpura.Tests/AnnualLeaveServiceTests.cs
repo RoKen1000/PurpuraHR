@@ -569,5 +569,89 @@ namespace Purpura.Tests
         }
 
         #endregion
+
+        #region GetByExternalReference
+
+        [Fact]
+        public async void GetByExternalReference_NoEntityFound_ThrowsException()
+        {
+            //arrange
+            var extRef = Guid.NewGuid().ToString();
+
+            //act & assert
+            var exception = await Assert.ThrowsAsync<NullReferenceException>(() => _annualLeaveService.GetByExternalReference(extRef));
+            Assert.Equal("Leave not found.", exception.Message);
+        }
+
+        [Fact]
+        public async void GetByExternalReference_EntityFound_ReturnsViewModel()
+        {
+            //arrange
+            _mapperMock.Setup(a => a.Map<AnnualLeaveViewModel>(It.IsAny<AnnualLeave>()))
+                .Returns((AnnualLeave src) => new AnnualLeaveViewModel()
+                {
+                    ExternalReference = annualLeaveExtRef
+                });
+
+            //act
+            var returnedViewModel = await _annualLeaveService.GetByExternalReference(annualLeaveExtRef);
+
+            //assert
+            Assert.NotNull(returnedViewModel);
+            Assert.Equal(annualLeaveExtRef, returnedViewModel.ExternalReference);
+            Assert.IsType<AnnualLeaveViewModel>(returnedViewModel);
+        }
+
+        #endregion
+
+        #region GetUserAnnualLeaveCount
+
+        [Fact]
+        public async void GetUserAnnualLeaveCount_NoUserFound_ThrowsException()
+        {
+            //arrange
+            var randomUserExtRef = Guid.NewGuid().ToString();
+
+            //act & assert
+            var noUserFoundError = await Assert.ThrowsAsync<NullReferenceException>(() => _annualLeaveService.GetUserAnnualLeaveCount(randomUserExtRef));
+            Assert.Equal("User not found.", noUserFoundError.Message);
+        }
+
+        [Fact]
+        public async void GetUserAnnualLeaveCount_UserWithNegativeLeaveDayCount_ReturnsZero()
+        {
+            //arrange
+            var userEntity = _fixture.Build<ApplicationUser>()
+                .With(a => a.Id, userId)
+                .With(a => a.AnnualLeaveDays, -2)
+                .Create();
+            _userManagementRepositoryMock.Setup(r => r.GetSingle(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
+                .ReturnsAsync((Expression<Func<ApplicationUser, bool>> predicate) =>
+                {
+                    var func = predicate.Compile();
+                    return func(userEntity) ? userEntity : null;
+                });
+
+            //act
+            var negativeCountResult = await _annualLeaveService.GetUserAnnualLeaveCount(userId);
+
+            //assert
+            Assert.Equal(0, negativeCountResult);
+            Assert.True(negativeCountResult != -2);
+            Assert.False(negativeCountResult < 0);
+        }
+
+        [Fact]
+        public async void GetUserAnnualLeaveCount_FoundUserWithAnnualLeave_ReturnsCount()
+        {
+            //arrange - not required
+            //act
+            var annualLeaveCount = await _annualLeaveService.GetUserAnnualLeaveCount(userId);
+
+            //assert
+            Assert.Equal(10, annualLeaveCount);
+        }
+
+        #endregion
     }
 }
