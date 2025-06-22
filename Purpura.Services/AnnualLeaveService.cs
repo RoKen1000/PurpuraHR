@@ -28,7 +28,7 @@ namespace Purpura.Services
                     return Result.Failure("User not found.");
 
                 var daysUsed = (annualLeavePeriod.EndDate - annualLeavePeriod.StartDate).Days;
-                var newAnnualLeaveTotal = AnnualLeaveResolver.WorkOutNumberOfDaysLeft(user.AnnualLeaveDays, daysUsed);
+                var newAnnualLeaveTotal = user.AnnualLeaveDays - daysUsed;
                 var validBookingErrors = AnnualLeaveResolver.IsValidBooking(user.AnnualLeaveDays, newAnnualLeaveTotal, annualLeavePeriod.StartDate, annualLeavePeriod.EndDate);
 
                 if (!String.IsNullOrEmpty(validBookingErrors))
@@ -128,7 +128,7 @@ namespace Purpura.Services
                 return Result.Failure("User not found.");
 
             var daysUsed = (viewModel.EndDate - viewModel.StartDate).Days;
-            var newAnnualLeaveTotal = AnnualLeaveResolver.WorkOutNumberOfDaysLeft(user.AnnualLeaveDays, daysUsed);
+            var newAnnualLeaveTotal = user.AnnualLeaveDays - daysUsed;
             var validBookingErrors = AnnualLeaveResolver.IsValidBooking(user.AnnualLeaveDays, newAnnualLeaveTotal, viewModel.StartDate, viewModel.EndDate);
 
             if (!String.IsNullOrEmpty(validBookingErrors))

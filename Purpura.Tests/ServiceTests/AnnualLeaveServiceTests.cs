@@ -9,7 +9,7 @@ using Purpura.Services.Interfaces;
 using PurpuraWeb.Models.Entities;
 using System.Linq.Expressions;
 
-namespace Purpura.Tests
+namespace Purpura.Tests.ServiceTests
 {
     public class AnnualLeaveServiceTests
     {
@@ -200,7 +200,7 @@ namespace Purpura.Tests
                 .With(a => a.EndDate, new DateTime(2025, 6, 20))
                 .Create();
 
-            _mapperMock.Setup(m => m.Map<AnnualLeaveViewModel, AnnualLeave>(It.IsAny<AnnualLeaveViewModel>(), It.IsAny<AnnualLeave>()))
+            _mapperMock.Setup(m => m.Map(It.IsAny<AnnualLeaveViewModel>(), It.IsAny<AnnualLeave>()))
                 .Returns(new AnnualLeave());
             _unitOfWorkMock.Setup(u => u.SaveChangesAsync())
                 .ReturnsAsync(1);
@@ -224,7 +224,7 @@ namespace Purpura.Tests
                 .With(a => a.EndDate, new DateTime(2025, 6, 20))
                 .Create();
 
-            _mapperMock.Setup(m => m.Map<AnnualLeaveViewModel, AnnualLeave>(It.IsAny<AnnualLeaveViewModel>(), It.IsAny<AnnualLeave>()))
+            _mapperMock.Setup(m => m.Map(It.IsAny<AnnualLeaveViewModel>(), It.IsAny<AnnualLeave>()))
                 .Returns(new AnnualLeave());
 
             //act

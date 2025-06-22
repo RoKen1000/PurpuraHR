@@ -35,7 +35,7 @@ namespace PurpuraWeb.Controllers
             var viewModel = new AnnualLeaveIndexViewModel
             {
                 AnnualLeaveDaysRemaining = currentUserAnnualLeave,
-                AnnualLeaveDaysUsed = AnnualLeaveResolver.WorkOutNumberOfDaysUsed(currentUserAnnualLeave)
+                AnnualLeaveDaysUsed = 28 - currentUserAnnualLeave
             };
 
             return PartialView(viewModel);

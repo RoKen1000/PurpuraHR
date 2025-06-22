@@ -8,11 +8,6 @@ namespace Purpura.Utility.Resolvers
 {
     public static class AnnualLeaveResolver
     {
-        public static int WorkOutNumberOfDaysLeft(int currentCount, int daysBeingTaken)
-        {
-            return currentCount - daysBeingTaken;
-        }
-
         public static string IsValidBooking(int currentDays, int newTotal, DateTime startDate, DateTime endDate)
         {
             var errorString = "";
@@ -27,13 +22,6 @@ namespace Purpura.Utility.Resolvers
             }
 
             return errorString;
-        }
-
-        public static int WorkOutNumberOfDaysUsed(int userCurrentTotal)
-        {
-            var daysUsed = 28 - userCurrentTotal;
-
-            return daysUsed <= 28 ? daysUsed : 28;
         }
     }
 }
