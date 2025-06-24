@@ -29,7 +29,7 @@
 
         @if (!authenticationPaths.Contains(path))
         {
-            <header>
+            @* <header>
                 <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
                     <div class="container-fluid">
                         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PurpuraWeb</a>
@@ -47,7 +47,15 @@
                         </div>
                     </div>
                 </nav>
-            </header>
+            </header> *@
+
+            <nav id="side-nav">
+                <a id="site-name" class="text-white" href="/home/index"><strong>PurpuraWeb</strong></a>
+                <span><hr/></span>
+                <a class="nav-link text-white" asp-controller="AnnualLeave" asp-action="Index">Book Time Off</a>
+                <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Test 1</a>
+                <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Test 2</a>
+            </nav>
         }
         <div class="container">
             <main role="main">

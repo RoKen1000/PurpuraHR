@@ -1,44 +1,4 @@
-﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-a {
-  color: #0077cc;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
+﻿
 .footer {
   position: absolute;
   bottom: 0;
@@ -79,4 +39,33 @@ button.accept-policy {
     #footer-flex-container, #footer-name {
         padding-left: 80px;
     }
+}
+
+#side-nav {
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    z-index: 1;
+    background-color: mediumpurple;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+#site-name {
+    display: block;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    text-decoration: none;
+}
+
+main, footer {
+    padding-left: 160px;
+}
+
+#side-nav hr {
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 3px;
 }
