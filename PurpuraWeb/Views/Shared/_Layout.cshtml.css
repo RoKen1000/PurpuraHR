@@ -1,44 +1,4 @@
-﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-a {
-  color: #0077cc;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
+﻿
 .footer {
   position: absolute;
   bottom: 0;
@@ -67,16 +27,113 @@ button.accept-policy {
 }
 
 @media screen and (min-width: 500px) {
-    #footer-flex-container a{
-        padding-right: 20px;
-    }
-    #footer-name {
+    #footer-name #footer-flex-container a {
         padding-left: 30px;
     }
 }
 
-@media screen and (min-width: 750px) {
-    #footer-flex-container, #footer-name {
-        padding-left: 80px;
+footer {
+    padding-left: 160px;
+}
+
+
+
+#side-nav {
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    z-index: 1;
+    background-color: mediumpurple;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+#side-nav a:not(#site-name) {
+    cursor: pointer;
+    color: white;
+    padding: 4px 0 4px 0;
+    margin: 14px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+#side-nav a:hover:not(#site-name) {
+    background-color: rebeccapurple;
+}
+
+#site-name {
+    display: block;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    text-decoration: none;
+}
+
+#side-nav hr, #offcanvas-nav hr {
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 3px;
+}
+
+#offcanvas-nav hr{
+    width: 80%;
+}
+
+#mobile-menu-toggle {
+    margin-left: 200px;
+    border-radius: 20px;
+}
+
+#offcanvas-nav{
+    background-color: mediumpurple;
+}
+
+#site-name-mobile {
+    width: auto;
+    padding-left: 14px;
+    text-decoration: none;
+}
+
+.offcanvas-header{
+    padding-bottom: 0;
+}
+
+.offcanvas-body{
+    padding-top: 0;
+}
+
+@media screen and (max-width: 768px) {
+    #side-nav{
+        width:0;
+        position: center;
+    }
+    footer{
+        padding-left: 10px;
+    }
+    #button-container{
+        position: relative;
+        right: 16px;
+    }
+    #mobile-menu-toggle{
+        position: fixed;
+        margin: 0;
+        padding-left: 20px;
+        overflow-x: hidden;
+        margin-top: 80px;
+        background-color: mediumpurple;
+        opacity: 0.7;
+    }
+    #mobile-menu-toggle i {
+        color: white;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #mobile-menu-toggle {
+        visibility: hidden;
+    }
+    main{
+        margin-left: 160px;
     }
 }
