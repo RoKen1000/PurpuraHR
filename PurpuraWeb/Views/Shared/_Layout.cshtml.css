@@ -48,6 +48,19 @@ footer {
     padding-top: 20px;
 }
 
+#side-nav a:not(#site-name) {
+    cursor: pointer;
+    color: white;
+    padding: 4px 0 4px 0;
+    margin: 14px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+#side-nav a:hover:not(#site-name) {
+    background-color: rebeccapurple;
+}
+
 #site-name {
     display: block;
     width: 60%;
@@ -80,6 +93,14 @@ footer {
     width: auto;
     padding-left: 14px;
     text-decoration: none;
+}
+
+.offcanvas-header{
+    padding-bottom: 0;
+}
+
+.offcanvas-body{
+    padding-top: 0;
 }
 
 @media screen and (max-width: 768px) {
