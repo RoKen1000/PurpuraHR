@@ -31,6 +31,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 </head>
 <body style="@(authenticationPaths.Contains(path) ? "background: linear-gradient(white, mediumpurple);" : "")">
+
+    <header>
+        <h4><strong>Purpura HR</strong></h4>
+    </header>
+
     <div id="page-container">
 
         @if (!authenticationPaths.Contains(path))
@@ -53,13 +58,11 @@
         </div>
 
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas-nav" aria-labelledby="offcanvasExampleLabel">
+
             <div class="offcanvas-header">
-                <h5 class="offcanvas-title">
-                    <a id="site-name-mobile" class="text-white" href="/home/index"><strong>Purpura HR</strong></a>
-                </h5>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <hr/>
+
             <div class="offcanvas-body">
                 <nav>
                     <a class="nav-link text-white" asp-controller="UserManagement" asp-action="Details" asp-route-userId="@UserManager.GetUserId(User)">Account Details</a>
