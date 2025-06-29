@@ -5,6 +5,7 @@ using Purpura.Utility.Helpers;
 
 namespace PurpuraWeb.Controllers
 {
+    [Route("[controller]")]
     public class UserManagementController : Controller
     {
         private readonly IUserManagementService _userManagementService;
@@ -12,12 +13,6 @@ namespace PurpuraWeb.Controllers
         public UserManagementController(IUserManagementService userManagementService)
         {
             _userManagementService = userManagementService;
-        }
-
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return View();
         }
 
         [HttpGet]
@@ -34,7 +29,7 @@ namespace PurpuraWeb.Controllers
 
         [HttpGet]
         [Route("Edit/{userId}")]
-        public async Task<IActionResult> EditUserDetails(string userId)
+        public async Task<IActionResult> Edit(string userId)
         {
             var userViewModel = await _userManagementService.GetUser(u => u.Id == userId);
 
@@ -50,7 +45,7 @@ namespace PurpuraWeb.Controllers
 
         [HttpPost]
         [Route("Edit/{userId}")]
-        public async Task<IActionResult> EditUserDetails(ApplicationUserViewModel viewModel)
+        public async Task<IActionResult> Edit(ApplicationUserViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
