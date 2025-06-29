@@ -15,12 +15,6 @@ namespace PurpuraWeb.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        [HttpGet]
         [Route("Details/{userId}")]
         public async Task<IActionResult> Details(string userId)
         {

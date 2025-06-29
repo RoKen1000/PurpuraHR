@@ -20,3 +20,13 @@ html {
 body {
     margin-bottom: 60px;
 }
+
+.btn-purpura{
+    background-color: mediumpurple;
+    color: white;
+}
+
+.btn-purpura:hover{
+    background-color: rebeccapurple;
+    color: white;
+}
