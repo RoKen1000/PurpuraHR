@@ -138,3 +138,9 @@ footer {
         margin-left: 160px;
     }
 }
+
+@media screen and (max-width: 768px) {
+    #header-buffer{
+        height: 54px;
+    }
+}
