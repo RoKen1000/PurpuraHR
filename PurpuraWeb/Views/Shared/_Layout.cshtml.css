@@ -4,6 +4,7 @@
   bottom: 0;
   width: 100%;
   white-space: nowrap;
+  background-color: ghostwhite;
 }
 
 #page-container {
@@ -125,6 +126,13 @@ header h4{
 }
 
 
+main{
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    min-height: 80vh;
+}
 
 
 @media screen and (max-width: 768px) {
