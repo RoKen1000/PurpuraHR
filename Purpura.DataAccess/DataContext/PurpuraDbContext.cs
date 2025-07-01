@@ -15,6 +15,7 @@ namespace Purpura.DataAccess.DataContext
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<AnnualLeave> AnnualLeave { get; set; }
+        public DbSet<Goal> Goals { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
