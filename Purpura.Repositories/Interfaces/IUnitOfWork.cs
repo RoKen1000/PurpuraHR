@@ -11,5 +11,6 @@ namespace Purpura.Repositories.Interfaces
         Task<int> SaveChangesAsync();
         IAnnualLeaveRepository AnnualLeaveRepository { get; }
         IUserManagementRepository UserManagementRepository { get; }
+        IGoalRepository GoalRepository { get; }
     }
 }
