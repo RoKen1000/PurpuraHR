@@ -1,1 +1,16 @@
-﻿
+﻿@using Purpura.Models.Entities
+@model GoalIndexViewModel
+
+@if (Model.Goals.Any())
+{
+    foreach(var goal in Model.Goals)
+    {
+        
+    }
+}
+else
+{
+    <h1>No goals set yet!</h1>
+}
+
+<a asp-controller="Goal" asp-action="Create" class="btn btn-purpura">Create New Goal</a>

@@ -1,13 +1,6 @@
 ﻿using AutoMapper;
-using Purpura.Common;
-using Purpura.DataAccess.DataContext;
 using Purpura.Repositories.Interfaces;
 using Purpura.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Purpura.Services
 {

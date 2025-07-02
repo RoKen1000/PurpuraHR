@@ -2,7 +2,6 @@
 using Purpura.Common.Results;
 using Purpura.Models.Entities;
 using Purpura.Models.ViewModels;
-using Purpura.Repositories;
 using Purpura.Repositories.Interfaces;
 using Purpura.Services.Interfaces;
 using Purpura.Utility.Resolvers;

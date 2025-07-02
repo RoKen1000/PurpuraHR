@@ -1,0 +1,20 @@
+﻿@model GoalViewModel;
+
+
+<form asp-action="Create" asp-controller="Goal">
+
+    <label asp-for="DueDate">Due Date</label>
+    <input type="date" asp-for="DueDate" />
+    <span asp-validation-for="DueDate"></span>
+
+    <label asp-for="Name">Goal Name</label>
+    <input type="text" asp-for="Name"/>
+    <span asp-validation-for="Name"></span>
+
+    <label asp-for="Description">Description</label>
+    <textarea asp-for="Description"></textarea>
+    <span asp-validation-for="Description"></span>
+
+
+    <input type="hidden" asp-for="UserId" />
+</form>
