@@ -1,20 +1,29 @@
 ﻿@model GoalViewModel;
 
+<h1 class="form-title">Create Goal</h1>
 
-<form asp-action="Create" asp-controller="Goal">
+<form asp-action="Create" asp-controller="Goal" class="goal-form">
 
-    <label asp-for="DueDate">Due Date</label>
-    <input type="date" asp-for="DueDate" />
-    <span asp-validation-for="DueDate"></span>
+    <div class="form-floating mb-3">
+        <input class="form-control" type="date" asp-for="DueDate" placeholder="1" />
+        <label asp-for="DueDate">Due Date</label>
+        <span asp-validation-for="DueDate"></span>
+    </div>
 
-    <label asp-for="Name">Goal Name</label>
-    <input type="text" asp-for="Name"/>
-    <span asp-validation-for="Name"></span>
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" asp-for="Name" placeholder="My Goal" />
+        <label asp-for="Name">Goal Name</label>
+        <span asp-validation-for="Name" class="mb-3"></span>
+    </div>
 
-    <label asp-for="Description">Description</label>
-    <textarea asp-for="Description"></textarea>
-    <span asp-validation-for="Description"></span>
-
+    <div class="form-floating mb-3">
+        <textarea class="form-control" asp-for="Description" placeholder=""></textarea>
+        <label asp-for="Description">Description</label>
+        <span asp-validation-for="Description"></span>
+    </div>
 
     <input type="hidden" asp-for="UserId" />
+
+
+    <button type="submit" class="btn btn-purpura">Submit</button>
 </form>

@@ -9,14 +9,22 @@ namespace Purpura.Services
 {
     public class GoalService : BaseService<Goal>, IGoalService
     {
-        public GoalService(IMapper mapper, IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
-        {
+        private readonly IUserManagementRepository _userManagementRepository;
 
+        public GoalService(IMapper mapper, 
+            IUnitOfWork unitOfWork,
+            IUserManagementRepository userManagementRepository) : base(mapper, unitOfWork)
+        {
+            _userManagementRepository = userManagementRepository;
         }
 
         public async Task<Result> Create(GoalViewModel viewModel)
         {
-             _unitOfWork.GoalRepository.Create(_mapper.Map<Goal>(viewModel));
+            var newEntity = _mapper.Map<Goal>(viewModel);
+            newEntity.ExternalReference = Guid.NewGuid().ToString();
+            newEntity.DateCreated = DateTime.Now;
+
+            _unitOfWork.GoalRepository.Create(newEntity);
 
             var result = await _unitOfWork.SaveChangesAsync();
 

@@ -31,3 +31,12 @@ body {
     background-color: rebeccapurple;
     color: white;
 }
+
+.form-title{
+    margin-bottom: 1rem;
+}
+
+.field-validation-error{
+    color: red;
+    padding: 10px;
+}
