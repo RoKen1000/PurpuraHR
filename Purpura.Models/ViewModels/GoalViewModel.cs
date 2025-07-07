@@ -16,5 +16,7 @@ namespace Purpura.Models.ViewModels
 
         [Range(0, 100)]
         public int? PercentageComplete { get; set; }
+
+        public bool OperationFailure { get; set; }
     }
 }

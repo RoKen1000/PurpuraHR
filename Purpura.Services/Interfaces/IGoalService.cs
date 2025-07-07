@@ -6,5 +6,6 @@ namespace Purpura.Services.Interfaces
     public interface IGoalService
     {
         Task<Result> Create(GoalViewModel viewModel);
+        Task<List<GoalViewModel>> GetAllGoalsByUserId(string userId);
     }
 }

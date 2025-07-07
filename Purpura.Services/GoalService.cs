@@ -33,5 +33,10 @@ namespace Purpura.Services
             else
                 return Result.Failure("Create failed.");
         }
+
+        public Task<List<GoalViewModel>> GetAllGoalsByUserId(string userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

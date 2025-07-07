@@ -45,8 +45,10 @@ namespace PurpuraWeb.Controllers
             {
                 var result = await _goalService.Create(viewModel);
 
-                if(result.IsSuccess)
+                if (result.IsSuccess)
                     return RedirectToAction("Index");
+                else
+                    viewModel.OperationFailure = true;
             }
 
             return View(viewModel);

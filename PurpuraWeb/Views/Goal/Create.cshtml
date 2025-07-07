@@ -27,3 +27,11 @@
 
     <button type="submit" class="btn btn-purpura">Submit</button>
 </form>
+
+@section Scripts{
+    <script>
+        if(@Model.OperationFailure.ToString().ToLower()){
+            toastr.error("Create failed.")
+        }
+    </script>
+}
