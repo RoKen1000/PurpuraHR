@@ -6,3 +6,12 @@
 .goal-form textarea {
     height: 200px;
 }
+
+.goal-cards{
+    width: 40%;
+    padding: 0;
+}
+
+#create-goal-button{
+    margin: 1em 0 1em 0;
+}

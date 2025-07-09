@@ -17,11 +17,13 @@ namespace PurpuraWeb.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var userGoals = await _goalService.GetAllGoalsByUserId(_userManager.GetUserId(User));
+
             var viewModel = new GoalIndexViewModel()
             {
-
+                Goals = userGoals
             };
 
             return View(viewModel);

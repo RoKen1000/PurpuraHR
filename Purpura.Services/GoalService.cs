@@ -34,9 +34,11 @@ namespace Purpura.Services
                 return Result.Failure("Create failed.");
         }
 
-        public Task<List<GoalViewModel>> GetAllGoalsByUserId(string userId)
+        public async Task<List<GoalViewModel>> GetAllGoalsByUserId(string userId)
         {
-            throw new NotImplementedException();
+            var goals = await _unitOfWork.GoalRepository.GetAll(g => g.UserId == userId);
+
+            return _mapper.Map<List<GoalViewModel>>(goals);
         }
     }
 }

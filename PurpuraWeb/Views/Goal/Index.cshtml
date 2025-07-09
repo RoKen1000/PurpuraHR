@@ -3,14 +3,29 @@
 
 @if (Model.Goals.Any())
 {
-    foreach(var goal in Model.Goals)
-    {
-        
-    }
+    <div id="goal-card-container" class="row row-cols-2">
+        @foreach(var goal in Model.Goals)
+        {
+            var barPercentageStyle = $"style='width:{goal.PercentageComplete}%'";
+
+            <div class="card goal-cards m-2">
+                <div class="card-header">
+                    @goal.Name
+                </div>
+                <div class="card-body">
+                    <p class="card-body">@goal.Description</p>
+                    <div class="progress mb-3" role="progressbar">
+                        <div class="progress-bar" @barPercentageStyle></div>
+                    </div>
+                    <a class="btn btn-purpura" asp-controller="Goal" asp-action="Details" asp-route-reference="@goal.ExternalReference">Details</a>
+                </div>
+            </div>
+        }
+    </div>
 }
 else
 {
     <h1 style="text-align: center;">No goals set yet!</h1>
 }
 
-<a asp-controller="Goal" asp-action="Create" class="btn btn-purpura">Create New Goal</a>
+<a asp-controller="Goal" asp-action="Create" class="btn btn-purpura" id="create-goal-button">Create New Goal</a>
