@@ -7,5 +7,6 @@ namespace Purpura.Services.Interfaces
     {
         Task<Result> Create(GoalViewModel viewModel);
         Task<List<GoalViewModel>> GetAllGoalsByUserId(string userId);
+        Task<GoalViewModel?> GetByExternalReference(string goalReference);
     }
 }

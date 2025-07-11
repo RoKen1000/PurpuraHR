@@ -40,5 +40,17 @@ namespace Purpura.Services
 
             return _mapper.Map<List<GoalViewModel>>(goals);
         }
+
+        public async Task<GoalViewModel?> GetByExternalReference(string goalReference)
+        {
+            var goal = await _unitOfWork.GoalRepository.GetSingle(g => g.ExternalReference == goalReference);
+
+            if(goal != null)
+            {
+                return _mapper.Map<GoalViewModel>(goal);
+            }
+
+            return null;
+        }
     }
 }

@@ -22,6 +22,8 @@ body {
     background-color: whitesmoke;
 }
 
+
+
 .btn-purpura{
     background-color: mediumpurple;
     color: white;
@@ -32,6 +34,8 @@ body {
     color: white;
 }
 
+
+
 .form-title{
     margin-bottom: 1rem;
 }
@@ -39,4 +43,22 @@ body {
 .field-validation-error{
     color: red;
     padding: 10px;
+}
+
+
+
+
+.details-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+}
+
+.details-container, .details-button-container {
+    max-width: 500px;
 }

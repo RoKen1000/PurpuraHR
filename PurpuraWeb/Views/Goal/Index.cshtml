@@ -3,24 +3,38 @@
 
 @if (Model.Goals.Any())
 {
-    <div id="goal-card-container" class="row row-cols-2">
-        @foreach(var goal in Model.Goals)
-        {
-            var barPercentageStyle = $"style='width:{goal.PercentageComplete}%'";
+    <h1>Goals</h1>
+    <div id="goal-card-container">
 
-            <div class="card goal-cards m-2">
-                <div class="card-header">
-                    @goal.Name
-                </div>
-                <div class="card-body">
-                    <p class="card-body">@goal.Description</p>
-                    <div class="progress mb-3" role="progressbar">
-                        <div class="progress-bar" @barPercentageStyle></div>
+            @foreach(var goal in Model.Goals)
+            {
+                var dueDate = DateTime.MinValue;
+
+                if(goal.DueDate != null)
+                {
+                    var modelDate = (DateTime)goal.DueDate;
+                    dueDate = modelDate.Date;
+                }
+
+                var barPercentageStyle = $"style='width:{goal.PercentageComplete}%'";
+
+                <div class="card goal-cards mb-3 mb-xs-3 m-md-2">
+                    <div class="card-header">
+                        @goal.Name 
                     </div>
-                    <a class="btn btn-purpura" asp-controller="Goal" asp-action="Details" asp-route-reference="@goal.ExternalReference">Details</a>
+                    <div class="card-body">
+                        <div class="card-body">
+                            <p>@goal.Description</p>
+                            <p>@(dueDate != DateTime.MinValue ? $"Due Date: {dueDate.ToShortDateString()}" : "")</p>
+                        </div>
+                        <div class="progress mb-3" role="progressbar">
+                            <div class="progress-bar" @barPercentageStyle></div>
+                        </div>
+                        <a class="btn btn-purpura" asp-controller="Goal" asp-action="Details" asp-route-reference="@goal.ExternalReference">Details</a>
+                    </div>
                 </div>
-            </div>
-        }
+
+            }
     </div>
 }
 else

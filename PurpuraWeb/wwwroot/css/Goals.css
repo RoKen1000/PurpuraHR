@@ -7,11 +7,35 @@
     height: 200px;
 }
 
-.goal-cards{
-    width: 40%;
+#goal-card-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.goal-cards {
+    width: 100%;
     padding: 0;
 }
 
 #create-goal-button{
     margin: 1em 0 1em 0;
+}
+
+.goal-details-progress-bar {
+    max-width: 400px;
+}
+
+@media screen and (min-width: 768px){
+    .goal-cards {
+        max-width: 500px;
+    }
+}
+
+@media screen and (min-width: 996px) {
+
+    .goal-cards {
+        max-width: 650px;
+    }
 }

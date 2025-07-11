@@ -138,6 +138,7 @@ main{
     padding: 20px;
     margin-bottom: 20px;
     min-height: 80vh;
+    position: relative;
 }
 
 

@@ -55,5 +55,18 @@ namespace PurpuraWeb.Controllers
 
             return View(viewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(string reference)
+        {
+            var goalViewModel = await _goalService.GetByExternalReference(reference);
+
+            if(goalViewModel == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(goalViewModel);
+        }
     }
 }
