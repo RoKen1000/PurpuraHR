@@ -9,7 +9,7 @@
         dueDate = modelDate.Date;
     }
 
-    var barPercentageStyle = $"style='width:{Model.PercentageComplete}%'";
+    var barPercentageStyle = $"style=width:{Model.PercentageComplete}%";
 }
 
 <div class="details-container">
@@ -21,7 +21,7 @@
         <dt>Description</dt>
         <dd>@Model.Description</dd>
 
-        <dt class="mb-2">Progress</dt>
+        <dt class="mb-2">Progress @($"{Model.PercentageComplete}%")</dt>
         <dd>
             <div class="progress mb-3 goal-details-progress-bar" role="progressbar">
                 <div class="progress-bar" @barPercentageStyle></div>
@@ -30,6 +30,5 @@
     </dl>
 </div>
 <div class="details-button-container">
-    <a class="btn btn-dark">Cancel</a>
-    <a class="btn btn-purpura">Edit</a>
+    <a asp-action="Edit" asp-controller="Goal" asp-route-reference="@Model.ExternalReference" class="btn btn-purpura">Edit</a>
 </div>

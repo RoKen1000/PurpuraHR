@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Purpura.Common.Results;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,6 @@ namespace Purpura.Models.ViewModels
     {
         public string UserId { get; set; }
         public string? ExternalReference { get; set; }
+        public Result? Result { get; set; }
     }
 }

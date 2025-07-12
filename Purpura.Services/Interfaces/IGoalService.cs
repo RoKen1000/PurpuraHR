@@ -5,8 +5,9 @@ namespace Purpura.Services.Interfaces
 {
     public interface IGoalService
     {
-        Task<Result> Create(GoalViewModel viewModel);
-        Task<List<GoalViewModel>> GetAllGoalsByUserId(string userId);
-        Task<GoalViewModel?> GetByExternalReference(string goalReference);
+        Task<Result> CreateAsync(GoalViewModel viewModel);
+        Task<List<GoalViewModel>> GetAllGoalsByUserIdAsync(string userId);
+        Task<GoalViewModel?> GetByExternalReferenceAsync(string goalReference);
+        Task<Result> EditAsync(GoalViewModel viewModel);
     }
 }

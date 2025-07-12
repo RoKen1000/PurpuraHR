@@ -40,25 +40,13 @@ body {
     margin-bottom: 1rem;
 }
 
-.field-validation-error{
+.field-validation-error {
     color: red;
     padding: 10px;
 }
 
-
-
-
-.details-button-container {
+.form-button-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 1rem;
-}
-
-.details-container, .details-button-container {
-    max-width: 500px;
 }

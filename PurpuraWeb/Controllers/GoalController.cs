@@ -19,7 +19,7 @@ namespace PurpuraWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var userGoals = await _goalService.GetAllGoalsByUserId(_userManager.GetUserId(User));
+            var userGoals = await _goalService.GetAllGoalsByUserIdAsync(_userManager.GetUserId(User));
 
             var viewModel = new GoalIndexViewModel()
             {
@@ -45,7 +45,7 @@ namespace PurpuraWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _goalService.Create(viewModel);
+                var result = await _goalService.CreateAsync(viewModel);
 
                 if (result.IsSuccess)
                     return RedirectToAction("Index");
@@ -59,11 +59,39 @@ namespace PurpuraWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(string reference)
         {
-            var goalViewModel = await _goalService.GetByExternalReference(reference);
+            var goalViewModel = await _goalService.GetByExternalReferenceAsync(reference);
 
-            if(goalViewModel == null)
+            if (goalViewModel == null)
             {
                 return RedirectToAction("Index");
+            }
+
+            return View(goalViewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string reference)
+        {
+            var goalViewModel = await _goalService.GetByExternalReferenceAsync(reference);
+
+            return View(goalViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(GoalViewModel goalViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _goalService.EditAsync(goalViewModel);
+
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction("Details", new { reference = goalViewModel.ExternalReference });
+                }
+                else
+                {
+                    goalViewModel.Result = result;
+                }
             }
 
             return View(goalViewModel);
