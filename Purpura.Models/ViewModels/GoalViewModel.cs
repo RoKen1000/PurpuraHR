@@ -11,7 +11,7 @@ namespace Purpura.Models.ViewModels
         [StringLength(50, MinimumLength = 5)]
         public string Name { get; set; }
         [Required]
-        [StringLength(200)]
+        [StringLength(350)]
         public string Description { get; set; }
 
         [Range(0, 100)]

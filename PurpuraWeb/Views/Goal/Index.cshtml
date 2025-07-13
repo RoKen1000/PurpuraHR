@@ -26,12 +26,16 @@
                         <i class="bi bi-trophy"></i> @goal.Name
                     </div>
                     <div class="card-body">
-                        <div class="card-body">
-                            <p>@goal.Description</p>
-                            <p>@(dueDate != DateTime.MinValue ? $"Due Date: {dueDate.ToShortDateString()}" : "")</p>
-                        </div>
-                        <div class="progress mb-3" role="progressbar">
-                            <div class="progress-bar" @barPercentageStyle></div>
+                        <p>@goal.Description</p>
+                        <p>@(dueDate != DateTime.MinValue ? $"Due Date: {dueDate.ToShortDateString()}" : "")</p>
+
+                        <div class="goal-card-progress-buffer"></div>
+
+                        <div class="goal-card-progress">
+                            <p>@($"Complete: {goal.PercentageComplete}%")</p>
+                            <div class="progress mb-3" role="progressbar">
+                                <div class="progress-bar" @barPercentageStyle></div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer goal-cards-footer">
