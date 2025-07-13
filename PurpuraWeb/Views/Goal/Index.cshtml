@@ -1,0 +1,61 @@
+﻿@using Purpura.Models.Entities
+@model GoalIndexViewModel
+
+@if (Model.Goals.Any())
+{
+    <h1 class="page-heading">Goals</h1>
+
+    <a asp-controller="Goal" asp-action="Create" class="btn btn-purpura mb-3 mt-3" id="create-goal-button-with-goals"><i class="bi bi-plus-lg button-icons"></i>Create New Goal</a>
+
+    <div id="goal-card-container">
+
+            @foreach(var goal in Model.Goals)
+            {
+                var dueDate = DateTime.MinValue;
+
+                if(goal.DueDate != null)
+                {
+                    var modelDate = (DateTime)goal.DueDate;
+                    dueDate = modelDate.Date;
+                }
+
+                var barPercentageStyle = $"style=width:{goal.PercentageComplete}%";
+
+                <div class="card goal-cards mb-3 mb-xs-3 m-md-2">
+                    <div class="card-header">
+                        <i class="bi bi-trophy"></i> @goal.Name
+                    </div>
+                    <div class="card-body">
+                        <p>@goal.Description</p>
+                        <p>@(dueDate != DateTime.MinValue ? $"Due Date: {dueDate.ToShortDateString()}" : "")</p>
+
+                        <div class="goal-card-progress-buffer"></div>
+
+                        <div class="goal-card-progress">
+                            <p>@($"Complete: {goal.PercentageComplete}%")</p>
+                            <div class="progress mb-3" role="progressbar">
+                                <div class="progress-bar" @barPercentageStyle></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer goal-cards-footer">
+                        <a class="btn btn-purpura" asp-controller="Goal" asp-action="Details" asp-route-reference="@goal.ExternalReference">Details</a>
+                        <a asp-action="Delete" asp-controller="Goal" asp-route-reference="@goal.ExternalReference" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+
+            }
+    </div>
+
+    
+}
+else
+{
+    <h1 class="page-heading">No goals set yet!</h1>
+
+    <div id="goal-icon-container">
+        <i class="bi bi-trophy"></i>
+    </div>
+
+    <a asp-controller="Goal" asp-action="Create" class="btn btn-purpura" id="create-goal-button"><i class="bi bi-plus-lg button-icons"></i>Create New Goal</a>
+}

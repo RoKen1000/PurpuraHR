@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="~/css/UserAuthentication.css" />
     <link rel="stylesheet" href="~/css/UserManagement.css" />
     <link rel="stylesheet" href="~/css/AnnualLeave.css" />
+    <link rel="stylesheet" href="~/css/Goals.css" />
     <link rel="stylesheet" href="~/PurpuraWeb.styles.css" asp-append-version="true" />
 
     <!--javascript packages-->
@@ -45,7 +46,7 @@
                 <hr/>
                 <a class="nav-link" href="@($"/usermanagement/details/{UserManager.GetUserId(User)}")">Account Details</a>
                 <a class="nav-link" href="/annualleave/index">Book Time Off</a>
-                <a class="nav-link">Test 2</a>
+                <a class="nav-link" href="/goal/index">Goals</a>
             </nav>
         }
 
@@ -67,12 +68,12 @@
                 <nav>
                     <a class="nav-link text-white" asp-controller="UserManagement" asp-action="Details" asp-route-userId="@UserManager.GetUserId(User)">Account Details</a>
                     <a class="nav-link text-white" asp-controller="AnnualLeave" asp-action="Index">Book Time Off</a>
-                    <a class="nav-link text-white" asp-controller="Home" asp-action="Index">Test 2</a>
+                    <a class="nav-link text-white" asp-controller="Goal" asp-action="Index">Goals</a>
                 </nav>
             </div>
         </div>
 
-        <div class="container">
+        <div id="main-content-container">
             <main role="main">
                 @RenderBody()
             </main>
@@ -95,6 +96,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/AnnualLeave.js" ></script>
+    <script src="~/js/Goals.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

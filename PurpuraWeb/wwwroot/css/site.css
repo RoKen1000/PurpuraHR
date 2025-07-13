@@ -22,6 +22,8 @@ body {
     background-color: whitesmoke;
 }
 
+
+
 .btn-purpura{
     background-color: mediumpurple;
     color: white;
@@ -30,4 +32,36 @@ body {
 .btn-purpura:hover{
     background-color: rebeccapurple;
     color: white;
+}
+
+
+
+.form-title{
+    margin-bottom: 1rem;
+}
+
+.field-validation-error {
+    color: red;
+    padding: 10px;
+}
+
+.form-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.button-icons{
+    padding-right: 0.3rem;
+}
+
+.page-heading{
+    text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+
+    .details-container {
+        width: 50%;
+    }
 }

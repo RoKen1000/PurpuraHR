@@ -1,0 +1,44 @@
+﻿@model GoalViewModel;
+
+<h1 class="form-title">Edit Goal</h1>
+
+<form asp-action="Edit" asp-controller="Goal" class="goal-form">
+
+    <div class="form-floating mb-3">
+        <input class="form-control" type="date" asp-for="DueDate" readonly placeholder="1" />
+        <label asp-for="DueDate">Due Date</label>
+        <span asp-validation-for="DueDate"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" asp-for="Name" placeholder="My Goal" />
+        <label asp-for="Name">Goal Name</label>
+        <span asp-validation-for="Name" class="mb-3"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <textarea class="form-control" asp-for="Description" placeholder=""></textarea>
+        <label asp-for="Description">Description</label>
+        <span asp-validation-for="Description"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input class="form-control" asp-for="PercentageComplete" placeholder="">
+        <label asp-for="PercentageComplete">Percentage Complete</label>
+        <span asp-validation-for="PercentageComplete"></span>
+    </div>
+
+    <input type="hidden" asp-for="UserId" />
+    <input type="hidden" asp-for="ExternalReference" />
+
+    @if(Model.Result != null && Model.Result.Error != null)
+    {
+        <div class="field-validation-error">@Model.Result.Error</div>
+    }
+
+    <div class="form-button-container">
+        <a asp-action="Index" asp-controller="Goal" class="btn btn-secondary"><i class="bi bi-x button-icons"></i>Cancel</a>
+        <button type="submit" class="btn btn-success"><i class="bi bi-pencil-square button-icons"></i>Submit</button>
+    </div>
+</form>
+

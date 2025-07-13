@@ -27,9 +27,11 @@ builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 builder.Services.AddScoped<IUserManagementRepository, UserManagementRepository>();
 builder.Services.AddScoped<IAnnualLeaveRepository, AnnualLeaveRepository>();
+builder.Services.AddScoped<IGoalRepository, GoalRepository>();
 
 builder.Services.AddScoped<IAnnualLeaveService, AnnualLeaveService>();
 builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+builder.Services.AddScoped<IGoalService, GoalService>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
