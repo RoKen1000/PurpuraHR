@@ -50,3 +50,14 @@ body {
     flex-direction: row;
     justify-content: space-between;
 }
+
+.button-icons{
+    padding-right: 0.3rem;
+}
+
+@media screen and (min-width: 768px) {
+
+    .details-container {
+        width: 50%;
+    }
+}

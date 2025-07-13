@@ -30,7 +30,10 @@
                         <div class="progress mb-3" role="progressbar">
                             <div class="progress-bar" @barPercentageStyle></div>
                         </div>
+                    </div>
+                    <div class="card-footer goal-cards-footer">
                         <a class="btn btn-purpura" asp-controller="Goal" asp-action="Details" asp-route-reference="@goal.ExternalReference">Details</a>
+                        <a asp-action="Delete" asp-controller="Goal" asp-route-reference="@goal.ExternalReference" class="btn btn-danger">Delete</a>
                     </div>
                 </div>
 

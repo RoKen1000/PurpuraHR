@@ -96,5 +96,36 @@ namespace PurpuraWeb.Controllers
 
             return View(goalViewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(string reference)
+        {
+            var goalViewModel = await _goalService.GetByExternalReferenceAsync(reference);
+
+            if(goalViewModel == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(goalViewModel);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeletePost(GoalViewModel viewModel)
+        {
+            var result = await _goalService.DeleteAsync(viewModel);
+
+            if (result.IsSuccess)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                viewModel.Result = result;
+            }
+
+            return View(viewModel);
+        }
     }
 }

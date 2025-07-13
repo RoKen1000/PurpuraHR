@@ -32,6 +32,27 @@ namespace Purpura.Services
                 return Result.Failure("Create failed.");
         }
 
+        public async Task<Result> DeleteAsync(GoalViewModel viewModel)
+        {
+            var goalEntity = await _unitOfWork.GoalRepository.GetSingle(g => g.ExternalReference == viewModel.ExternalReference);
+
+            if(goalEntity == null)
+            {
+                return Result.Failure("Entity not found.");
+            }
+
+            _unitOfWork.GoalRepository.Delete(goalEntity);
+            
+            var result = await _unitOfWork.SaveChangesAsync();
+
+            if(result > 0)
+            {
+                return Result.Success();
+            }
+
+            return Result.Failure("Delete failed.");
+        }
+
         public async Task<Result> EditAsync(GoalViewModel viewModel)
         {
             var goalEntity = await _unitOfWork.GoalRepository.GetSingle(g => g.ExternalReference == viewModel.ExternalReference);

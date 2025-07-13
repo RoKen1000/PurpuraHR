@@ -24,8 +24,10 @@
 
     <input type="hidden" asp-for="UserId" />
 
-
-    <button type="submit" class="btn btn-success">Submit</button>
+    <div class="form-button-container">
+        <a asp-action="Index" asp-controller="Goal" class="btn btn-secondary"><i class="bi bi-x button-icons"></i>Cancel</a>
+        <button type="submit" class="btn btn-success"><i class="bi bi-check2 button-icons"></i>Submit</button>
+    </div>
 </form>
 
 @section Scripts{
