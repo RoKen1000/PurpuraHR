@@ -19,8 +19,17 @@
     padding: 0;
 }
 
-#create-goal-button{
-    margin: 1em 0 1em 0;
+#create-goal-button {
+    display: block;
+    margin: 1em auto 1em auto;
+    max-width: 300px;
+}
+
+#create-goal-button-with-goals{
+    display: block;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .goal-details-progress-bar {
@@ -32,9 +41,25 @@
     justify-content: space-between;
 }
 
+#goal-icon-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#goal-icon-container > i {
+    font-size: 5rem;
+    text-align: center;
+    padding: 1rem;
+}
+
 @media screen and (min-width: 768px){
     .goal-cards {
         max-width: 500px;
+    }
+
+    #create-goal-button-with-goals {
+        margin-left: 8px;
     }
 }
 

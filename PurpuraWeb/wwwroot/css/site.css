@@ -55,6 +55,10 @@ body {
     padding-right: 0.3rem;
 }
 
+.page-heading{
+    text-align: center;
+}
+
 @media screen and (min-width: 768px) {
 
     .details-container {

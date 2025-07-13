@@ -3,7 +3,10 @@
 
 @if (Model.Goals.Any())
 {
-    <h1>Goals</h1>
+    <h1 class="page-heading">Goals</h1>
+
+    <a asp-controller="Goal" asp-action="Create" class="btn btn-purpura mb-3 mt-3" id="create-goal-button-with-goals"><i class="bi bi-plus-lg button-icons"></i>Create New Goal</a>
+
     <div id="goal-card-container">
 
             @foreach(var goal in Model.Goals)
@@ -20,7 +23,7 @@
 
                 <div class="card goal-cards mb-3 mb-xs-3 m-md-2">
                     <div class="card-header">
-                        @goal.Name 
+                        <i class="bi bi-trophy"></i> @goal.Name
                     </div>
                     <div class="card-body">
                         <div class="card-body">
@@ -39,10 +42,16 @@
 
             }
     </div>
+
+    
 }
 else
 {
-    <h1 style="text-align: center;">No goals set yet!</h1>
-}
+    <h1 class="page-heading">No goals set yet!</h1>
 
-<a asp-controller="Goal" asp-action="Create" class="btn btn-purpura" id="create-goal-button">Create New Goal</a>
+    <div id="goal-icon-container">
+        <i class="bi bi-trophy"></i>
+    </div>
+
+    <a asp-controller="Goal" asp-action="Create" class="btn btn-purpura" id="create-goal-button"><i class="bi bi-plus-lg button-icons"></i>Create New Goal</a>
+}
