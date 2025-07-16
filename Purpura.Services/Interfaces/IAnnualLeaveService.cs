@@ -5,12 +5,12 @@ namespace Purpura.Services.Interfaces
 {
     public interface IAnnualLeaveService
     {
-        Task<Result> BookTimeOff(AnnualLeaveViewModel bookedTimePeriod);
-        Task<int> GetUserAnnualLeaveCount(string userId);
-        Task<List<AnnualLeaveViewModel>> GetBookedLeave(string userId);
-        Task<AnnualLeaveViewModel> GetByExternalReference(string externalReference);
-        Task<OverlapResult> CheckForLeaveOverlaps(string userId, DateTime startDate, DateTime endDate, string? leaveExtRef);
-        Task<Result> Edit(AnnualLeaveViewModel viewModel);
-        Task<Result> Delete(AnnualLeaveViewModel viewModel);
+        Task<Result> CreateAsync(AnnualLeaveViewModel bookedTimePeriod);
+        Task<int> GetUserAnnualLeaveCountAsync(string userId);
+        Task<List<AnnualLeaveViewModel>> GetBookedLeaveByUserIdAsync(string userId);
+        Task<AnnualLeaveViewModel> GetByExternalReferenceAsync(string externalReference);
+        Task<OverlapResult> CheckForLeaveOverlapsAsync(string userId, DateTime startDate, DateTime endDate, string? leaveExtRef);
+        Task<Result> EditAsync(AnnualLeaveViewModel viewModel);
+        Task<Result> DeleteAsync(AnnualLeaveViewModel viewModel);
     }
 }
