@@ -73,7 +73,7 @@ namespace Purpura.Tests.ServiceTests
             //arrange
             var annualLeaveWithRandomRef = _fixture.Create<AnnualLeaveViewModel>();
             var annualLeaveWithNoRef = _fixture.Build<AnnualLeaveViewModel>()
-                .With(a => a.ExternalReference, (string)null)
+                .With(a => a.ExternalReference, (string?)null)
                 .Create();
 
             //act
@@ -97,7 +97,7 @@ namespace Purpura.Tests.ServiceTests
                 .Create();
             var annualLeaveViewModelWithNoUserId = _fixture.Build<AnnualLeaveViewModel>()
                 .With(a => a.ExternalReference, annualLeaveExtRef)
-                .With(a => a.UserId, (string)null)
+                .With(a => a.UserId, (string?)null)
                 .Create();
 
             //act
@@ -250,7 +250,7 @@ namespace Purpura.Tests.ServiceTests
         {
             var annualLeaveWithRandomUserRef = _fixture.Create<AnnualLeaveViewModel>();
             var annualLeaveWithNoUserRef = _fixture.Build<AnnualLeaveViewModel>()
-                .With(a => a.UserId, (string)null)
+                .With(a => a.UserId, (string?)null)
                 .Create();
 
             var randomUserResult = await _annualLeaveService.CreateAsync(annualLeaveWithRandomUserRef);

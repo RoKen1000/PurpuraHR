@@ -17,7 +17,7 @@ namespace Purpura.Repositories
             this.dbSet = _dbContext.Set<TEntity>();
         }
 
-        public async Task<TEntity> GetSingle(Expression<Func<TEntity, bool>> filter)
+        public async Task<TEntity?> GetSingle(Expression<Func<TEntity, bool>> filter)
         {
             IQueryable<TEntity> query = dbSet;
 

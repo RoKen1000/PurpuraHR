@@ -16,7 +16,7 @@ namespace Purpura.Services
             
         }
 
-        public async Task<ApplicationUserViewModel> GetUser(Expression<Func<ApplicationUser, bool>> filter)
+        public async Task<ApplicationUserViewModel?> GetUser(Expression<Func<ApplicationUser, bool>> filter)
         {
             var user = await _unitOfWork.UserManagementRepository.GetSingle(filter);
 
@@ -26,7 +26,7 @@ namespace Purpura.Services
             return _mapper.Map<ApplicationUserViewModel>(user);
         }
 
-        public async Task<ApplicationUser> GetUserEntity(Expression<Func<ApplicationUser, bool>> filter)
+        public async Task<ApplicationUser?> GetUserEntity(Expression<Func<ApplicationUser, bool>> filter)
         {
             var user = await _unitOfWork.UserManagementRepository.GetSingle(filter);
 
