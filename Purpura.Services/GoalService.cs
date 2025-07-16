@@ -24,12 +24,7 @@ namespace Purpura.Services
 
             _unitOfWork.GoalRepository.Create(newEntity);
 
-            var result = await _unitOfWork.SaveChangesAsync();
-
-            if (result > 0)
-                return Result.Success();
-            else
-                return Result.Failure("Create failed.");
+            return await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<Result> DeleteAsync(GoalViewModel viewModel)
@@ -43,14 +38,7 @@ namespace Purpura.Services
 
             _unitOfWork.GoalRepository.Delete(goalEntity);
             
-            var result = await _unitOfWork.SaveChangesAsync();
-
-            if(result > 0)
-            {
-                return Result.Success();
-            }
-
-            return Result.Failure("Delete failed.");
+            return await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<Result> EditAsync(GoalViewModel viewModel)
@@ -65,14 +53,7 @@ namespace Purpura.Services
             _mapper.Map<GoalViewModel, Goal>(viewModel, goalEntity);
             _unitOfWork.GoalRepository.Update(goalEntity);
 
-            var result = await _unitOfWork.SaveChangesAsync();
-
-            if(result == 0)
-            {
-                return Result.Failure("Update failed.");
-            }
-
-            return Result.Success();
+            return await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<List<GoalViewModel>> GetAllGoalsByUserIdAsync(string userId)

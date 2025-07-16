@@ -1,6 +1,7 @@
 using AutoFixture;
 using AutoMapper;
 using Moq;
+using Purpura.Common.Results;
 using Purpura.Models.Entities;
 using Purpura.Models.ViewModels;
 using Purpura.Repositories.Interfaces;
@@ -203,7 +204,7 @@ namespace Purpura.Tests.ServiceTests
             _mapperMock.Setup(m => m.Map(It.IsAny<AnnualLeaveViewModel>(), It.IsAny<AnnualLeave>()))
                 .Returns(new AnnualLeave());
             _unitOfWorkMock.Setup(u => u.SaveChangesAsync())
-                .ReturnsAsync(1);
+                .ReturnsAsync(Result.Success());
 
             //act
             var editResult = await _annualLeaveService.Edit(annualLeaveViewModel);
@@ -211,6 +212,7 @@ namespace Purpura.Tests.ServiceTests
             //assert
             Assert.True(editResult.IsSuccess == true);
             Assert.Null(editResult.Error);
+            _unitOfWorkMock.Verify(a => a.SaveChangesAsync(), Times.Once);
         }
 
         [Fact]
@@ -226,13 +228,17 @@ namespace Purpura.Tests.ServiceTests
 
             _mapperMock.Setup(m => m.Map(It.IsAny<AnnualLeaveViewModel>(), It.IsAny<AnnualLeave>()))
                 .Returns(new AnnualLeave());
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync())
+                .ReturnsAsync(Result.Failure("Database save failed."));
+
 
             //act
             var editResult = await _annualLeaveService.Edit(annualLeaveViewModel);
 
             //assert
             Assert.True(editResult.IsSuccess == false);
-            Assert.Equal("Update failed.", editResult.Error);
+            Assert.Equal("Database save failed.", editResult.Error);
+            _unitOfWorkMock.Verify(a => a.SaveChangesAsync(), Times.Once);
         }
 
         #endregion
@@ -303,7 +309,7 @@ namespace Purpura.Tests.ServiceTests
             _mapperMock.Setup(m => m.Map<AnnualLeave>(It.IsAny<AnnualLeaveViewModel>()))
                 .Returns(new AnnualLeave());
             _unitOfWorkMock.Setup(u => u.SaveChangesAsync())
-                .ReturnsAsync(1);
+                .ReturnsAsync(Result.Success());
 
             //act
             var validResult = await _annualLeaveService.BookTimeOff(validAnnualLeave);
@@ -317,6 +323,7 @@ namespace Purpura.Tests.ServiceTests
                 )), Times.Once);
             Assert.True(validResult.IsSuccess == true);
             Assert.Null(validResult.Error);
+            _unitOfWorkMock.Verify(a => a.SaveChangesAsync(), Times.Once);
         }
 
         [Fact]
@@ -332,13 +339,16 @@ namespace Purpura.Tests.ServiceTests
 
             _mapperMock.Setup(m => m.Map<AnnualLeave>(It.IsAny<AnnualLeaveViewModel>()))
                 .Returns(new AnnualLeave());
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync())
+                .ReturnsAsync(Result.Failure("Database save failed."));
 
             //act
             var createResult = await _annualLeaveService.BookTimeOff(validAnnualLeave);
 
             //assert
             Assert.True(createResult.IsSuccess == false);
-            Assert.Equal("Create failed.", createResult.Error);
+            Assert.Equal("Database save failed.", createResult.Error);
+            _unitOfWorkMock.Verify(a => a.SaveChangesAsync(), Times.Once);
         }
 
         #endregion
@@ -499,7 +509,7 @@ namespace Purpura.Tests.ServiceTests
 
             _annualLeaveRepositoryMock.Setup(a => a.Delete(It.IsAny<AnnualLeave>()));
             _unitOfWorkMock.Setup(a => a.SaveChangesAsync())
-                .ReturnsAsync(1);
+                .ReturnsAsync(Result.Success());
 
             //act
             var successResult = await _annualLeaveService.Delete(annualLeaveViewModel);
@@ -507,6 +517,7 @@ namespace Purpura.Tests.ServiceTests
             //assert
             Assert.True(successResult.IsSuccess == true);
             Assert.Null(successResult.Error);
+            _unitOfWorkMock.Verify(a => a.SaveChangesAsync(), Times.Once);
         }
 
         #endregion

@@ -43,12 +43,7 @@ namespace Purpura.Services
                 user.AnnualLeaveDays = newAnnualLeaveTotal;
                 _unitOfWork.UserManagementRepository.Update(user);
 
-                var result = await _unitOfWork.SaveChangesAsync();
-
-                if (result > 0)
-                    return Result.Success();
-                else
-                    return Result.Failure("Create failed.");
+                return await _unitOfWork.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -105,10 +100,7 @@ namespace Purpura.Services
             if(leaveEntity != null)
             {
                 _unitOfWork.AnnualLeaveRepository.Delete(leaveEntity);
-                var result = await _unitOfWork.SaveChangesAsync();
-
-                if (result > 0)
-                    return Result.Success();
+                return await _unitOfWork.SaveChangesAsync();
             }
 
             return Result.Failure("Entity not found.");
@@ -136,12 +128,7 @@ namespace Purpura.Services
             var updatedEntity = _mapper.Map<AnnualLeaveViewModel, AnnualLeave>(viewModel, annualLeaveEntity);
             updatedEntity.DateEdited = DateTime.Now;
 
-            var result = await _unitOfWork.SaveChangesAsync();
-
-            if (result > 0)
-                return Result.Success();
-            else
-                return Result.Failure("Update failed.");
+            return await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<List<AnnualLeaveViewModel>> GetBookedLeave(string userId)

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Purpura.Common.Results;
 
 namespace Purpura.Repositories.Interfaces
 {
     public interface IUnitOfWork
     {
-        Task<int> SaveChangesAsync();
+        Task<Result> SaveChangesAsync();
         IAnnualLeaveRepository AnnualLeaveRepository { get; }
         IUserManagementRepository UserManagementRepository { get; }
         IGoalRepository GoalRepository { get; }
