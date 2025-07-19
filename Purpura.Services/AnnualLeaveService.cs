@@ -147,27 +147,24 @@ namespace Purpura.Services
             return bookedLeaveList;
         }
 
-        public async Task<AnnualLeaveViewModel> GetByExternalReferenceAsync(string externalReference)
+        public async Task<AnnualLeaveViewModel?> GetByExternalReferenceAsync(string externalReference)
         {
             var annualLeaveEntity = await _unitOfWork.AnnualLeaveRepository.GetSingle(al => al.ExternalReference == externalReference);
 
             if(annualLeaveEntity != null)
                 return _mapper.Map<AnnualLeaveViewModel>(annualLeaveEntity);
 
-            throw new NullReferenceException("Leave not found.");
+            return null;
         }
 
         public async Task<int> GetUserAnnualLeaveCountAsync(string userId)
         {
             var user = await _unitOfWork.UserManagementRepository.GetSingle(u => u.Id == userId);
 
-            if (user == null)
+            if (user == null || user.AnnualLeaveDays < 0)
             {
-                throw new NullReferenceException("User not found.");
-            }
-
-            if (user.AnnualLeaveDays < 0)
                 return 0;
+            }
 
             return user.AnnualLeaveDays;
         }

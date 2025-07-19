@@ -584,14 +584,16 @@ namespace Purpura.Tests.ServiceTests
         #region GetByExternalReferenceAsync
 
         [Fact]
-        public async void GetByExternalReference_NoEntityFound_ThrowsException()
+        public async void GetByExternalReference_NoEntityFound_ReturnsNull()
         {
             //arrange
             var extRef = Guid.NewGuid().ToString();
 
-            //act & assert
-            var exception = await Assert.ThrowsAsync<NullReferenceException>(() => _annualLeaveService.GetByExternalReferenceAsync(extRef));
-            Assert.Equal("Leave not found.", exception.Message);
+            //act
+            var result = await _annualLeaveService.GetByExternalReferenceAsync(extRef);
+
+            //assert
+            Assert.Null(result);
         }
 
         [Fact]
@@ -618,14 +620,16 @@ namespace Purpura.Tests.ServiceTests
         #region GetUserAnnualLeaveCountAsync
 
         [Fact]
-        public async void GetUserAnnualLeaveCountAsync_NoUserFound_ThrowsException()
+        public async void GetUserAnnualLeaveCountAsync_NoUserFound_Returns0()
         {
             //arrange
             var randomUserExtRef = Guid.NewGuid().ToString();
 
-            //act & assert
-            var noUserFoundError = await Assert.ThrowsAsync<NullReferenceException>(() => _annualLeaveService.GetUserAnnualLeaveCountAsync(randomUserExtRef));
-            Assert.Equal("User not found.", noUserFoundError.Message);
+            //act
+            var result = await _annualLeaveService.GetUserAnnualLeaveCountAsync(randomUserExtRef);
+
+            //assert
+            Assert.Equal(0, result);
         }
 
         [Fact]

@@ -84,11 +84,21 @@ namespace PurpuraWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> _Edit(string externalReference)
         {
-            var viewModel = await _annualLeaveService.GetByExternalReferenceAsync(externalReference);
-            viewModel.LeaveTypeSelectList = EnumHelpers.GenerateLeaveTypeSelectList();
+            AnnualLeaveViewModel? viewModel = null;
+            viewModel = await _annualLeaveService.GetByExternalReferenceAsync(externalReference);
 
-            var overlapPreCheck = await _annualLeaveService.CheckForLeaveOverlapsAsync(viewModel.UserId, viewModel.StartDate, viewModel.EndDate, viewModel.ExternalReference);
-            viewModel.HasOverlap = overlapPreCheck.HasOverlap;
+            if(viewModel == null)
+            {
+                viewModel = new();
+                viewModel.Result = Result.Failure("Can not find entity");
+            }
+            else
+            {
+                viewModel.LeaveTypeSelectList = EnumHelpers.GenerateLeaveTypeSelectList();
+
+                var overlapPreCheck = await _annualLeaveService.CheckForLeaveOverlapsAsync(viewModel.UserId, viewModel.StartDate, viewModel.EndDate, viewModel.ExternalReference);
+                viewModel.HasOverlap = overlapPreCheck.HasOverlap;
+            }
 
             return PartialView("_BookTimeOffForm", viewModel);
         }
@@ -111,8 +121,19 @@ namespace PurpuraWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> _Delete(string externalReference)
         {
-            var viewModel = await _annualLeaveService.GetByExternalReferenceAsync(externalReference);
-            viewModel.LeaveTypeSelectList = EnumHelpers.GenerateLeaveTypeSelectList();
+            AnnualLeaveViewModel? viewModel = null;
+
+            viewModel = await _annualLeaveService.GetByExternalReferenceAsync(externalReference);
+
+            if(viewModel == null)
+            {
+                viewModel = new();
+                viewModel.Result = Result.Failure("Can not find entity");
+            }
+            else
+            {
+                viewModel.LeaveTypeSelectList = EnumHelpers.GenerateLeaveTypeSelectList();
+            }
 
             return PartialView("_BookTimeOffForm", viewModel);
         }
