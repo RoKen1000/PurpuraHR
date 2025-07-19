@@ -2,6 +2,7 @@ using AutoFixture;
 using AutoMapper;
 using Moq;
 using Purpura.Common.Results;
+using Purpura.MappingProfiles;
 using Purpura.Models.Entities;
 using Purpura.Models.ViewModels;
 using Purpura.Repositories.Interfaces;
@@ -16,8 +17,8 @@ namespace Purpura.Tests.ServiceTests
     {
         private readonly IFixture _fixture;
         private readonly IAnnualLeaveService _annualLeaveService;
+        private readonly IMapper _mapper;
 
-        private readonly Mock<IMapper> _mapperMock;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
         private readonly Mock<IAnnualLeaveRepository> _annualLeaveRepositoryMock;
@@ -29,7 +30,6 @@ namespace Purpura.Tests.ServiceTests
         public AnnualLeaveServiceTests()
         {
             _fixture = new Fixture();
-            _mapperMock = new Mock<IMapper>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
             _annualLeaveRepositoryMock = new Mock<IAnnualLeaveRepository>();
@@ -46,22 +46,27 @@ namespace Purpura.Tests.ServiceTests
                 .With(a => a.AnnualLeaveDays, 10)
                 .Create();
 
-            _annualLeaveRepositoryMock.Setup(r => r.GetSingle(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
+            _annualLeaveRepositoryMock.Setup(r => r.GetSingleAsync(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
                 .ReturnsAsync((Expression<Func<AnnualLeave, bool>> predicate) =>
                 {
                     var func = predicate.Compile();
                     return func(annualLeaveEntity) ? annualLeaveEntity : null;
                 });
-            _userManagementRepositoryMock.Setup(r => r.GetSingle(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
+            _userManagementRepositoryMock.Setup(r => r.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
                 .ReturnsAsync((Expression<Func<ApplicationUser, bool>> predicate) =>
                 {
                     var func = predicate.Compile();
                     return func(userEntity) ? userEntity : null;
                 });
 
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<AnnualLeaveMappingProfile>();
+            });
+            _mapper = config.CreateMapper();
 
             _annualLeaveService = new AnnualLeaveService(
-                _mapperMock.Object,
+                _mapper,
                 _unitOfWorkMock.Object);
         }
 
@@ -158,7 +163,7 @@ namespace Purpura.Tests.ServiceTests
                 .With(a => a.UserId, noDaysRef)
                 .Create();
 
-            _userManagementRepositoryMock.Setup(r => r.GetSingle(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
+            _userManagementRepositoryMock.Setup(r => r.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
                 .ReturnsAsync((Expression<Func<ApplicationUser, bool>> predicate) =>
                 {
                     var func = predicate.Compile();
@@ -201,8 +206,6 @@ namespace Purpura.Tests.ServiceTests
                 .With(a => a.EndDate, new DateTime(2025, 6, 20))
                 .Create();
 
-            _mapperMock.Setup(m => m.Map(It.IsAny<AnnualLeaveViewModel>(), It.IsAny<AnnualLeave>()))
-                .Returns(new AnnualLeave());
             _unitOfWorkMock.Setup(u => u.SaveChangesAsync())
                 .ReturnsAsync(Result.Success());
 
@@ -226,8 +229,6 @@ namespace Purpura.Tests.ServiceTests
                 .With(a => a.EndDate, new DateTime(2025, 6, 20))
                 .Create();
 
-            _mapperMock.Setup(m => m.Map(It.IsAny<AnnualLeaveViewModel>(), It.IsAny<AnnualLeave>()))
-                .Returns(new AnnualLeave());
             _unitOfWorkMock.Setup(u => u.SaveChangesAsync())
                 .ReturnsAsync(Result.Failure("Database save failed."));
 
@@ -272,21 +273,21 @@ namespace Purpura.Tests.ServiceTests
                 .With(a => a.ExternalReference, annualLeaveExtRef)
                 .With(a => a.UserId, userId)
                 .Create();
-            var annualLeaveWithSameStartAndEnd = _fixture.Build<AnnualLeaveViewModel>()
-                .With(a => a.StartDate, new DateTime(2025, 06, 17))
-                .With(a => a.EndDate, new DateTime(2025, 06, 17))
+            var annualLeaveExceedingUserLeaveTotal = _fixture.Build<AnnualLeaveViewModel>()
+                .With(a => a.StartDate, new DateTime(2025, 06, 15))
+                .With(a => a.EndDate, new DateTime(2025, 06, 30))
                 .With(a => a.ExternalReference, annualLeaveExtRef)
                 .With(a => a.UserId, userId)
                 .Create();
 
             //act
             var invalidDateResult = await _annualLeaveService.CreateAsync(annualLeaveWithEndBeforeStart);
-            var sameDayResult = await _annualLeaveService.CreateAsync(annualLeaveWithSameStartAndEnd);
+            var exceededTotalResult = await _annualLeaveService.CreateAsync(annualLeaveExceedingUserLeaveTotal);
 
             //assert
             //Truncated tests for results. See Edit method tests for full testing of error messages.
-            Assert.True(invalidDateResult.IsSuccess == false);
-            Assert.True(sameDayResult.IsSuccess == false);
+            Assert.False(invalidDateResult.IsSuccess);
+            Assert.False(exceededTotalResult.IsSuccess);
         }
 
         [Fact]
@@ -306,8 +307,6 @@ namespace Purpura.Tests.ServiceTests
 
             var currentDateTime = DateTime.Now;
 
-            _mapperMock.Setup(m => m.Map<AnnualLeave>(It.IsAny<AnnualLeaveViewModel>()))
-                .Returns(new AnnualLeave());
             _unitOfWorkMock.Setup(u => u.SaveChangesAsync())
                 .ReturnsAsync(Result.Success());
 
@@ -337,8 +336,6 @@ namespace Purpura.Tests.ServiceTests
                 .With(a => a.UserId, userId)
                 .Create();
 
-            _mapperMock.Setup(m => m.Map<AnnualLeave>(It.IsAny<AnnualLeaveViewModel>()))
-                .Returns(new AnnualLeave());
             _unitOfWorkMock.Setup(u => u.SaveChangesAsync())
                 .ReturnsAsync(Result.Failure("Database save failed."));
 
@@ -413,7 +410,7 @@ namespace Purpura.Tests.ServiceTests
             annualLeavelist.Add(annualLeaveEntity1);
             annualLeavelist.Add(annualLeaveEntity2);
 
-            _annualLeaveRepositoryMock.Setup(r => r.GetAll(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
+            _annualLeaveRepositoryMock.Setup(r => r.GetAllAsync(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
                 .ReturnsAsync((Expression<Func<AnnualLeave, bool>> predicate) =>
                 {
                     var func = predicate.Compile();
@@ -457,7 +454,7 @@ namespace Purpura.Tests.ServiceTests
             annualLeavelist.Add(annualLeaveEntity1);
             annualLeavelist.Add(annualLeaveEntity2);
 
-            _annualLeaveRepositoryMock.Setup(r => r.GetAll(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
+            _annualLeaveRepositoryMock.Setup(r => r.GetAllAsync(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
                 .ReturnsAsync((Expression<Func<AnnualLeave, bool>> predicate) =>
                 {
                     var func = predicate.Compile();
@@ -530,7 +527,7 @@ namespace Purpura.Tests.ServiceTests
             //arrange
             var annualLeaveList = new List<AnnualLeave>();
 
-            _annualLeaveRepositoryMock.Setup(a => a.GetAll(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
+            _annualLeaveRepositoryMock.Setup(a => a.GetAllAsync(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
                 .ReturnsAsync((Expression<Func<AnnualLeave, bool>> predicate) =>
                 {
                     var func = predicate.Compile();
@@ -561,14 +558,13 @@ namespace Purpura.Tests.ServiceTests
             annualLeaveList.Add(annualLeave1);
             annualLeaveList.Add(annualLeave2);
 
-            _annualLeaveRepositoryMock.Setup(a => a.GetAll(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
+            _annualLeaveRepositoryMock.Setup(a => a.GetAllAsync(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
                 .ReturnsAsync((Expression<Func<AnnualLeave, bool>> predicate) =>
                 {
                     var func = predicate.Compile();
                     var list = annualLeaveList.Where(func);
                     return list;
                 }); ;
-            _mapperMock.Setup(a => a.Map<AnnualLeaveViewModel>(It.IsAny<AnnualLeave>()));
 
             //act
             var populatedList = await _annualLeaveService.GetBookedLeaveByUserIdAsync(userId);
@@ -599,13 +595,6 @@ namespace Purpura.Tests.ServiceTests
         [Fact]
         public async void GetByExternalReferenceAsync_EntityFound_ReturnsViewModel()
         {
-            //arrange
-            _mapperMock.Setup(a => a.Map<AnnualLeaveViewModel>(It.IsAny<AnnualLeave>()))
-                .Returns((AnnualLeave src) => new AnnualLeaveViewModel()
-                {
-                    ExternalReference = annualLeaveExtRef
-                });
-
             //act
             var returnedViewModel = await _annualLeaveService.GetByExternalReferenceAsync(annualLeaveExtRef);
 
@@ -640,7 +629,7 @@ namespace Purpura.Tests.ServiceTests
                 .With(a => a.Id, userId)
                 .With(a => a.AnnualLeaveDays, -2)
                 .Create();
-            _userManagementRepositoryMock.Setup(r => r.GetSingle(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
+            _userManagementRepositoryMock.Setup(r => r.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
                 .ReturnsAsync((Expression<Func<ApplicationUser, bool>> predicate) =>
                 {
                     var func = predicate.Compile();

@@ -29,7 +29,7 @@ namespace Purpura.Services
 
         public async Task<Result> DeleteAsync(GoalViewModel viewModel)
         {
-            var goalEntity = await _unitOfWork.GoalRepository.GetSingle(g => g.ExternalReference == viewModel.ExternalReference);
+            var goalEntity = await _unitOfWork.GoalRepository.GetSingleAsync(g => g.ExternalReference == viewModel.ExternalReference);
 
             if(goalEntity == null)
             {
@@ -43,11 +43,11 @@ namespace Purpura.Services
 
         public async Task<Result> EditAsync(GoalViewModel viewModel)
         {
-            var goalEntity = await _unitOfWork.GoalRepository.GetSingle(g => g.ExternalReference == viewModel.ExternalReference);
+            var goalEntity = await _unitOfWork.GoalRepository.GetSingleAsync(g => g.ExternalReference == viewModel.ExternalReference);
 
             if(goalEntity == null)
             {
-                return Result.Failure("Entity not found");
+                return Result.Failure("Entity not found.");
             }
 
             _mapper.Map<GoalViewModel, Goal>(viewModel, goalEntity);
@@ -58,14 +58,14 @@ namespace Purpura.Services
 
         public async Task<List<GoalViewModel>> GetAllGoalsByUserIdAsync(string userId)
         {
-            var goals = await _unitOfWork.GoalRepository.GetAll(g => g.UserId == userId);
+            var goals = await _unitOfWork.GoalRepository.GetAllAsync(g => g.UserId == userId);
 
             return _mapper.Map<List<GoalViewModel>>(goals);
         }
 
         public async Task<GoalViewModel?> GetByExternalReferenceAsync(string goalReference)
         {
-            var goal = await _unitOfWork.GoalRepository.GetSingle(g => g.ExternalReference == goalReference);
+            var goal = await _unitOfWork.GoalRepository.GetSingleAsync(g => g.ExternalReference == goalReference);
 
             if(goal != null)
             {

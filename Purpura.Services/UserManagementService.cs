@@ -18,7 +18,7 @@ namespace Purpura.Services
 
         public async Task<ApplicationUserViewModel?> GetUser(Expression<Func<ApplicationUser, bool>> filter)
         {
-            var user = await _unitOfWork.UserManagementRepository.GetSingle(filter);
+            var user = await _unitOfWork.UserManagementRepository.GetSingleAsync(filter);
 
             if (user == null)
                 return null;
@@ -28,7 +28,7 @@ namespace Purpura.Services
 
         public async Task<ApplicationUser?> GetUserEntity(Expression<Func<ApplicationUser, bool>> filter)
         {
-            var user = await _unitOfWork.UserManagementRepository.GetSingle(filter);
+            var user = await _unitOfWork.UserManagementRepository.GetSingleAsync(filter);
 
             if (user == null)
                 return null;
@@ -38,7 +38,7 @@ namespace Purpura.Services
 
         public async Task UpdateUser(ApplicationUserViewModel userViewModel)
         {
-            var userEntity = await _unitOfWork.UserManagementRepository.GetSingle(u => u.Id == userViewModel.Id);
+            var userEntity = await _unitOfWork.UserManagementRepository.GetSingleAsync(u => u.Id == userViewModel.Id);
 
             if (userEntity != null)
             {
