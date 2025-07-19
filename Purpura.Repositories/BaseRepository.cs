@@ -17,7 +17,7 @@ namespace Purpura.Repositories
             this.dbSet = _dbContext.Set<TEntity>();
         }
 
-        public async Task<TEntity> GetSingle(Expression<Func<TEntity, bool>> filter)
+        public async Task<TEntity?> GetSingleAsync(Expression<Func<TEntity, bool>> filter)
         {
             IQueryable<TEntity> query = dbSet;
 
@@ -33,7 +33,7 @@ namespace Purpura.Repositories
             dbSet.Remove(entity);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll(Expression<Func<TEntity, bool>> filter)
+        public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter)
         {
             IQueryable<TEntity> query = dbSet;
 

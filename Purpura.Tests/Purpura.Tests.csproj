@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Purpura.MappingProfiles\Purpura.MappingProfiles.csproj" />
     <ProjectReference Include="..\Purpura.Models\Purpura.Models.csproj" />
     <ProjectReference Include="..\Purpura.Services\Purpura.Services.csproj" />
   </ItemGroup>

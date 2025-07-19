@@ -17,11 +17,11 @@ namespace Purpura.Services
         {
         }
 
-        public async Task<Result> BookTimeOff(AnnualLeaveViewModel annualLeavePeriod)
+        public async Task<Result> CreateAsync(AnnualLeaveViewModel annualLeavePeriod)
         {
             try
             {
-                var user = await _unitOfWork.UserManagementRepository.GetSingle(u => u.Id == annualLeavePeriod.UserId);
+                var user = await _unitOfWork.UserManagementRepository.GetSingleAsync(u => u.Id == annualLeavePeriod.UserId);
 
                 if (user == null)
                     return Result.Failure("User not found.");
@@ -43,12 +43,7 @@ namespace Purpura.Services
                 user.AnnualLeaveDays = newAnnualLeaveTotal;
                 _unitOfWork.UserManagementRepository.Update(user);
 
-                var result = await _unitOfWork.SaveChangesAsync();
-
-                if (result > 0)
-                    return Result.Success();
-                else
-                    return Result.Failure("Create failed.");
+                return await _unitOfWork.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -56,7 +51,7 @@ namespace Purpura.Services
             }
         }
 
-        public async Task<OverlapResult> CheckForLeaveOverlaps(string userId, DateTime startDate, DateTime endDate, string? leaveExtRef)
+        public async Task<OverlapResult> CheckForLeaveOverlapsAsync(string userId, DateTime startDate, DateTime endDate, string? leaveExtRef)
         {
             var result = new OverlapResult();
 
@@ -71,11 +66,11 @@ namespace Purpura.Services
 
             if (leaveExtRef == null) //check is being done from the create modal therefore all other exisiting leave needs to be checked
             {
-                userCurrentLeave = await _unitOfWork.AnnualLeaveRepository.GetAll(al => al.UserId == userId);
+                userCurrentLeave = await _unitOfWork.AnnualLeaveRepository.GetAllAsync(al => al.UserId == userId);
             }
             else //if being called from edit then need to not include the entity being edited to avoid it comparing it against itself
             {
-                userCurrentLeave = await _unitOfWork.AnnualLeaveRepository.GetAll(al => al.ExternalReference != leaveExtRef && al.UserId == userId);
+                userCurrentLeave = await _unitOfWork.AnnualLeaveRepository.GetAllAsync(al => al.ExternalReference != leaveExtRef && al.UserId == userId);
             }
 
             if (userCurrentLeave == null || !userCurrentLeave.Any())
@@ -98,30 +93,27 @@ namespace Purpura.Services
             return result;
         }
 
-        public async Task<Result> Delete(AnnualLeaveViewModel viewModel)
+        public async Task<Result> DeleteAsync(AnnualLeaveViewModel viewModel)
         {
-            var leaveEntity = await _unitOfWork.AnnualLeaveRepository.GetSingle(al => al.ExternalReference == viewModel.ExternalReference);
+            var leaveEntity = await _unitOfWork.AnnualLeaveRepository.GetSingleAsync(al => al.ExternalReference == viewModel.ExternalReference);
 
             if(leaveEntity != null)
             {
                 _unitOfWork.AnnualLeaveRepository.Delete(leaveEntity);
-                var result = await _unitOfWork.SaveChangesAsync();
-
-                if (result > 0)
-                    return Result.Success();
+                return await _unitOfWork.SaveChangesAsync();
             }
 
             return Result.Failure("Entity not found.");
         }
 
-        public async Task<Result> Edit(AnnualLeaveViewModel viewModel)
+        public async Task<Result> EditAsync(AnnualLeaveViewModel viewModel)
         {
-            var annualLeaveEntity = await _unitOfWork.AnnualLeaveRepository.GetSingle(e => e.ExternalReference == viewModel.ExternalReference);
+            var annualLeaveEntity = await _unitOfWork.AnnualLeaveRepository.GetSingleAsync(e => e.ExternalReference == viewModel.ExternalReference);
 
             if (annualLeaveEntity == null)
                 return Result.Failure("Annual Leave not found.");
 
-            var user = await _unitOfWork.UserManagementRepository.GetSingle(u => u.Id == viewModel.UserId);
+            var user = await _unitOfWork.UserManagementRepository.GetSingleAsync(u => u.Id == viewModel.UserId);
 
             if (user == null)
                 return Result.Failure("User not found.");
@@ -136,18 +128,13 @@ namespace Purpura.Services
             var updatedEntity = _mapper.Map<AnnualLeaveViewModel, AnnualLeave>(viewModel, annualLeaveEntity);
             updatedEntity.DateEdited = DateTime.Now;
 
-            var result = await _unitOfWork.SaveChangesAsync();
-
-            if (result > 0)
-                return Result.Success();
-            else
-                return Result.Failure("Update failed.");
+            return await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<List<AnnualLeaveViewModel>> GetBookedLeave(string userId)
+        public async Task<List<AnnualLeaveViewModel>> GetBookedLeaveByUserIdAsync(string userId)
         {
             var bookedLeaveList = new List<AnnualLeaveViewModel>();
-            var bookedLeave = await _unitOfWork.AnnualLeaveRepository.GetAll(al => al.UserId == userId);
+            var bookedLeave = await _unitOfWork.AnnualLeaveRepository.GetAllAsync(al => al.UserId == userId);
 
             if (bookedLeave.Any())
             {
@@ -160,27 +147,24 @@ namespace Purpura.Services
             return bookedLeaveList;
         }
 
-        public async Task<AnnualLeaveViewModel> GetByExternalReference(string externalReference)
+        public async Task<AnnualLeaveViewModel?> GetByExternalReferenceAsync(string externalReference)
         {
-            var annualLeaveEntity = await _unitOfWork.AnnualLeaveRepository.GetSingle(al => al.ExternalReference == externalReference);
+            var annualLeaveEntity = await _unitOfWork.AnnualLeaveRepository.GetSingleAsync(al => al.ExternalReference == externalReference);
 
             if(annualLeaveEntity != null)
                 return _mapper.Map<AnnualLeaveViewModel>(annualLeaveEntity);
 
-            throw new NullReferenceException("Leave not found.");
+            return null;
         }
 
-        public async Task<int> GetUserAnnualLeaveCount(string userId)
+        public async Task<int> GetUserAnnualLeaveCountAsync(string userId)
         {
-            var user = await _unitOfWork.UserManagementRepository.GetSingle(u => u.Id == userId);
+            var user = await _unitOfWork.UserManagementRepository.GetSingleAsync(u => u.Id == userId);
 
-            if (user == null)
+            if (user == null || user.AnnualLeaveDays < 0)
             {
-                throw new NullReferenceException("User not found.");
-            }
-
-            if (user.AnnualLeaveDays < 0)
                 return 0;
+            }
 
             return user.AnnualLeaveDays;
         }

@@ -40,9 +40,13 @@ body {
     margin-bottom: 1rem;
 }
 
-.field-validation-error {
+.field-validation-error, .result-failure-error {
     color: red;
     padding: 10px;
+}
+
+.result-failure-error{
+    text-align: center;
 }
 
 .form-button-container {

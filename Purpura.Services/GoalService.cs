@@ -24,17 +24,12 @@ namespace Purpura.Services
 
             _unitOfWork.GoalRepository.Create(newEntity);
 
-            var result = await _unitOfWork.SaveChangesAsync();
-
-            if (result > 0)
-                return Result.Success();
-            else
-                return Result.Failure("Create failed.");
+            return await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<Result> DeleteAsync(GoalViewModel viewModel)
         {
-            var goalEntity = await _unitOfWork.GoalRepository.GetSingle(g => g.ExternalReference == viewModel.ExternalReference);
+            var goalEntity = await _unitOfWork.GoalRepository.GetSingleAsync(g => g.ExternalReference == viewModel.ExternalReference);
 
             if(goalEntity == null)
             {
@@ -43,48 +38,34 @@ namespace Purpura.Services
 
             _unitOfWork.GoalRepository.Delete(goalEntity);
             
-            var result = await _unitOfWork.SaveChangesAsync();
-
-            if(result > 0)
-            {
-                return Result.Success();
-            }
-
-            return Result.Failure("Delete failed.");
+            return await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<Result> EditAsync(GoalViewModel viewModel)
         {
-            var goalEntity = await _unitOfWork.GoalRepository.GetSingle(g => g.ExternalReference == viewModel.ExternalReference);
+            var goalEntity = await _unitOfWork.GoalRepository.GetSingleAsync(g => g.ExternalReference == viewModel.ExternalReference);
 
             if(goalEntity == null)
             {
-                return Result.Failure("Entity not found");
+                return Result.Failure("Entity not found.");
             }
 
             _mapper.Map<GoalViewModel, Goal>(viewModel, goalEntity);
             _unitOfWork.GoalRepository.Update(goalEntity);
 
-            var result = await _unitOfWork.SaveChangesAsync();
-
-            if(result == 0)
-            {
-                return Result.Failure("Update failed.");
-            }
-
-            return Result.Success();
+            return await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<List<GoalViewModel>> GetAllGoalsByUserIdAsync(string userId)
         {
-            var goals = await _unitOfWork.GoalRepository.GetAll(g => g.UserId == userId);
+            var goals = await _unitOfWork.GoalRepository.GetAllAsync(g => g.UserId == userId);
 
             return _mapper.Map<List<GoalViewModel>>(goals);
         }
 
         public async Task<GoalViewModel?> GetByExternalReferenceAsync(string goalReference)
         {
-            var goal = await _unitOfWork.GoalRepository.GetSingle(g => g.ExternalReference == goalReference);
+            var goal = await _unitOfWork.GoalRepository.GetSingleAsync(g => g.ExternalReference == goalReference);
 
             if(goal != null)
             {

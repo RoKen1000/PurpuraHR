@@ -1,4 +1,5 @@
-﻿using Purpura.DataAccess.DataContext;
+﻿using Purpura.Common.Results;
+using Purpura.DataAccess.DataContext;
 using Purpura.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -26,9 +27,16 @@ namespace Purpura.Repositories
             GoalRepository = goalRepository;
         }
 
-        public async Task<int> SaveChangesAsync()
+        public async Task<Result> SaveChangesAsync()
         {
-            return await _dbContext.SaveChangesAsync();
+            var result = await _dbContext.SaveChangesAsync();
+
+            if(result == 0)
+            {
+                return Result.Failure("Database save failed.");
+            }
+
+            return Result.Success();
         }
     }
 }

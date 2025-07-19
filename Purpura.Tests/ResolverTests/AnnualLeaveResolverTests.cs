@@ -7,7 +7,7 @@ namespace Purpura.Tests.ResolverTests
     {
         #region IsValidBooking
         [Fact]
-        public async void IsValidBooking_WithNegativeOrZeroCurrentDays_ReturnsErrorString()
+        public void IsValidBooking_WithNegativeOrZeroCurrentDays_ReturnsErrorString()
         {
             //arrange & act
             var zeroResult = AnnualLeaveResolver.IsValidBooking(0, 1, DateTime.Now, DateTime.Now.AddDays(1));
@@ -19,7 +19,7 @@ namespace Purpura.Tests.ResolverTests
         }
 
         [Fact]
-        public async void IsValidBooking_NegativeNewTotal_ReturnsErrorString()
+        public void IsValidBooking_NegativeNewTotal_ReturnsErrorString()
         {
             //arrange & act
             var negativeResult = AnnualLeaveResolver.IsValidBooking(2, -1, DateTime.Now, DateTime.Now.AddDays(1));
@@ -29,7 +29,7 @@ namespace Purpura.Tests.ResolverTests
         }
 
         [Fact]
-        public async void IsValidBooking_EndDateBeforeStartDate_ReturnsErrorString()
+        public void IsValidBooking_EndDateBeforeStartDate_ReturnsErrorString()
         {
             //arrange & act
             var endBeforeStartResult = AnnualLeaveResolver.IsValidBooking(2, 1, DateTime.Now, DateTime.Now.AddDays(-1));
@@ -39,7 +39,7 @@ namespace Purpura.Tests.ResolverTests
         }
 
         [Fact]
-        public async void IsValidBooking_InvalidTotalsAndEndBeforeStart_ReturnsErrorString()
+        public void IsValidBooking_InvalidTotalsAndEndBeforeStart_ReturnsErrorString()
         {
             //arrange & act
             var invalidTotalAndDateResult = AnnualLeaveResolver.IsValidBooking(-1, 1, DateTime.Now, DateTime.Now.AddDays(-1));
@@ -49,7 +49,7 @@ namespace Purpura.Tests.ResolverTests
         }
 
         [Fact]
-        public async void IsValidBooking_ValidDatesAndLeaveTotals_ReturnsEmptyErrorString()
+        public void IsValidBooking_ValidDatesAndLeaveTotals_ReturnsEmptyErrorString()
         {
             //arrange & act
             var emptyResult = AnnualLeaveResolver.IsValidBooking(2, 1, DateTime.Now, DateTime.Now.AddDays(1));
