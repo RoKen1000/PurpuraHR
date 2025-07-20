@@ -4,7 +4,7 @@ using Purpura.Repositories.Interfaces;
 
 namespace Purpura.Repositories
 {
-    public class CompanyRepository : BaseRepository<Company>, ICompanyService
+    public class CompanyRepository : BaseRepository<Company>, ICompanyRepository
     {
         public CompanyRepository(PurpuraDbContext dbContext) : base(dbContext)
         {

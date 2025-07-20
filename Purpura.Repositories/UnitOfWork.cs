@@ -15,16 +15,19 @@ namespace Purpura.Repositories
         public IAnnualLeaveRepository AnnualLeaveRepository { get; private set; }
         public IUserManagementRepository UserManagementRepository { get; private set; }
         public IGoalRepository GoalRepository { get; private set; }
+        public ICompanyRepository CompanyRepository { get; private set; }
 
         public UnitOfWork(PurpuraDbContext dbContext,
             IAnnualLeaveRepository annualLeaveRepository,
             IUserManagementRepository userManagementRepository,
-            IGoalRepository goalRepository)
+            IGoalRepository goalRepository,
+            ICompanyRepository companyRepository)
         {
             _dbContext = dbContext;
             AnnualLeaveRepository = annualLeaveRepository;
             UserManagementRepository = userManagementRepository;
             GoalRepository = goalRepository;
+            CompanyRepository = companyRepository;
         }
 
         public async Task<Result> SaveChangesAsync()

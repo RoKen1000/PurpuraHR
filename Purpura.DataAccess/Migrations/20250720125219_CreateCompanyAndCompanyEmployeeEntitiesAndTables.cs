@@ -60,17 +60,17 @@ namespace Purpura.DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Companies",
                 columns: new[] { "Id", "Address", "DateCreated", "DateEdited", "Details", "ExternalReference", "Name" },
-                values: new object[] { 1, "123 Some Street, Some Business Estate, London, ABC 123", new DateTime(2025, 7, 20, 12, 14, 6, 834, DateTimeKind.Local).AddTicks(7485), null, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec augue a arcu aliquam consequat a sit amet ante. Nullam eget tincidunt ante. Donec sed malesuada nibh. Cras rhoncus auctor lorem, vel ullamcorper ipsum egestas in. Cras lobortis justo enim, sed vulputate magna sagittis ac. Ut imperdiet sapien sed ante posuere porta. Praesent ultricies sagittis venenatis. Suspendisse potenti. Nulla viverra, mi ac pellentesque fringilla, purus tortor blandit enim, non lacinia augue lacus et felis.", "af669137-20ef-4f2d-b585-72f07ea5105f", "JLB Finance" });
+                values: new object[] { 1, "123 Some Street, Some Business Estate, London, ABC 123", new DateTime(2025, 7, 20, 13, 52, 18, 571, DateTimeKind.Local).AddTicks(109), null, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec augue a arcu aliquam consequat a sit amet ante. Nullam eget tincidunt ante. Donec sed malesuada nibh. Cras rhoncus auctor lorem, vel ullamcorper ipsum egestas in. Cras lobortis justo enim, sed vulputate magna sagittis ac. Ut imperdiet sapien sed ante posuere porta. Praesent ultricies sagittis venenatis. Suspendisse potenti. Nulla viverra, mi ac pellentesque fringilla, purus tortor blandit enim, non lacinia augue lacus et felis.", "05595D26-131C-45EA-B78C-C4E912FC2438", "JLB Finance" });
 
             migrationBuilder.InsertData(
                 table: "CompanyEmployees",
                 columns: new[] { "Id", "CompanyId", "DateCreated", "DateEdited", "ExternalReference", "FirstName", "JobTitle", "LastName", "MiddleName" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2025, 7, 20, 12, 14, 6, 834, DateTimeKind.Local).AddTicks(7697), null, "b72cfcc6-a66c-4fc5-817a-74993e28b84b", "Allan", "Chief Executive Officer", "Johnson", null },
-                    { 2, 1, new DateTime(2025, 7, 20, 12, 14, 6, 834, DateTimeKind.Local).AddTicks(7703), null, "9acc105c-ddfa-4f08-9206-de2036d0dae7", "Sophie", "Customer Service Representative", "Chapman", "Hortensia" },
-                    { 3, 1, new DateTime(2025, 7, 20, 12, 14, 6, 834, DateTimeKind.Local).AddTicks(7707), null, "376d8869-bbfb-4890-99e2-4bc3b20d04a5", "Mark", "Account Manager", "Corrigan", null },
-                    { 4, 1, new DateTime(2025, 7, 20, 12, 14, 6, 834, DateTimeKind.Local).AddTicks(7710), null, "53ad7543-42bc-4084-bf1b-dedbc61d06e9", "Gerrard", "Finance Auditor", "Matthew", null }
+                    { 1, 1, new DateTime(2025, 7, 20, 13, 52, 18, 571, DateTimeKind.Local).AddTicks(314), null, "b68b8e2f-192d-4917-9741-5c22543c39f0", "Allan", "Chief Executive Officer", "Johnson", null },
+                    { 2, 1, new DateTime(2025, 7, 20, 13, 52, 18, 571, DateTimeKind.Local).AddTicks(323), null, "51914932-fba6-4510-937f-720156736714", "Sophie", "Customer Service Representative", "Chapman", "Hortensia" },
+                    { 3, 1, new DateTime(2025, 7, 20, 13, 52, 18, 571, DateTimeKind.Local).AddTicks(334), null, "32bd34b8-16ba-4224-b13e-7b5eb7bddaa0", "Mark", "Account Manager", "Corrigan", null },
+                    { 4, 1, new DateTime(2025, 7, 20, 13, 52, 18, 571, DateTimeKind.Local).AddTicks(338), null, "5470cb2f-05f6-4ddb-ac11-de7a5d88c60b", "Gerrard", "Finance Auditor", "Matthew", null }
                 });
 
             migrationBuilder.CreateIndex(

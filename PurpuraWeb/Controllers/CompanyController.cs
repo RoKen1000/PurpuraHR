@@ -8,20 +8,15 @@ namespace PurpuraWeb.Controllers
     public class CompanyController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly ICompanyService _companyService;
+        private readonly ICompanyRepository _companyService;
 
-        public CompanyController(UserManager<IdentityUser> userManager, ICompanyService companyService)
+        public CompanyController(UserManager<IdentityUser> userManager, ICompanyRepository companyService)
         {
             _userManager = userManager;
             _companyService = companyService;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Details(int id)
+        public IActionResult Details(string? companyReference)
         {
             return View();
         }
@@ -35,6 +30,7 @@ namespace PurpuraWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(CompanyViewModel viewModel)
         {
+            //if successful then add claim for company id
             return View();
         }
 

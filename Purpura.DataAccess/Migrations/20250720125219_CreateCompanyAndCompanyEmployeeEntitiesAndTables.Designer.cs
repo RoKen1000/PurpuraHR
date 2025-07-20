@@ -12,7 +12,7 @@ using Purpura.DataAccess.DataContext;
 namespace Purpura.DataAccess.Migrations
 {
     [DbContext(typeof(PurpuraDbContext))]
-    [Migration("20250720111407_CreateCompanyAndCompanyEmployeeEntitiesAndTables")]
+    [Migration("20250720125219_CreateCompanyAndCompanyEmployeeEntitiesAndTables")]
     partial class CreateCompanyAndCompanyEmployeeEntitiesAndTables
     {
         /// <inheritdoc />
@@ -312,9 +312,9 @@ namespace Purpura.DataAccess.Migrations
                         {
                             Id = 1,
                             Address = "123 Some Street, Some Business Estate, London, ABC 123",
-                            DateCreated = new DateTime(2025, 7, 20, 12, 14, 6, 834, DateTimeKind.Local).AddTicks(7485),
+                            DateCreated = new DateTime(2025, 7, 20, 13, 52, 18, 571, DateTimeKind.Local).AddTicks(109),
                             Details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec augue a arcu aliquam consequat a sit amet ante. Nullam eget tincidunt ante. Donec sed malesuada nibh. Cras rhoncus auctor lorem, vel ullamcorper ipsum egestas in. Cras lobortis justo enim, sed vulputate magna sagittis ac. Ut imperdiet sapien sed ante posuere porta. Praesent ultricies sagittis venenatis. Suspendisse potenti. Nulla viverra, mi ac pellentesque fringilla, purus tortor blandit enim, non lacinia augue lacus et felis.",
-                            ExternalReference = "af669137-20ef-4f2d-b585-72f07ea5105f",
+                            ExternalReference = "05595D26-131C-45EA-B78C-C4E912FC2438",
                             Name = "JLB Finance"
                         });
                 });
@@ -366,8 +366,8 @@ namespace Purpura.DataAccess.Migrations
                         {
                             Id = 1,
                             CompanyId = 1,
-                            DateCreated = new DateTime(2025, 7, 20, 12, 14, 6, 834, DateTimeKind.Local).AddTicks(7697),
-                            ExternalReference = "b72cfcc6-a66c-4fc5-817a-74993e28b84b",
+                            DateCreated = new DateTime(2025, 7, 20, 13, 52, 18, 571, DateTimeKind.Local).AddTicks(314),
+                            ExternalReference = "b68b8e2f-192d-4917-9741-5c22543c39f0",
                             FirstName = "Allan",
                             JobTitle = "Chief Executive Officer",
                             LastName = "Johnson"
@@ -376,8 +376,8 @@ namespace Purpura.DataAccess.Migrations
                         {
                             Id = 2,
                             CompanyId = 1,
-                            DateCreated = new DateTime(2025, 7, 20, 12, 14, 6, 834, DateTimeKind.Local).AddTicks(7703),
-                            ExternalReference = "9acc105c-ddfa-4f08-9206-de2036d0dae7",
+                            DateCreated = new DateTime(2025, 7, 20, 13, 52, 18, 571, DateTimeKind.Local).AddTicks(323),
+                            ExternalReference = "51914932-fba6-4510-937f-720156736714",
                             FirstName = "Sophie",
                             JobTitle = "Customer Service Representative",
                             LastName = "Chapman",
@@ -387,8 +387,8 @@ namespace Purpura.DataAccess.Migrations
                         {
                             Id = 3,
                             CompanyId = 1,
-                            DateCreated = new DateTime(2025, 7, 20, 12, 14, 6, 834, DateTimeKind.Local).AddTicks(7707),
-                            ExternalReference = "376d8869-bbfb-4890-99e2-4bc3b20d04a5",
+                            DateCreated = new DateTime(2025, 7, 20, 13, 52, 18, 571, DateTimeKind.Local).AddTicks(334),
+                            ExternalReference = "32bd34b8-16ba-4224-b13e-7b5eb7bddaa0",
                             FirstName = "Mark",
                             JobTitle = "Account Manager",
                             LastName = "Corrigan"
@@ -397,8 +397,8 @@ namespace Purpura.DataAccess.Migrations
                         {
                             Id = 4,
                             CompanyId = 1,
-                            DateCreated = new DateTime(2025, 7, 20, 12, 14, 6, 834, DateTimeKind.Local).AddTicks(7710),
-                            ExternalReference = "53ad7543-42bc-4084-bf1b-dedbc61d06e9",
+                            DateCreated = new DateTime(2025, 7, 20, 13, 52, 18, 571, DateTimeKind.Local).AddTicks(338),
+                            ExternalReference = "5470cb2f-05f6-4ddb-ac11-de7a5d88c60b",
                             FirstName = "Gerrard",
                             JobTitle = "Finance Auditor",
                             LastName = "Matthew"

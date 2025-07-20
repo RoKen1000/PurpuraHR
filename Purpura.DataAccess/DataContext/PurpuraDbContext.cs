@@ -24,7 +24,7 @@ namespace Purpura.DataAccess.DataContext
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Company>().HasData(
-                new Company { Name = "JLB Finance", Address = "123 Some Street, Some Business Estate, London, ABC 123", DateCreated = DateTime.Now, ExternalReference = Guid.NewGuid().ToString(), Id = 1, Details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec augue a arcu aliquam consequat a sit amet ante. Nullam eget tincidunt ante. Donec sed malesuada nibh. Cras rhoncus auctor lorem, vel ullamcorper ipsum egestas in. Cras lobortis justo enim, sed vulputate magna sagittis ac. Ut imperdiet sapien sed ante posuere porta. Praesent ultricies sagittis venenatis. Suspendisse potenti. Nulla viverra, mi ac pellentesque fringilla, purus tortor blandit enim, non lacinia augue lacus et felis." }
+                new Company { Name = "JLB Finance", Address = "123 Some Street, Some Business Estate, London, ABC 123", DateCreated = DateTime.Now, ExternalReference = "05595D26-131C-45EA-B78C-C4E912FC2438", Id = 1, Details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec augue a arcu aliquam consequat a sit amet ante. Nullam eget tincidunt ante. Donec sed malesuada nibh. Cras rhoncus auctor lorem, vel ullamcorper ipsum egestas in. Cras lobortis justo enim, sed vulputate magna sagittis ac. Ut imperdiet sapien sed ante posuere porta. Praesent ultricies sagittis venenatis. Suspendisse potenti. Nulla viverra, mi ac pellentesque fringilla, purus tortor blandit enim, non lacinia augue lacus et felis." }
             );
 
             modelBuilder.Entity<CompanyEmployee>().HasData(

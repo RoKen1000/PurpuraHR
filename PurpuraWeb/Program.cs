@@ -8,6 +8,7 @@ using Purpura.Repositories.Interfaces;
 using Purpura.Repositories;
 using Purpura.Services.Interfaces;
 using Purpura.Services;
+using Purpura.Utility.Factories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,14 +25,17 @@ builder.Services.AddDbContext<PurpuraDbContext>(
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<PurpuraDbContext>().AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<IdentityUser>, CustomClaimsPrincipalFactory>();
 
 builder.Services.AddScoped<IUserManagementRepository, UserManagementRepository>();
 builder.Services.AddScoped<IAnnualLeaveRepository, AnnualLeaveRepository>();
 builder.Services.AddScoped<IGoalRepository, GoalRepository>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 
 builder.Services.AddScoped<IAnnualLeaveService, AnnualLeaveService>();
 builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 builder.Services.AddScoped<IGoalService, GoalService>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

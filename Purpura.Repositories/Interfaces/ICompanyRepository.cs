@@ -2,7 +2,7 @@
 
 namespace Purpura.Repositories.Interfaces
 {
-    public interface ICompanyService : IBaseRepository<Company>
+    public interface ICompanyRepository : IBaseRepository<Company>
     {
     }
 }

@@ -8,5 +8,6 @@ namespace Purpura.Repositories.Interfaces
         IAnnualLeaveRepository AnnualLeaveRepository { get; }
         IUserManagementRepository UserManagementRepository { get; }
         IGoalRepository GoalRepository { get; }
+        ICompanyRepository CompanyRepository { get; }
     }
 }
