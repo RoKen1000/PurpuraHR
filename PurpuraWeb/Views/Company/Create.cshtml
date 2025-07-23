@@ -1,0 +1,33 @@
+﻿@model CompanyViewModel;
+
+<form method="post" asp-action="create" asp-controller="company" class="goal-form">
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" asp-for="Name" placeholder="" />
+        <label asp-for="Name">Name</label>
+        <span asp-validation-for="Name"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" asp-for="AddressLine1" placeholder="" />
+        <label asp-for="AddressLine1">Address Line 1</label>
+        <span asp-validation-for="AddressLine1"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" asp-for="AddressLine2" placeholder="" />
+        <label asp-for="AddressLine2">Address Line 2</label>
+        <span asp-validation-for="AddressLine2"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" asp-for="AddressLine3" placeholder="" />
+        <label asp-for="AddressLine3">Address Line 1</label>
+        <span asp-validation-for="AddressLine3"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <textarea class="form-control" asp-for="Details" placeholder=""></textarea>
+        <label asp-for="Details">Description</label>
+        <span asp-validation-for="Details"></span>
+    </div>
+</form>

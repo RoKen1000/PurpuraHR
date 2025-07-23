@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Purpura.Common.Results;
 using Purpura.Models.ViewModels;
 using Purpura.Repositories.Interfaces;
 using Purpura.Services.Interfaces;
@@ -9,11 +11,13 @@ namespace Purpura.Services
 {
     public class UserManagementService : BaseService<ApplicationUser>, IUserManagementService
     {
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public UserManagementService(IMapper mapper,
-            IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
+            IUnitOfWork unitOfWork,
+            UserManager<ApplicationUser> userManager) : base(mapper, unitOfWork)
         {
-            
+            _userManager = userManager;
         }
 
         public async Task<ApplicationUserViewModel?> GetUser(Expression<Func<ApplicationUser, bool>> filter)
@@ -26,14 +30,23 @@ namespace Purpura.Services
             return _mapper.Map<ApplicationUserViewModel>(user);
         }
 
-        public async Task<ApplicationUser?> GetUserEntity(Expression<Func<ApplicationUser, bool>> filter)
+        public async Task<Result> AddUserClaimAsync(string userId, string value)
         {
-            var user = await _unitOfWork.UserManagementRepository.GetSingleAsync(filter);
+            var userEntity = await _unitOfWork.UserManagementRepository.GetSingleAsync(u => u.Id == userId);
 
-            if (user == null)
-                return null;
+            if(userEntity == null)
+            {
+                return Result.Failure("User not found.");
+            }
 
-            return user;
+            var result = await _userManager.AddClaimAsync(userEntity, new System.Security.Claims.Claim("CompanyReference", value));
+
+            if (result.Succeeded)
+            {
+                return Result.Success();
+            }
+
+            return Result.Failure("Failed to add claim.");
         }
 
         public async Task UpdateUser(ApplicationUserViewModel userViewModel)

@@ -49,7 +49,7 @@
                 <a class="nav-link" href="@($"/usermanagement/details/{UserManager.GetUserId(User)}")">Account Details</a>
                 <a class="nav-link" href="/annualleave/index">Book Time Off</a>
                 <a class="nav-link" href="/goal/index">Goals</a>
-                <a class="nav-link" href="/company/details">CompanyDetails</a>
+                <a class="nav-link" href="/company/details/@companyReferenceClaim">Company Details</a>
             </nav>
         }
 
@@ -72,7 +72,7 @@
                     <a class="nav-link text-white" asp-controller="UserManagement" asp-action="Details" asp-route-userId="@UserManager.GetUserId(User)">Account Details</a>
                     <a class="nav-link text-white" asp-controller="AnnualLeave" asp-action="Index">Book Time Off</a>
                     <a class="nav-link text-white" asp-controller="Goal" asp-action="Index">Goals</a>
-                    <a class="nav-link text-white" asp-controller="Company" asp-action="Details" asp-route-companyId="@companyReferenceClaim">Goals</a>
+                    <a class="nav-link text-white" asp-controller="Company" asp-action="Details" asp-route-companyId="@companyReferenceClaim">Company Details</a>
                 </nav>
             </div>
         </div>
