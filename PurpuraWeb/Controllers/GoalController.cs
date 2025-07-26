@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Purpura.Abstractions.ServiceInterfaces;
 using Purpura.Models.ViewModels;
-using Purpura.Services.Interfaces;
 
 namespace PurpuraWeb.Controllers
 {

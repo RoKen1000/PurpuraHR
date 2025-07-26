@@ -1,11 +1,6 @@
-﻿using Purpura.Common.Results;
+﻿using Purpura.Abstractions.RepositoryInterfaces;
+using Purpura.Common.Results;
 using Purpura.DataAccess.DataContext;
-using Purpura.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Purpura.Repositories
 {

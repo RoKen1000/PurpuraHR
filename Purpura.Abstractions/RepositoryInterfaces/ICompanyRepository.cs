@@ -1,6 +1,6 @@
 ﻿using Purpura.Models.Entities;
 
-namespace Purpura.Repositories.Interfaces
+namespace Purpura.Abstractions.RepositoryInterfaces
 {
     public interface ICompanyRepository : IBaseRepository<Company>
     {

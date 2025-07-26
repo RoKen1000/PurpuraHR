@@ -1,5 +1,5 @@
-﻿using Purpura.DataAccess.DataContext;
-using Purpura.Repositories.Interfaces;
+﻿using Purpura.Abstractions.RepositoryInterfaces;
+using Purpura.DataAccess.DataContext;
 using PurpuraWeb.Models.Entities;
 
 namespace Purpura.Repositories

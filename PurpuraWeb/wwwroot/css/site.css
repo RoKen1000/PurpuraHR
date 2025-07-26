@@ -63,9 +63,22 @@ body {
     text-align: center;
 }
 
+.post-forms{
+
+}
+
+.post-forms textarea {
+    height: 150px !important;
+}
+
+
 @media screen and (min-width: 768px) {
 
     .details-container {
         width: 50%;
+    }
+
+    .post-forms {
+        width: 60%;
     }
 }

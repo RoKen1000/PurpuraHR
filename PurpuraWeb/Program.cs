@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Identity;
 using Purpura.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Purpura.MappingProfiles;
-using Purpura.Repositories.Interfaces;
 using Purpura.Repositories;
-using Purpura.Services.Interfaces;
 using Purpura.Services;
 using Purpura.Utility.Factories;
+using Purpura.Abstractions.RepositoryInterfaces;
+using Purpura.Abstractions.ServiceInterfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +26,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkSto
 
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<IdentityUser>, CustomClaimsPrincipalFactory>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IUserManagementRepository, UserManagementRepository>();
 builder.Services.AddScoped<IAnnualLeaveRepository, AnnualLeaveRepository>();

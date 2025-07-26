@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using Purpura.Abstractions.RepositoryInterfaces;
+using Purpura.Abstractions.ServiceInterfaces;
 using Purpura.Common.Results;
 using Purpura.Models.Entities;
 using Purpura.Models.ViewModels;
-using Purpura.Repositories.Interfaces;
-using Purpura.Services.Interfaces;
+using Purpura.Utility.Helpers;
 
 namespace Purpura.Services
 {
@@ -19,6 +20,7 @@ namespace Purpura.Services
         {
             var newEntity = _mapper.Map<Company>(viewModel);
             newEntity.ExternalReference = Guid.NewGuid().ToString();
+            newEntity.Address = AddressHelpers.ConstructAddressString(new string[4] {viewModel.AddressLine1, viewModel.AddressLine2, viewModel.AddressLine3, viewModel.Postcode});
 
             _unitOfWork.CompanyRepository.Create(newEntity);
             var result = await _unitOfWork.SaveChangesAsync();
@@ -29,7 +31,7 @@ namespace Purpura.Services
             }
             else
             {
-                return Result<string>.Failure("EntityCreationFailed");
+                return Result<string>.Failure("Entity Creation Failed");
             }
         }
 

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Purpura.Abstractions.RepositoryInterfaces;
+using Purpura.Abstractions.ServiceInterfaces;
 using Purpura.Common.Results;
 using Purpura.Models.ViewModels;
-using Purpura.Repositories.Interfaces;
-using Purpura.Services.Interfaces;
 using PurpuraWeb.Models.Entities;
 using System.Linq.Expressions;
 
@@ -11,11 +11,11 @@ namespace Purpura.Services
 {
     public class UserManagementService : BaseService<ApplicationUser>, IUserManagementService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public UserManagementService(IMapper mapper,
             IUnitOfWork unitOfWork,
-            UserManager<ApplicationUser> userManager) : base(mapper, unitOfWork)
+            UserManager<IdentityUser> userManager) : base(mapper, unitOfWork)
         {
             _userManager = userManager;
         }
@@ -65,6 +65,18 @@ namespace Purpura.Services
             }
 
             throw new NullReferenceException();
+        }
+
+        public async Task<ApplicationUser?> GetUserEntityByIdAsync(string id)
+        {
+            var user = await _unitOfWork.UserManagementRepository.GetSingleAsync(u => u.Id == id);
+
+            if(user == null)
+            {
+                return null;
+            }
+
+            return user;
         }
     }
 }

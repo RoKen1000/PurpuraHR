@@ -1,8 +1,4 @@
 ﻿
-.goal-form textarea {
-    height: 150px !important;
-}
-
 #goal-card-container {
     width: 100%;
     display: flex;
@@ -60,10 +56,6 @@
 
     #create-goal-button-with-goals {
         margin-left: 8px;
-    }
-
-    .goal-form {
-        width: 60%;
     }
 
     .goal-card-progress {

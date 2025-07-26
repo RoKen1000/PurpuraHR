@@ -1,6 +1,6 @@
 ﻿using PurpuraWeb.Models.Entities;
 
-namespace Purpura.Repositories.Interfaces
+namespace Purpura.Abstractions.RepositoryInterfaces
 {
     public interface IUserManagementRepository : IBaseRepository<ApplicationUser>
     {

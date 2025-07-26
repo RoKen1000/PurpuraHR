@@ -1,7 +1,6 @@
-﻿using Purpura.Common;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
-namespace Purpura.Repositories.Interfaces
+namespace Purpura.Abstractions.RepositoryInterfaces
 {
     public interface IBaseRepository<TEntity> where TEntity : class
     {

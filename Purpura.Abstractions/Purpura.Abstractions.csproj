@@ -7,10 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Purpura.Abstractions\Purpura.Abstractions.csproj" />
-    <ProjectReference Include="..\Purpura.DataAccess\Purpura.DataAccess.csproj" />
     <ProjectReference Include="..\Purpura.Models\Purpura.Models.csproj" />
-    <ProjectReference Include="..\Purpura.Utility\Purpura.Utility.csproj" />
   </ItemGroup>
 
 </Project>

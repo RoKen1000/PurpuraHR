@@ -12,6 +12,8 @@ namespace Purpura.Models.ViewModels
         public string AddressLine2 { get; set; }
         [Required]
         public string AddressLine3 { get; set; }
+        [Required]
+        public string Postcode { get; set; }
         public string? FullAddress { get; set; }
         [Required]
         [StringLength(350)]

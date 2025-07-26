@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using Purpura.Abstractions.RepositoryInterfaces;
+using Purpura.Abstractions.ServiceInterfaces;
 using Purpura.Common.Results;
 using Purpura.Models.Entities;
 using Purpura.Models.ViewModels;
-using Purpura.Repositories.Interfaces;
-using Purpura.Services.Interfaces;
 
 namespace Purpura.Services
 {

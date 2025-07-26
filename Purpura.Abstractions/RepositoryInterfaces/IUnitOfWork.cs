@@ -1,6 +1,6 @@
 ﻿using Purpura.Common.Results;
 
-namespace Purpura.Repositories.Interfaces
+namespace Purpura.Abstractions.RepositoryInterfaces
 {
     public interface IUnitOfWork
     {

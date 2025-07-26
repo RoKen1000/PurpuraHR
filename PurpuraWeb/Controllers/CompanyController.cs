@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Purpura.Abstractions.ServiceInterfaces;
 using Purpura.Models.ViewModels;
-using Purpura.Services.Interfaces;
-using System.Threading.Tasks;
 
 namespace PurpuraWeb.Controllers
 {
@@ -47,25 +46,28 @@ namespace PurpuraWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CompanyViewModel viewModel)
         {
-            var result = await _companyService.CreateAsync(viewModel);
-
-            if (result.IsSuccess)
+            if (ModelState.IsValid)
             {
-                //if successful then add claim for company id
-                var user = await _userManagementService.GetUser(u => u.Id == _userManager.GetUserId(User));
+                var result = await _companyService.CreateAsync(viewModel);
 
-                if (user != null)
+                if (result.IsSuccess)
                 {
-                    var claimResult = await _userManagementService.AddUserClaimAsync(_userManager.GetUserId(User), result.Data);
+                    //if successful then add claim for company id
+                    var user = await _userManagementService.GetUser(u => u.Id == _userManager.GetUserId(User));
 
-                    if (claimResult.IsSuccess)
+                    if (user != null)
                     {
-                        return RedirectToAction("Details", new { companyReference = result.Data });
+                        var claimResult = await _userManagementService.AddUserClaimAsync(_userManager.GetUserId(User), result.Data);
+
+                        if (claimResult.IsSuccess)
+                        {
+                            return RedirectToAction("Details", new { companyReference = result.Data });
+                        }
                     }
                 }
             }
 
-            return View();
+            return View(viewModel);
         }
 
         public IActionResult Edit(int id)
