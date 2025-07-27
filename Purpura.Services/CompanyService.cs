@@ -27,7 +27,7 @@ namespace Purpura.Services
 
             if (result.IsSuccess)
             {
-                return Result<string>.Success(newEntity.ExternalReference);
+                return Result<string>.Success(new List<string> { newEntity.ExternalReference, newEntity.Id.ToString() });
             }
             else
             {
@@ -45,6 +45,18 @@ namespace Purpura.Services
             }
 
             return null;
+        }
+
+        public async Task<string> GetExternalReferenceByIdAsync(int id)
+        {
+            var companyEntity = await _unitOfWork.CompanyRepository.GetSingleAsync(c => c.Id == id);
+
+            if(companyEntity == null)
+            {
+                return "";
+            }
+
+            return companyEntity.ExternalReference;
         }
     }
 }

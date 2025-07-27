@@ -6,20 +6,23 @@ using System.Security.Claims;
 
 namespace Purpura.Utility.Factories
 {
-    public class CustomClaimsPrincipalFactory : UserClaimsPrincipalFactory<IdentityUser>
+    public class CustomUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<IdentityUser>
     {
         private readonly IUserManagementService _userManagementService;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ICompanyService _companyService;
 
-        public CustomClaimsPrincipalFactory(UserManager<IdentityUser> userManager, 
+        public CustomUserClaimsPrincipalFactory(UserManager<IdentityUser> userManager, 
             IOptions<IdentityOptions> options,
             IUserManagementService userManagementService,
-            IHttpContextAccessor httpContextAccessor) : base(userManager, options)
+            IHttpContextAccessor httpContextAccessor,
+            ICompanyService companyService) : base(userManager, options)
         {
             _userManager = userManager;
             _userManagementService = userManagementService;
             _httpContextAccessor = httpContextAccessor;
+            _companyService = companyService;
         }
 
         protected override async Task<ClaimsIdentity> GenerateClaimsAsync(IdentityUser user)
@@ -33,6 +36,12 @@ namespace Purpura.Utility.Factories
             else
             {
                 var appicationUserEntity = await _userManagementService.GetUserEntityByIdAsync(_userManager.GetUserId(_httpContextAccessor.HttpContext.User));
+
+                if(appicationUserEntity != null && (appicationUserEntity.CompanyId != null && appicationUserEntity.CompanyId > 0))
+                {
+                    var companyExternalReference = await _companyService.GetExternalReferenceByIdAsync(appicationUserEntity.CompanyId);
+                    identity.AddClaim(new Claim("CompanyReference", companyExternalReference));
+                }
             }
 
             return identity;

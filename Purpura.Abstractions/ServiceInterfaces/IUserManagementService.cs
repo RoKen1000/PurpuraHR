@@ -9,7 +9,7 @@ namespace Purpura.Abstractions.ServiceInterfaces
     {
         Task<ApplicationUserViewModel?> GetUser(Expression<Func<ApplicationUser, bool>> filter);
         Task UpdateUser(ApplicationUserViewModel user);
-        Task<Result> AddUserClaimAsync(string userId, string value);
+        Task<Result> AddUserCompanyReferenceClaimAsync(string userId, string companyReference, string companyId);
         Task<ApplicationUser?> GetUserEntityByIdAsync(string id);
     }
 }

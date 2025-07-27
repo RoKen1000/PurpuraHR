@@ -30,7 +30,7 @@ namespace Purpura.Services
             return _mapper.Map<ApplicationUserViewModel>(user);
         }
 
-        public async Task<Result> AddUserClaimAsync(string userId, string value)
+        public async Task<Result> AddUserCompanyReferenceClaimAsync(string userId, string companyReference, string companyId)
         {
             var userEntity = await _unitOfWork.UserManagementRepository.GetSingleAsync(u => u.Id == userId);
 
@@ -39,7 +39,16 @@ namespace Purpura.Services
                 return Result.Failure("User not found.");
             }
 
-            var result = await _userManager.AddClaimAsync(userEntity, new System.Security.Claims.Claim("CompanyReference", value));
+            var parsedCompanyId = int.Parse(companyId);
+
+            var updateResult = await SetCompanyIdToUserAsync(userEntity, parsedCompanyId);
+
+            if (!updateResult.IsSuccess)
+            {
+                return updateResult;
+            }
+
+            var result = await _userManager.AddClaimAsync(userEntity, new System.Security.Claims.Claim("CompanyReference", companyReference));
 
             if (result.Succeeded)
             {
@@ -47,6 +56,13 @@ namespace Purpura.Services
             }
 
             return Result.Failure("Failed to add claim.");
+        }
+
+        private async Task<Result> SetCompanyIdToUserAsync(ApplicationUser userEntity, int companyId)
+        {
+            userEntity.CompanyId = companyId;
+            _unitOfWork.UserManagementRepository.Update(userEntity);
+            return await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task UpdateUser(ApplicationUserViewModel userViewModel)

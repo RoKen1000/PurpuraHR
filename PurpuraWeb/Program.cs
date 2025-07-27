@@ -25,7 +25,7 @@ builder.Services.AddDbContext<PurpuraDbContext>(
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<PurpuraDbContext>().AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IEmailSender, EmailSender>();
-builder.Services.AddScoped<IUserClaimsPrincipalFactory<IdentityUser>, CustomClaimsPrincipalFactory>();
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<IdentityUser>, CustomUserClaimsPrincipalFactory>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IUserManagementRepository, UserManagementRepository>();

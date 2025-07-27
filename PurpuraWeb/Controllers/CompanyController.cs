@@ -57,7 +57,7 @@ namespace PurpuraWeb.Controllers
 
                     if (user != null)
                     {
-                        var claimResult = await _userManagementService.AddUserClaimAsync(_userManager.GetUserId(User), result.Data);
+                        var claimResult = await _userManagementService.AddUserCompanyReferenceClaimAsync(_userManager.GetUserId(User), result.DataList.ElementAt(0), result.DataList.ElementAt(1));
 
                         if (claimResult.IsSuccess)
                         {

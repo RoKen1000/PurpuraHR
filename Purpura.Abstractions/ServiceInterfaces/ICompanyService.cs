@@ -1,4 +1,5 @@
 ﻿using Purpura.Common.Results;
+using Purpura.Models.Entities;
 using Purpura.Models.ViewModels;
 
 namespace Purpura.Abstractions.ServiceInterfaces
@@ -7,5 +8,6 @@ namespace Purpura.Abstractions.ServiceInterfaces
     {
         Task<Result<string>> CreateAsync(CompanyViewModel viewModel);
         Task<CompanyViewModel?> GetByExternalReferenceAsync(string externalReference);
+        Task<string> GetExternalReferenceByIdAsync(int id);
     }
 }

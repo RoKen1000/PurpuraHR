@@ -2,8 +2,8 @@
 {
     public class Result
     {
-        public bool IsSuccess { get; set; }
-        public string? Error { get; set; }
+        public bool IsSuccess { get; private set; }
+        public string? Error { get; private set; }
 
         protected Result()
         {
@@ -31,14 +31,21 @@
 
     public class Result<T>
     {
-        public bool IsSuccess { get; set; }
-        public string? Error { get; set; }
-        public T? Data { get; set; }
+        public bool IsSuccess { get; private set; }
+        public string? Error { get; private set; }
+        public T Data { get; private set; }
+        public List<T> DataList { get; private set; }
 
         protected Result(T data)
         {
             IsSuccess = true;
             Data = data;
+        }
+
+        protected Result(List<T> dataList)
+        {
+            IsSuccess = true;
+            DataList = dataList;
         }
 
         protected Result(string error)
@@ -50,6 +57,11 @@
         public static Result<T> Success(T data)
         {
             return new Result<T>(data);
+        }
+
+        public static Result<T> Success(List<T> dataList)
+        {
+            return new Result<T>(dataList);
         }
 
         public static Result<T> Failure(string error)
