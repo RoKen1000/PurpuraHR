@@ -22,7 +22,7 @@ namespace Purpura.Utility.Helpers
         public static void DeconstructAddressString(ApplicationUserViewModel viewModel)
         {
             var splitAdress = viewModel.Address.Split(',');
-
+            
             for (int i = 0; i < splitAdress.Length; i++)
             {
                 switch (i)

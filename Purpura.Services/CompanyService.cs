@@ -47,6 +47,18 @@ namespace Purpura.Services
             return null;
         }
 
+        public async Task<CompanyViewModel?> GetByExternalReferenceWithCompanyEmployeesAsync(string companyReference)
+        {
+            var companyEntity = await _unitOfWork.CompanyRepository.GetByExternalReferenceWithEmployeesAsync(companyReference);
+
+            if(companyEntity != null)
+            {
+                return _mapper.Map<CompanyViewModel>(companyEntity);
+            }
+
+            return null;
+        }
+
         public async Task<string> GetExternalReferenceByIdAsync(int id)
         {
             var companyEntity = await _unitOfWork.CompanyRepository.GetSingleAsync(c => c.Id == id);

@@ -35,12 +35,18 @@ namespace Purpura.Utility.Factories
             }
             else
             {
-                var appicationUserEntity = await _userManagementService.GetUserEntityByIdAsync(_userManager.GetUserId(_httpContextAccessor.HttpContext.User));
+                var companyClaim = identity.FindFirst("CompanyReference");
 
-                if(appicationUserEntity != null && (appicationUserEntity.CompanyId != null && appicationUserEntity.CompanyId > 0))
+                if(companyClaim == null)
                 {
-                    var companyExternalReference = await _companyService.GetExternalReferenceByIdAsync(appicationUserEntity.CompanyId);
-                    identity.AddClaim(new Claim("CompanyReference", companyExternalReference));
+                    var identityClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
+                    var appicationUserEntity = await _userManagementService.GetUserEntityByIdAsync(identityClaim.Value);
+
+                    if(appicationUserEntity != null && (appicationUserEntity.CompanyId != null && appicationUserEntity.CompanyId > 0))
+                    {
+                        var companyExternalReference = await _companyService.GetExternalReferenceByIdAsync(appicationUserEntity.CompanyId);
+                        identity.AddClaim(new Claim("CompanyReference", companyExternalReference));
+                    }
                 }
             }
 

@@ -18,6 +18,6 @@ namespace Purpura.Models.ViewModels
         [Required]
         [StringLength(350)]
         public string Details { get; set; }
-        public List<CompanyEmployeeViewModel> CompanyEmployees { get; set; } = new();
+        public List<CompanyEmployeeViewModel> Employees { get; set; } = new();
     }
 }

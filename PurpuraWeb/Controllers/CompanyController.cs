@@ -25,7 +25,7 @@ namespace PurpuraWeb.Controllers
                 return RedirectToAction("Create");
             }
 
-            var companyViewModel = await _companyService.GetByExternalReferenceAsync(companyReference);
+            var companyViewModel = await _companyService.GetByExternalReferenceWithCompanyEmployeesAsync(companyReference);
 
             if (companyViewModel != null)
             {

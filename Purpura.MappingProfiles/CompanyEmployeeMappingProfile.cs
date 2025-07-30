@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Purpura.Models.Entities;
+using Purpura.Models.ViewModels;
 
 namespace Purpura.MappingProfiles
 {
@@ -7,7 +8,7 @@ namespace Purpura.MappingProfiles
     {
         public CompanyEmployeeMappingProfile()
         {
-            CreateMap<CompanyEmployee, CompanyEmployeeMappingProfile>().ReverseMap();
+            CreateMap<CompanyEmployee, CompanyEmployeeViewModel>().ReverseMap();
         }
     }
 }

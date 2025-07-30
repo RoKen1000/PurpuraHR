@@ -12,7 +12,7 @@ namespace Purpura.MappingProfiles
                 .ForMember(dest => dest.FullAddress, opt => opt.MapFrom(src => src.Address))
                 .AfterMap((src, dest) =>
                 {
-                    foreach(var employee in dest.CompanyEmployees)
+                    foreach(var employee in dest.Employees)
                     {
                         employee.CompanyExternalReference = src.ExternalReference;
                     }

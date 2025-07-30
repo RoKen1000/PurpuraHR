@@ -9,5 +9,6 @@ namespace Purpura.Abstractions.ServiceInterfaces
         Task<Result<string>> CreateAsync(CompanyViewModel viewModel);
         Task<CompanyViewModel?> GetByExternalReferenceAsync(string externalReference);
         Task<string> GetExternalReferenceByIdAsync(int id);
+        Task<CompanyViewModel?> GetByExternalReferenceWithCompanyEmployeesAsync(string companyReference);
     }
 }
