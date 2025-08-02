@@ -1,7 +1,7 @@
 ﻿using Purpura.Common.Results;
 using Purpura.Models.ViewModels;
 
-namespace Purpura.Services.Interfaces
+namespace Purpura.Abstractions.ServiceInterfaces
 {
     public interface IAnnualLeaveService
     {

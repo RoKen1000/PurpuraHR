@@ -1,0 +1,21 @@
+﻿@model CompanyViewModel
+
+<div class="details-container">
+    <div id="company-details-header">
+        <h1>@Model.Name</h1>
+        <a asp-action="Edit" asp-controller="Company" asp-route-reference="@Model.ExternalReference" class="btn btn-purpura"><i class="bi bi-pencil-square button-icons"></i>Edit</a>
+    </div>
+
+    <dl id="company-detail-list">
+        <dt>Address</dt>
+        <dd>@Model.FullAddress</dd>
+
+        <dt>Details</dt>
+        <dd>@Model.Details</dd>
+    </dl>
+</div>
+
+@if(Model.Employees != null && Model.Employees.Any())
+{
+    <partial name="_CompanyEmployeeCards" model="@Model.Employees" />
+}

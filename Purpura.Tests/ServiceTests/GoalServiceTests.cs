@@ -1,14 +1,13 @@
 ﻿using AutoFixture;
 using AutoMapper;
 using Moq;
+using Purpura.Abstractions.RepositoryInterfaces;
+using Purpura.Abstractions.ServiceInterfaces;
 using Purpura.Common.Results;
 using Purpura.MappingProfiles;
 using Purpura.Models.Entities;
 using Purpura.Models.ViewModels;
-using Purpura.Repositories.Interfaces;
 using Purpura.Services;
-using Purpura.Services.Interfaces;
-using PurpuraWeb.Models.Entities;
 using System.Linq.Expressions;
 
 namespace Purpura.Tests.ServiceTests
@@ -26,6 +25,12 @@ namespace Purpura.Tests.ServiceTests
         public GoalServiceTests()
         {
             _fixture = new Fixture();
+            _fixture.Behaviors
+                .OfType<ThrowingRecursionBehavior>()
+                .ToList()
+                .ForEach(b => _fixture.Behaviors.Remove(b));
+            _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+
             _goalRepositoryMock = new Mock<IGoalRepository>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 

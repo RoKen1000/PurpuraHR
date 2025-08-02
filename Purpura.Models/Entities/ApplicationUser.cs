@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Purpura.Common.Enums;
+using Purpura.Models.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace PurpuraWeb.Models.Entities
@@ -13,7 +14,8 @@ namespace PurpuraWeb.Models.Entities
         public string Address { get; set; }
         public Genders Gender { get; set; }
         public Titles Title { get; set; }
-
         public int AnnualLeaveDays { get; set; }
+        public Company? Company { get; set; }
+        public int CompanyId { get; set; }
     }
 }

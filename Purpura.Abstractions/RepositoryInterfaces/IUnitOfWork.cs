@@ -1,6 +1,6 @@
 ﻿using Purpura.Common.Results;
 
-namespace Purpura.Repositories.Interfaces
+namespace Purpura.Abstractions.RepositoryInterfaces
 {
     public interface IUnitOfWork
     {
@@ -8,5 +8,6 @@ namespace Purpura.Repositories.Interfaces
         IAnnualLeaveRepository AnnualLeaveRepository { get; }
         IUserManagementRepository UserManagementRepository { get; }
         IGoalRepository GoalRepository { get; }
+        ICompanyRepository CompanyRepository { get; }
     }
 }

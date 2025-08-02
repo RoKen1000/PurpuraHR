@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Purpura.Repositories.Interfaces;
-using Purpura.Services.Interfaces;
+using Purpura.Abstractions.RepositoryInterfaces;
+using Purpura.Abstractions.ServiceInterfaces;
 
 namespace Purpura.Services
 {

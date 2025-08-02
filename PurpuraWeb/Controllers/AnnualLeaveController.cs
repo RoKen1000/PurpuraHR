@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Purpura.Abstractions.ServiceInterfaces;
 using Purpura.Common.Results;
 using Purpura.Models.ViewModels;
-using Purpura.Services.Interfaces;
 using Purpura.Utility.Helpers;
 
 namespace PurpuraWeb.Controllers

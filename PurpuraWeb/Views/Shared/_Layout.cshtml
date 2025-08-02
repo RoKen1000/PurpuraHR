@@ -10,6 +10,14 @@
         "/Account/Register",
         "/Account/Logout"
     };
+
+    var companyDetailsHref = "/company/details";
+    var companyReferenceClaim = User.FindFirst("CompanyReference")?.Value;
+
+    if(companyReferenceClaim != null)
+    {
+        companyDetailsHref += $"?companyReference={companyReferenceClaim}";
+    }
 }
 
 <!DOCTYPE html>
@@ -25,6 +33,7 @@
     <link rel="stylesheet" href="~/css/UserManagement.css" />
     <link rel="stylesheet" href="~/css/AnnualLeave.css" />
     <link rel="stylesheet" href="~/css/Goals.css" />
+    <link rel="stylesheet" href="~/css/Companies.css" />
     <link rel="stylesheet" href="~/PurpuraWeb.styles.css" asp-append-version="true" />
 
     <!--javascript packages-->
@@ -47,6 +56,7 @@
                 <a class="nav-link" href="@($"/usermanagement/details/{UserManager.GetUserId(User)}")">Account Details</a>
                 <a class="nav-link" href="/annualleave/index">Book Time Off</a>
                 <a class="nav-link" href="/goal/index">Goals</a>
+                <a class="nav-link" href="@companyDetailsHref">Company Details</a>
             </nav>
         }
 
@@ -69,6 +79,7 @@
                     <a class="nav-link text-white" asp-controller="UserManagement" asp-action="Details" asp-route-userId="@UserManager.GetUserId(User)">Account Details</a>
                     <a class="nav-link text-white" asp-controller="AnnualLeave" asp-action="Index">Book Time Off</a>
                     <a class="nav-link text-white" asp-controller="Goal" asp-action="Index">Goals</a>
+                    <a class="nav-link text-white" asp-controller="Company" asp-action="Details" asp-route-companyReference="@companyReferenceClaim">Company Details</a>
                 </nav>
             </div>
         </div>

@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Purpura.Services", "Purpura
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Purpura.Tests", "Purpura.Tests\Purpura.Tests.csproj", "{40B8CEC1-CD27-4ADA-B786-DB5B61C6A9CA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Purpura.Abstractions", "Purpura.Abstractions\Purpura.Abstractions.csproj", "{FCEA1F77-65DC-4ACF-AE4C-6EFC1DA81C56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{40B8CEC1-CD27-4ADA-B786-DB5B61C6A9CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40B8CEC1-CD27-4ADA-B786-DB5B61C6A9CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40B8CEC1-CD27-4ADA-B786-DB5B61C6A9CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCEA1F77-65DC-4ACF-AE4C-6EFC1DA81C56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCEA1F77-65DC-4ACF-AE4C-6EFC1DA81C56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCEA1F77-65DC-4ACF-AE4C-6EFC1DA81C56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCEA1F77-65DC-4ACF-AE4C-6EFC1DA81C56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

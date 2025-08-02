@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Purpura.Abstractions.ServiceInterfaces;
 using Purpura.Models.ViewModels;
-using Purpura.Services.Interfaces;
 using Purpura.Utility.Helpers;
 
 namespace PurpuraWeb.Controllers
@@ -38,7 +38,6 @@ namespace PurpuraWeb.Controllers
 
             userViewModel.GenderList = EnumHelpers.GenerateGenderSelectList();
             userViewModel.TitleList = EnumHelpers.GenerateTitleSelectList();
-            AddressHelpers.DeconstructAddressString(userViewModel);
 
             return View(userViewModel);
         }

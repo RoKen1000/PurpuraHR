@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Purpura.Abstractions\Purpura.Abstractions.csproj" />
     <ProjectReference Include="..\Purpura.Common\Purpura.Common.csproj" />
     <ProjectReference Include="..\Purpura.Repositories\Purpura.Repositories.csproj" />
     <ProjectReference Include="..\Purpura.Utility\Purpura.Utility.csproj" />

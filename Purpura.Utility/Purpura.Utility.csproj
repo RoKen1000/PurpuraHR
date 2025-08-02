@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Purpura.Abstractions\Purpura.Abstractions.csproj" />
     <ProjectReference Include="..\Purpura.Models\Purpura.Models.csproj" />
   </ItemGroup>
 
