@@ -1,0 +1,53 @@
+﻿@model CompanyViewModel;
+
+<h1 class="form-title">Edit Company</h1>
+
+<form asp-action="Edit" asp-controller="Company" class="post-forms">
+    <input type="hidden" asp-for="ExternalReference" />
+
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" asp-for="Name" placeholder="" />
+        <label asp-for="Name">Name</label>
+        <span asp-validation-for="Name"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" asp-for="AddressLine1" placeholder="" />
+        <label asp-for="AddressLine1">Address Line 1</label>
+        <span asp-validation-for="AddressLine1"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" asp-for="AddressLine2" placeholder="" />
+        <label asp-for="AddressLine2">Address Line 2</label>
+        <span asp-validation-for="AddressLine2"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" asp-for="AddressLine3" placeholder="" />
+        <label asp-for="AddressLine3">Address Line 3</label>
+        <span asp-validation-for="AddressLine3"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" asp-for="Postcode" placeholder="" />
+        <label asp-for="Postcode">Postcode</label>
+        <span asp-validation-for="Postcode"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <textarea class="form-control" asp-for="Details" placeholder=""></textarea>
+        <label asp-for="Details">Description</label>
+        <span asp-validation-for="Details"></span>
+    </div>
+
+    @if (Model.Result != null && Model.Result.Error != null)
+    {
+        <div class="field-validation-error">@Model.Result.Error</div>
+    }
+
+    <div class="form-button-container">
+        <a asp-action="Details" asp-controller="Company" asp-route-companyReference="@Model.ExternalReference" class="btn btn-secondary"><i class="bi bi-x button-icons"></i>Cancel</a>
+        <button type="submit" class="btn btn-success"><i class="bi bi-check2 button-icons"></i>Submit</button>
+    </div>
+</form>

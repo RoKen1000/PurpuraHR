@@ -19,28 +19,32 @@ namespace Purpura.Utility.Helpers
             return completeAddressString;
         }
 
-        public static void DeconstructAddressString(ApplicationUserViewModel viewModel)
+        public static (string, string, string, string) DeconstructAddressString(string fullAddress)
         {
-            var splitAdress = viewModel.Address.Split(',');
+            var splitAdress = fullAddress.Split(',');
+            string addressLine1 = "", addressLine2 = "", addressLine3 = "", postcode = "";
+
             
             for (int i = 0; i < splitAdress.Length; i++)
             {
                 switch (i)
                 {
                     case 0:
-                        viewModel.AddressLine1 = splitAdress[i].Trim();
+                        addressLine1 = splitAdress[i].Trim();
                         break;
                     case 1:
-                        viewModel.AddressLine2 = splitAdress[i].Trim();
+                        addressLine2 = splitAdress[i].Trim();
                         break;
                     case 2:
-                        viewModel.AddressLine3 = splitAdress[i].Trim();
+                        addressLine3 = splitAdress[i].Trim();
                         break;
                     case 3:
-                        viewModel.Postcode = splitAdress[i].Trim();
+                        postcode = splitAdress[i].Trim();
                         break;
                 }
             }
+
+            return (addressLine1, addressLine2, addressLine3, postcode);
         }
     }
 }

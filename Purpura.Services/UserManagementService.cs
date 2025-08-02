@@ -4,6 +4,7 @@ using Purpura.Abstractions.RepositoryInterfaces;
 using Purpura.Abstractions.ServiceInterfaces;
 using Purpura.Common.Results;
 using Purpura.Models.ViewModels;
+using Purpura.Utility.Helpers;
 using PurpuraWeb.Models.Entities;
 using System.Linq.Expressions;
 
@@ -27,7 +28,15 @@ namespace Purpura.Services
             if (user == null)
                 return null;
 
-            return _mapper.Map<ApplicationUserViewModel>(user);
+            var viewModel = _mapper.Map<ApplicationUserViewModel>(user);
+
+            var (addressLine1, addressLine2, addressLine3, postcode) = AddressHelpers.DeconstructAddressString(user.Address);
+            viewModel.AddressLine1 = addressLine1;
+            viewModel.AddressLine2 = addressLine2;
+            viewModel.AddressLine3 = addressLine3;
+            viewModel.Postcode = postcode;
+
+            return viewModel;
         }
 
         public async Task<Result> AddUserCompanyReferenceClaimAsync(string userId, string companyReference, string companyId)

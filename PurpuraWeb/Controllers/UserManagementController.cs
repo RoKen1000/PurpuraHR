@@ -38,7 +38,6 @@ namespace PurpuraWeb.Controllers
 
             userViewModel.GenderList = EnumHelpers.GenerateGenderSelectList();
             userViewModel.TitleList = EnumHelpers.GenerateTitleSelectList();
-            AddressHelpers.DeconstructAddressString(userViewModel);
 
             return View(userViewModel);
         }

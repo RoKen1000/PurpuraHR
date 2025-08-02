@@ -1,7 +1,11 @@
 ﻿@model CompanyViewModel
 
 <div class="details-container">
-    <h1>@Model.Name</h1>
+    <div id="company-details-header">
+        <h1>@Model.Name</h1>
+        <a asp-action="Edit" asp-controller="Company" asp-route-reference="@Model.ExternalReference" class="btn btn-purpura"><i class="bi bi-pencil-square button-icons"></i>Edit</a>
+    </div>
+
     <dl id="company-detail-list">
         <dt>Address</dt>
         <dd>@Model.FullAddress</dd>

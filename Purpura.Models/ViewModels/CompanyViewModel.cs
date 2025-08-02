@@ -5,6 +5,7 @@ namespace Purpura.Models.ViewModels
     public class CompanyViewModel : BaseViewModel
     {
         [Required]
+        [StringLength(30)]
         public string Name { get; set; }
         [Required]
         public string AddressLine1 { get; set; }
@@ -16,7 +17,7 @@ namespace Purpura.Models.ViewModels
         public string Postcode { get; set; }
         public string? FullAddress { get; set; }
         [Required]
-        [StringLength(350)]
+        [StringLength(500)]
         public string Details { get; set; }
         public List<CompanyEmployeeViewModel> Employees { get; set; } = new();
     }

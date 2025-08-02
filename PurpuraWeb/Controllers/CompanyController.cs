@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Purpura.Abstractions.ServiceInterfaces;
 using Purpura.Models.ViewModels;
+using System.Threading.Tasks;
 
 namespace PurpuraWeb.Controllers
 {
@@ -70,28 +71,35 @@ namespace PurpuraWeb.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(string reference)
         {
-            return View();
+            var companyViewModel = await _companyService.GetByExternalReferenceAsync(reference);
+
+            if(companyViewModel != null)
+            {
+                return View(companyViewModel);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit()
+        public async Task<IActionResult> Edit(CompanyViewModel viewModel)
         {
-            return View();
-        }
+            if (ModelState.IsValid)
+            {
+                var result = await _companyService.EditAsync(viewModel);
 
-        public IActionResult Delete(int id)
-        {
-            return View();
-        }
+                if(result.IsSuccess)
+                {
+                    return RedirectToAction("Details", new { companyReference = viewModel.ExternalReference });
+                }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Delete()
-        {
-            return View();
+                viewModel.Result = result;
+            }
+
+            return View(viewModel);
         }
     }
 }

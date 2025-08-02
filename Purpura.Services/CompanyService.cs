@@ -35,13 +35,36 @@ namespace Purpura.Services
             }
         }
 
+        public async Task<Result> EditAsync(CompanyViewModel viewModel)
+        {
+            var companyEntity = await _unitOfWork.CompanyRepository.GetSingleAsync(c => c.ExternalReference == viewModel.ExternalReference);
+
+            if(companyEntity == null)
+            {
+                return Result.Failure("Entity not found.");
+            }
+
+            _mapper.Map<CompanyViewModel, Company>(viewModel, companyEntity);
+            companyEntity.DateEdited = DateTime.Now;
+
+            return await _unitOfWork.SaveChangesAsync();
+        }
+
         public async Task<CompanyViewModel?> GetByExternalReferenceAsync(string externalReference)
         {
             var companyEntity = await _unitOfWork.CompanyRepository.GetSingleAsync(c => c.ExternalReference == externalReference);
 
             if(companyEntity != null)
             {
-                return _mapper.Map<CompanyViewModel>(companyEntity);
+                var viewModel = _mapper.Map<CompanyViewModel>(companyEntity);
+
+                var (addressLine1, addressLine2, addressLine3, postcode) = AddressHelpers.DeconstructAddressString(companyEntity.Address);
+                viewModel.AddressLine1 = addressLine1;
+                viewModel.AddressLine2 = addressLine2;
+                viewModel.AddressLine3 = addressLine3;
+                viewModel.Postcode = postcode;
+
+                return viewModel;
             }
 
             return null;
