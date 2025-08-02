@@ -51,7 +51,7 @@
         protected Result(string error)
         {
             IsSuccess = false;
-            Data = default;
+            Error = error;
         }
 
         public static Result<T> Success(T data)

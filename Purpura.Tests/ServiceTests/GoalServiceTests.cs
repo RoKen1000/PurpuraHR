@@ -25,6 +25,12 @@ namespace Purpura.Tests.ServiceTests
         public GoalServiceTests()
         {
             _fixture = new Fixture();
+            _fixture.Behaviors
+                .OfType<ThrowingRecursionBehavior>()
+                .ToList()
+                .ForEach(b => _fixture.Behaviors.Remove(b));
+            _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+
             _goalRepositoryMock = new Mock<IGoalRepository>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
