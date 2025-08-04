@@ -3,7 +3,7 @@
 <div class="user-management-content">
     <h1>Edit User Details</h1>
 
-    <form method="post" asp-controller="UserManagement" asp-action="EditUserDetails">
+    <form method="post" asp-controller="UserManagement" asp-action="Edit">
         <div class="form-floating mb-3">
             <select class="form-select" asp-for="@Model.Title" asp-items="@Model.TitleList" name="Title"></select>
             <label asp-for="@Model.Title">Title</label>

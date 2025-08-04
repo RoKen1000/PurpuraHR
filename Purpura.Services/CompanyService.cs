@@ -20,6 +20,7 @@ namespace Purpura.Services
         {
             var newEntity = _mapper.Map<Company>(viewModel);
             newEntity.ExternalReference = Guid.NewGuid().ToString();
+            newEntity.DateCreated = DateTime.Now;
             newEntity.Address = AddressHelpers.ConstructAddressString(new string[4] {viewModel.AddressLine1, viewModel.AddressLine2, viewModel.AddressLine3, viewModel.Postcode});
 
             _unitOfWork.CompanyRepository.Create(newEntity);

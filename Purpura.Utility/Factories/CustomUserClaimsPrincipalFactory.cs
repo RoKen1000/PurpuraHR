@@ -44,7 +44,7 @@ namespace Purpura.Utility.Factories
 
                     if(appicationUserEntity != null && (appicationUserEntity.CompanyId != null && appicationUserEntity.CompanyId > 0))
                     {
-                        var companyExternalReference = await _companyService.GetExternalReferenceByIdAsync(appicationUserEntity.CompanyId);
+                        var companyExternalReference = await _companyService.GetExternalReferenceByIdAsync((int)appicationUserEntity.CompanyId);
                         identity.AddClaim(new Claim("CompanyReference", companyExternalReference));
                     }
                 }

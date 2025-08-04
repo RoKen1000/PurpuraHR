@@ -16,6 +16,8 @@ namespace PurpuraWeb.Models.Entities
         public Titles Title { get; set; }
         public int AnnualLeaveDays { get; set; }
         public Company? Company { get; set; }
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime? DateEdited { get; set; }
     }
 }
