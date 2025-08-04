@@ -44,6 +44,7 @@ namespace PurpuraWeb.Controllers
 
         [HttpPost]
         [Route("Edit/{userId}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ApplicationUserViewModel viewModel)
         {
             if (ModelState.IsValid)

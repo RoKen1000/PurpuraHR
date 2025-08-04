@@ -41,6 +41,7 @@ namespace PurpuraWeb.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(GoalViewModel viewModel)
         {
             if (ModelState.IsValid)
@@ -78,6 +79,7 @@ namespace PurpuraWeb.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(GoalViewModel goalViewModel)
         {
             if (ModelState.IsValid)
@@ -112,6 +114,7 @@ namespace PurpuraWeb.Controllers
 
         [HttpPost]
         [ActionName("Delete")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePost(GoalViewModel viewModel)
         {
             var result = await _goalService.DeleteAsync(viewModel);
