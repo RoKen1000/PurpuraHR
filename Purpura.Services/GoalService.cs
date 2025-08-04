@@ -51,6 +51,8 @@ namespace Purpura.Services
             }
 
             _mapper.Map<GoalViewModel, Goal>(viewModel, goalEntity);
+            goalEntity.DateEdited = DateTime.Now;
+
             _unitOfWork.GoalRepository.Update(goalEntity);
 
             return await _unitOfWork.SaveChangesAsync();
