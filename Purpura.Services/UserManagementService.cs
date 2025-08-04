@@ -81,6 +81,7 @@ namespace Purpura.Services
             if (userEntity != null)
             {
                 _mapper.Map<ApplicationUserViewModel, ApplicationUser>(userViewModel, userEntity);
+                userEntity.DateEdited = DateTime.Now;
 
                 _unitOfWork.UserManagementRepository.Update(userEntity);
 

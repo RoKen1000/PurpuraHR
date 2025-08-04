@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Purpura.DataAccess.DataContext;
 
@@ -11,9 +12,11 @@ using Purpura.DataAccess.DataContext;
 namespace Purpura.DataAccess.Migrations
 {
     [DbContext(typeof(PurpuraDbContext))]
-    partial class PurpuraDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250804152254_AddDateCreatedAndDateEditedTimestampsToApplicationUser")]
+    partial class AddDateCreatedAndDateEditedTimestampsToApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -309,7 +312,7 @@ namespace Purpura.DataAccess.Migrations
                         {
                             Id = 1,
                             Address = "123 Some Street, Some Business Estate, London, ABC 123",
-                            DateCreated = new DateTime(2025, 8, 4, 16, 32, 19, 964, DateTimeKind.Local).AddTicks(1007),
+                            DateCreated = new DateTime(2025, 8, 4, 16, 22, 53, 111, DateTimeKind.Local).AddTicks(8507),
                             Details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec augue a arcu aliquam consequat a sit amet ante. Nullam eget tincidunt ante. Donec sed malesuada nibh. Cras rhoncus auctor lorem, vel ullamcorper ipsum egestas in. Cras lobortis justo enim, sed vulputate magna sagittis ac. Ut imperdiet sapien sed ante posuere porta. Praesent ultricies sagittis venenatis. Suspendisse potenti. Nulla viverra, mi ac pellentesque fringilla, purus tortor blandit enim, non lacinia augue lacus et felis.",
                             ExternalReference = "05595D26-131C-45EA-B78C-C4E912FC2438",
                             Name = "JLB Finance"
@@ -363,8 +366,8 @@ namespace Purpura.DataAccess.Migrations
                         {
                             Id = 1,
                             CompanyId = 1,
-                            DateCreated = new DateTime(2025, 8, 4, 16, 32, 19, 964, DateTimeKind.Local).AddTicks(1213),
-                            ExternalReference = "5e53e0b1-69fb-4259-8806-bdc410ac330b",
+                            DateCreated = new DateTime(2025, 8, 4, 16, 22, 53, 111, DateTimeKind.Local).AddTicks(8843),
+                            ExternalReference = "18b1f3e1-2b63-45b7-b35b-f7261a21e6a8",
                             FirstName = "Allan",
                             JobTitle = "Chief Executive Officer",
                             LastName = "Johnson"
@@ -373,8 +376,8 @@ namespace Purpura.DataAccess.Migrations
                         {
                             Id = 2,
                             CompanyId = 1,
-                            DateCreated = new DateTime(2025, 8, 4, 16, 32, 19, 964, DateTimeKind.Local).AddTicks(1220),
-                            ExternalReference = "83ce888e-1d39-47de-a851-7863ba6a6db7",
+                            DateCreated = new DateTime(2025, 8, 4, 16, 22, 53, 111, DateTimeKind.Local).AddTicks(8858),
+                            ExternalReference = "493f1323-c2f2-4d1b-9fdd-c922bdc05a72",
                             FirstName = "Sophie",
                             JobTitle = "Customer Service Representative",
                             LastName = "Chapman",
@@ -384,8 +387,8 @@ namespace Purpura.DataAccess.Migrations
                         {
                             Id = 3,
                             CompanyId = 1,
-                            DateCreated = new DateTime(2025, 8, 4, 16, 32, 19, 964, DateTimeKind.Local).AddTicks(1223),
-                            ExternalReference = "ea654ce9-9a3e-4ed5-b9a0-b91179e71a36",
+                            DateCreated = new DateTime(2025, 8, 4, 16, 22, 53, 111, DateTimeKind.Local).AddTicks(8863),
+                            ExternalReference = "305787bf-ba7c-4785-8a20-e44af2a4ce68",
                             FirstName = "Mark",
                             JobTitle = "Account Manager",
                             LastName = "Corrigan"
@@ -394,8 +397,8 @@ namespace Purpura.DataAccess.Migrations
                         {
                             Id = 4,
                             CompanyId = 1,
-                            DateCreated = new DateTime(2025, 8, 4, 16, 32, 19, 964, DateTimeKind.Local).AddTicks(1227),
-                            ExternalReference = "5416dd9d-85da-4f8a-b664-ef63f5db491a",
+                            DateCreated = new DateTime(2025, 8, 4, 16, 22, 53, 111, DateTimeKind.Local).AddTicks(8867),
+                            ExternalReference = "1e143085-ff92-4c48-be1e-7c906ef91739",
                             FirstName = "Gerrard",
                             JobTitle = "Finance Auditor",
                             LastName = "Matthew"
@@ -456,7 +459,7 @@ namespace Purpura.DataAccess.Migrations
                     b.Property<int>("AnnualLeaveDays")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CompanyId")
+                    b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
@@ -578,7 +581,9 @@ namespace Purpura.DataAccess.Migrations
                 {
                     b.HasOne("Purpura.Models.Entities.Company", "Company")
                         .WithMany()
-                        .HasForeignKey("CompanyId");
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Company");
                 });
