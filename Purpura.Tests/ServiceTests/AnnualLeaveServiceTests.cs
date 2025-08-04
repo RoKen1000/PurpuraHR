@@ -58,6 +58,7 @@ namespace Purpura.Tests.ServiceTests
                     var func = predicate.Compile();
                     return func(annualLeaveEntity) ? annualLeaveEntity : null;
                 });
+
             _userManagementRepositoryMock.Setup(r => r.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
                 .ReturnsAsync((Expression<Func<ApplicationUser, bool>> predicate) =>
                 {
@@ -417,12 +418,7 @@ namespace Purpura.Tests.ServiceTests
             annualLeavelist.Add(annualLeaveEntity2);
 
             _annualLeaveRepositoryMock.Setup(r => r.GetAllAsync(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
-                .ReturnsAsync((Expression<Func<AnnualLeave, bool>> predicate) =>
-                {
-                    var func = predicate.Compile();
-                    var list = annualLeavelist.Where(func);
-                    return list;
-                });
+                .ReturnsAsync(annualLeavelist);
 
             //act
             var noOverlapResult = await _annualLeaveService.CheckForLeaveOverlapsAsync(userId, startDate, endDate, annualLeaveExtRef);
@@ -461,12 +457,7 @@ namespace Purpura.Tests.ServiceTests
             annualLeavelist.Add(annualLeaveEntity2);
 
             _annualLeaveRepositoryMock.Setup(r => r.GetAllAsync(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
-                .ReturnsAsync((Expression<Func<AnnualLeave, bool>> predicate) =>
-                {
-                    var func = predicate.Compile();
-                    var list = annualLeavelist.Where(func);
-                    return list;
-                });
+                .ReturnsAsync(annualLeavelist);
 
             //act
             var overlapResult = await _annualLeaveService.CheckForLeaveOverlapsAsync(userId, startDate, endDate, annualLeaveExtRef);
@@ -534,12 +525,7 @@ namespace Purpura.Tests.ServiceTests
             var annualLeaveList = new List<AnnualLeave>();
 
             _annualLeaveRepositoryMock.Setup(a => a.GetAllAsync(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
-                .ReturnsAsync((Expression<Func<AnnualLeave, bool>> predicate) =>
-                {
-                    var func = predicate.Compile();
-                    var list = annualLeaveList.Where(func);
-                    return list;
-                }); ;
+                .ReturnsAsync(annualLeaveList);
 
             //act
             var emptyList = await _annualLeaveService.GetBookedLeaveByUserIdAsync(userId);
@@ -565,12 +551,7 @@ namespace Purpura.Tests.ServiceTests
             annualLeaveList.Add(annualLeave2);
 
             _annualLeaveRepositoryMock.Setup(a => a.GetAllAsync(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
-                .ReturnsAsync((Expression<Func<AnnualLeave, bool>> predicate) =>
-                {
-                    var func = predicate.Compile();
-                    var list = annualLeaveList.Where(func);
-                    return list;
-                }); ;
+                .ReturnsAsync(annualLeaveList);
 
             //act
             var populatedList = await _annualLeaveService.GetBookedLeaveByUserIdAsync(userId);
@@ -636,11 +617,7 @@ namespace Purpura.Tests.ServiceTests
                 .With(a => a.AnnualLeaveDays, -2)
                 .Create();
             _userManagementRepositoryMock.Setup(r => r.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
-                .ReturnsAsync((Expression<Func<ApplicationUser, bool>> predicate) =>
-                {
-                    var func = predicate.Compile();
-                    return func(userEntity) ? userEntity : null;
-                });
+                .ReturnsAsync(userEntity);
 
             //act
             var negativeCountResult = await _annualLeaveService.GetUserAnnualLeaveCountAsync(userId);
