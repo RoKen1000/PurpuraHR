@@ -157,6 +157,11 @@ namespace Purpura.Services
             return null;
         }
 
+        /// <summary>
+        /// For retrieving the available annual leave count for the current user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<int> GetUserAnnualLeaveCountAsync(string userId)
         {
             var user = await _unitOfWork.UserManagementRepository.GetSingleAsync(u => u.Id == userId);

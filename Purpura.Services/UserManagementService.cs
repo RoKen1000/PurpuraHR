@@ -104,5 +104,17 @@ namespace Purpura.Services
 
             return user;
         }
+
+        public async Task<ApplicationUserViewModel?> GetUserViewModelByIdAsync(string id)
+        {
+            var user = await _unitOfWork.UserManagementRepository.GetSingleAsync(u => u.Id == id);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            return _mapper.Map<ApplicationUserViewModel>(user);
+        }
     }
 }
