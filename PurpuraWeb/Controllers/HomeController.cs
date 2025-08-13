@@ -13,18 +13,21 @@ namespace PurpuraWeb.Controllers
         private readonly IUserManagementService _userManagementService;
         private readonly ICompanyService _companyService;
         private readonly IAnnualLeaveService _annualLeaveService;
+        private readonly IGoalService _goalService;
 
         public HomeController(ILogger<HomeController> logger,
             UserManager<IdentityUser> userManager,
             IUserManagementService userManagementService,
             ICompanyService companyService,
-            IAnnualLeaveService annualLeaveService)
+            IAnnualLeaveService annualLeaveService,
+            IGoalService goalService)
         {
             _logger = logger;
             _userManager = userManager;
             _userManagementService = userManagementService;
             _companyService = companyService;
             _annualLeaveService = annualLeaveService;
+            _goalService = goalService;
         }
 
         public IActionResult Login()
@@ -56,6 +59,7 @@ namespace PurpuraWeb.Controllers
 
                 viewModel.AnnualLeave = await _annualLeaveService.GetBookedLeaveByUserIdAsync(_userManager.GetUserId(User));
                 viewModel.AnnualLeaveRemaining = await _annualLeaveService.GetUserAnnualLeaveCountAsync(_userManager.GetUserId(User));
+                viewModel.Goals = await _goalService.GetAllGoalsByUserIdAsync(_userManager.GetUserId(User));
             }
             else
             {

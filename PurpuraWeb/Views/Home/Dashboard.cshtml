@@ -1,2 +1,44 @@
 ﻿@model DashboardViewModel
 
+
+@if(Model.Result != null)
+{
+    <h1 class="result-failure-error">@Model.Result.Error</h1>
+}
+else
+{
+    <div id="dashboard-welcome-headings">
+        <h1>@($"Welcome {Model.User.FirstName} {Model.User.LastName}!")</h1>
+        <h2>@($"Welcome to Purpura HR for {Model.Company.Name}.")</h2>
+    </div>
+
+    if (Model.Goals.Any())
+    {
+        <div id="dashboard-goal-container">
+            <h3>Current goals:</h3>
+            @foreach(var goal in Model.Goals)
+            {
+                <div class="dashboard-goal-widget">
+                    <span>@goal.Name</span>
+                    <span>@($"{goal.PercentageComplete}% complete")</span>
+                </div>
+            }
+        </div>
+    }
+
+    <div id="dashboard-annual-leave-container">
+        <h3>@($"You currently have {28 - Model.AnnualLeaveRemaining} days of annual leave to take.")</h3>
+        @if (Model.AnnualLeave.Any(al => al.StartDate > DateTime.Now))
+        {
+                <h3>Upcoming Annual Leave:</h3>
+                @foreach(var leave in Model.AnnualLeave.Where(al => al.StartDate > DateTime.Now))
+                {
+                    <div>
+                        @($"{leave.StartDate} - {leave.EndDate}")
+                        @leave.Type
+                        @leave.Details
+                    </div>
+                }
+        }
+    </div>
+}

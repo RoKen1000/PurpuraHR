@@ -8,7 +8,7 @@ namespace Purpura.Models.ViewModels
         public ApplicationUserViewModel User { get; set; }
         public CompanyViewModel Company { get; set; }
         public int AnnualLeaveRemaining { get; set; }
-        public List<AnnualLeaveViewModel> AnnualLeave { get; set; }
-        public List<GoalViewModel> Goals { get; set; }
+        public List<AnnualLeaveViewModel> AnnualLeave { get; set; } = new();
+        public List<GoalViewModel> Goals { get; set; } = new();
     }
 }

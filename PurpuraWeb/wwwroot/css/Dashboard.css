@@ -1,0 +1,27 @@
+﻿
+#dashboard-welcome-headings, #dashboard-goal-container, #dashboard-annual-leave-container {
+    margin: 1rem 1rem 2rem 1rem;
+}
+
+#dashboard-welcome-headings, .dashboard-goal-container > h3, dashboard-annual-leave-container h3{
+    text-align: center;
+}
+
+.dashboard-goal-container {
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+}
+
+.dashboard-goal-widget {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    padding: 1rem;
+    border: solid 1px rgba(0, 0, 0, .125);
+    box-shadow: 0 2px 8px 0 grey;
+}
