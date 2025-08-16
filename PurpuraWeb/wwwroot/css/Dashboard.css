@@ -33,9 +33,16 @@
     border-top: solid 1px;
     display: flex;
     flex-direction: column;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 }
 
 .booked-leave-table tr:nth-child(even) {
+    background-color: #bf7de8;
+    color: white;
+}
+
+#dashboard-annual-leave-container div:nth-child(even) {
     background-color: #bf7de8;
     color: white;
 }
