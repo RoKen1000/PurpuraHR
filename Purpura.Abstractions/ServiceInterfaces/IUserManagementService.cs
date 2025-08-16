@@ -11,5 +11,6 @@ namespace Purpura.Abstractions.ServiceInterfaces
         Task UpdateUser(ApplicationUserViewModel user);
         Task<Result> AddUserCompanyReferenceClaimAsync(string userId, string companyReference, string companyId);
         Task<ApplicationUser?> GetUserEntityByIdAsync(string id);
+        Task<ApplicationUserViewModel?> GetUserViewModelByIdAsync(string id);
     }
 }
