@@ -52,7 +52,7 @@
         @if (!authenticationPaths.Contains(path))
         {
             <nav id="side-nav">
-                <a id="site-name" class="text-white" href="/home/index"><strong>Purpura HR</strong></a>
+                <a id="site-name" class="text-white" href="/home/dashboard"><strong>Purpura HR</strong></a>
                 <hr/>
                 <a class="nav-link" href="@($"/usermanagement/details/{UserManager.GetUserId(User)}")">Account Details</a>
                 <a class="nav-link" href="/annualleave/index">Book Time Off</a>
@@ -77,6 +77,7 @@
 
             <div class="offcanvas-body">
                 <nav>
+                    <a class="nav-link text-white" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
                     <a class="nav-link text-white" asp-controller="UserManagement" asp-action="Details" asp-route-userId="@UserManager.GetUserId(User)">Account Details</a>
                     <a class="nav-link text-white" asp-controller="AnnualLeave" asp-action="Index">Book Time Off</a>
                     <a class="nav-link text-white" asp-controller="Goal" asp-action="Index">Goals</a>
