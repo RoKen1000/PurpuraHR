@@ -132,7 +132,7 @@ header h4{
 }
 
 
-main{
+#main-content-container main {
     background-color: white;
     border-radius: 5px;
     padding: 20px;
@@ -181,7 +181,7 @@ main{
     #mobile-menu-toggle {
         visibility: hidden;
     }
-    main{
+    #main-content-container main {
         margin-left: 160px;
     }
    

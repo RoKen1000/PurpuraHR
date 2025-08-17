@@ -43,9 +43,12 @@
 </head>
 <body style="@(authenticationPaths.Contains(path) ? "background: linear-gradient(white, mediumpurple);" : "")">
 
-    <header>
-        <h4><strong>Purpura HR</strong></h4>
-    </header>
+    @if (!authenticationPaths.Contains(path))
+    {
+        <header>
+            <h4><strong>Purpura HR</strong></h4>
+        </header>
+    }
 
     <div id="page-container">
 
@@ -59,34 +62,34 @@
                 <a class="nav-link" href="/goal/index">Goals</a>
                 <a class="nav-link" href="@companyDetailsHref">Company Details</a>
             </nav>
+
+            <div id="header-buffer"></div>
+
+            <div id="button-container">
+                <button class="btn" type="button" id="mobile-menu-toggle" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-nav" >
+                    <i class="bi bi-list h1"></i>
+                </button>
+            </div>
+
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas-nav" aria-labelledby="offcanvasExampleLabel">
+
+                <div class="offcanvas-header">
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+
+                <div class="offcanvas-body">
+                    <nav>
+                        <a class="nav-link text-white" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
+                        <a class="nav-link text-white" asp-controller="UserManagement" asp-action="Details" asp-route-userId="@UserManager.GetUserId(User)">Account Details</a>
+                        <a class="nav-link text-white" asp-controller="AnnualLeave" asp-action="Index">Book Time Off</a>
+                        <a class="nav-link text-white" asp-controller="Goal" asp-action="Index">Goals</a>
+                        <a class="nav-link text-white" asp-controller="Company" asp-action="Details" asp-route-companyReference="@companyReferenceClaim">Company Details</a>
+                    </nav>
+                </div>
+            </div>
         }
 
-        <div id="header-buffer"></div>
-
-        <div id="button-container">
-            <button class="btn" type="button" id="mobile-menu-toggle" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-nav" >
-                <i class="bi bi-list h1"></i>
-            </button>
-        </div>
-
-        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas-nav" aria-labelledby="offcanvasExampleLabel">
-
-            <div class="offcanvas-header">
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-
-            <div class="offcanvas-body">
-                <nav>
-                    <a class="nav-link text-white" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
-                    <a class="nav-link text-white" asp-controller="UserManagement" asp-action="Details" asp-route-userId="@UserManager.GetUserId(User)">Account Details</a>
-                    <a class="nav-link text-white" asp-controller="AnnualLeave" asp-action="Index">Book Time Off</a>
-                    <a class="nav-link text-white" asp-controller="Goal" asp-action="Index">Goals</a>
-                    <a class="nav-link text-white" asp-controller="Company" asp-action="Details" asp-route-companyReference="@companyReferenceClaim">Company Details</a>
-                </nav>
-            </div>
-        </div>
-
-        <div id="main-content-container">
+        <div @(authenticationPaths.Contains(path) ? "" : "id=main-content-container")>
             <main role="main">
                 @RenderBody()
             </main>
