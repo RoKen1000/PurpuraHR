@@ -1,11 +1,9 @@
 ﻿@page
 @model RegisterModel
 
-<h1>@ViewData["Title"]</h1>
-
 <div class="row" id="register-container">
     <form id="register-form" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-        <h2>Create a new account.</h2>
+        <h2 style="text-align: center;">Create a new account.</h2>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
         <div class="form-floating mb-3">
@@ -87,7 +85,7 @@
             <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
         </div>
 
-        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-success">Register</button>
     </form>
 </div>
 
