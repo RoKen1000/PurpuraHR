@@ -68,10 +68,29 @@
         {
             <nav id="side-nav">
                 <hr/>
-                <a class="nav-link" href="@($"/usermanagement/details/{UserManager.GetUserId(User)}")">Account Details</a>
-                <a class="nav-link" href="/annualleave/index">Book Time Off</a>
-                <a class="nav-link" href="/goal/index">Goals</a>
-                <a class="nav-link" href="@companyDetailsHref">Company Details</a>
+                @if (Context.Request.Path != "/Home/Dashboard")
+                {
+                    <a class="navigation-links" href="/home/dashboard">
+                        <i class="bi bi-stack"></i>
+                        <span>Dashboard</span>
+                    </a>
+                }
+                <a class="navigation-links" href="@($"/usermanagement/details/{UserManager.GetUserId(User)}")">
+                    <i class="bi bi-person-gear"></i>
+                    <span>Account Details</span>
+                </a>
+                <a class="navigation-links" href="/annualleave/index">
+                    <i class="bi bi-calendar-check"></i>
+                    <span>Book Time Off</span>
+                </a>
+                <a class="navigation-links" href="/goal/index">
+                    <i class="bi bi-trophy"></i>
+                    <span>Goals</span>
+                </a>
+                <a class="navigation-links" href="@companyDetailsHref">
+                    <i class="bi bi-building-fill"></i>
+                    <span>Company Details</span>
+                </a>
             </nav>
 
             <div id="header-buffer"></div>
@@ -89,12 +108,30 @@
                 </div>
 
                 <div class="offcanvas-body">
-                    <nav>
-                        <a class="nav-link text-white" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
-                        <a class="nav-link text-white" asp-controller="UserManagement" asp-action="Details" asp-route-userId="@UserManager.GetUserId(User)">Account Details</a>
-                        <a class="nav-link text-white" asp-controller="AnnualLeave" asp-action="Index">Book Time Off</a>
-                        <a class="nav-link text-white" asp-controller="Goal" asp-action="Index">Goals</a>
-                        <a class="nav-link text-white" asp-controller="Company" asp-action="Details" asp-route-companyReference="@companyReferenceClaim">Company Details</a>
+                    <nav id="mobile-nav">
+                        @if (Context.Request.Path != "/Home/Dashboard")
+                        {
+                            <a class="navigation-links" href="/home/dashboard">
+                                <i class="bi bi-stack"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        }
+                        <a class="navigation-links" href="@($"/usermanagement/details/{UserManager.GetUserId(User)}")">
+                            <i class="bi bi-person-gear"></i>
+                            <span>Account Details</span>
+                        </a>
+                        <a class="navigation-links" href="/annualleave/index">
+                            <i class="bi bi-calendar-check"></i>
+                            <span>Book Time Off</span>
+                        </a>
+                        <a class="navigation-links" href="/goal/index">
+                            <i class="bi bi-trophy"></i>
+                            <span>Goals</span>
+                        </a>
+                        <a class="navigation-links" href="@companyDetailsHref">
+                            <i class="bi bi-building-fill"></i>
+                            <span>Company Details</span>
+                        </a>
                     </nav>
                 </div>
             </div>
