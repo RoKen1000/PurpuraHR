@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject UserManager<IdentityUser> UserManager;
+@inject SignInManager<IdentityUser> SignInManager
 
 @{
     var path = ViewContext.RouteData.Values["page"] as string;
@@ -47,6 +48,17 @@
     {
         <header>
             <h4><strong>Purpura HR</strong></h4>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                var loggedInAsString = $"Logged in as {User.FindFirst("Name")?.Value}";
+
+                <div id="header-profile-container">
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout">
+                        <button id="logout" type="submit" class="nav-link btn btn-link text-white">Logout</button>
+                    </form>
+                    <i data-bs-toggle="tooltip" data-bs-title="@loggedInAsString" class="bi bi-person-circle"></i>
+                </div>
+            }
         </header>
     }
 
@@ -55,7 +67,6 @@
         @if (!authenticationPaths.Contains(path))
         {
             <nav id="side-nav">
-                <a id="site-name" class="text-white" href="/home/dashboard"><strong>Purpura HR</strong></a>
                 <hr/>
                 <a class="nav-link" href="@($"/usermanagement/details/{UserManager.GetUserId(User)}")">Account Details</a>
                 <a class="nav-link" href="/annualleave/index">Book Time Off</a>

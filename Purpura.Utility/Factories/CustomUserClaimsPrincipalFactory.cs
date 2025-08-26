@@ -35,18 +35,24 @@ namespace Purpura.Utility.Factories
             }
             else
             {
+                var identityClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
+                var applicationUserEntity = await _userManagementService.GetUserEntityByIdAsync(identityClaim.Value);
+                var nameClaim = identity.FindFirst("Name");
                 var companyClaim = identity.FindFirst("CompanyReference");
 
                 if(companyClaim == null)
                 {
-                    var identityClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
-                    var appicationUserEntity = await _userManagementService.GetUserEntityByIdAsync(identityClaim.Value);
-
-                    if(appicationUserEntity != null && (appicationUserEntity.CompanyId != null && appicationUserEntity.CompanyId > 0))
+                    if (applicationUserEntity != null && (applicationUserEntity.CompanyId != null && applicationUserEntity.CompanyId > 0))
                     {
-                        var companyExternalReference = await _companyService.GetExternalReferenceByIdAsync((int)appicationUserEntity.CompanyId);
+                        var companyExternalReference = await _companyService.GetExternalReferenceByIdAsync((int)applicationUserEntity.CompanyId);
                         identity.AddClaim(new Claim("CompanyReference", companyExternalReference));
                     }
+                }
+
+                if (applicationUserEntity != null && nameClaim == null)
+                {
+                    var nameString = applicationUserEntity.MiddleName != null ? $"{applicationUserEntity.FirstName} {applicationUserEntity.MiddleName} {applicationUserEntity.LastName}" : $"{applicationUserEntity.FirstName} {applicationUserEntity.LastName}";
+                    identity.AddClaim(new Claim("Name", nameString));
                 }
             }
 
