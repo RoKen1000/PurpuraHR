@@ -77,11 +77,11 @@ header h4{
 
 #side-nav {
     height: 100%;
+    top: 50px;
     width: 160px;
     position: fixed;
     z-index: 1;
     background-color: mediumpurple;
-    overflow-x: hidden;
 }
 
 #side-nav a:not(#site-name) {
@@ -201,6 +201,19 @@ header h4{
 
     header h4 {
         padding-left: 1rem;
+    }
+
+    #header-buffer {
+        height: 4.5rem;
+    }
+
+    #button-container {
+        height: 0;
+    }
+
+    header {
+        position: fixed;
+        z-index: 2;
     }
 }
 

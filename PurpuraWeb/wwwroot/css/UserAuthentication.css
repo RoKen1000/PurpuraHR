@@ -36,15 +36,18 @@
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
+    box-shadow: 0 2px 8px 0 grey;
+    width: 24rem;
+}
+
+#logout-container p, h1 {
+    text-align: center;
 }
 
 @media screen and (min-width: 500px) {
-    #login-container {
+    #login-container, #logout-container {
         width: auto;
         max-width: 30rem;
-    }
-    #logout-container {
-        margin-top: 280px;
     }
 }
 
@@ -52,6 +55,7 @@
     #login-container {
         margin-top: 250px;
     }
+
     #logout-container {
         margin-top: 320px;
     }
