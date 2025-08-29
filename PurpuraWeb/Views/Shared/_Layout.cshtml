@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject UserManager<IdentityUser> UserManager;
+@inject SignInManager<IdentityUser> SignInManager
 
 @{
     var path = ViewContext.RouteData.Values["page"] as string;
@@ -43,50 +44,100 @@
 </head>
 <body style="@(authenticationPaths.Contains(path) ? "background: linear-gradient(white, mediumpurple);" : "")">
 
-    <header>
-        <h4><strong>Purpura HR</strong></h4>
-    </header>
+    @if (!authenticationPaths.Contains(path))
+    {
+        <header>
+            <h4><strong>Purpura HR</strong></h4>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                var loggedInAsString = $"Logged in as {User.FindFirst("Name")?.Value}";
+
+                <div id="header-profile-container">
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout">
+                        <button id="logout" type="submit" class="nav-link btn btn-link text-white">Logout</button>
+                    </form>
+                    <i data-bs-toggle="tooltip" data-bs-title="@loggedInAsString" class="bi bi-person-circle"></i>
+                </div>
+            }
+        </header>
+    }
 
     <div id="page-container">
 
         @if (!authenticationPaths.Contains(path))
         {
             <nav id="side-nav">
-                <a id="site-name" class="text-white" href="/home/dashboard"><strong>Purpura HR</strong></a>
                 <hr/>
-                <a class="nav-link" href="@($"/usermanagement/details/{UserManager.GetUserId(User)}")">Account Details</a>
-                <a class="nav-link" href="/annualleave/index">Book Time Off</a>
-                <a class="nav-link" href="/goal/index">Goals</a>
-                <a class="nav-link" href="@companyDetailsHref">Company Details</a>
+                @if (Context.Request.Path != "/Home/Dashboard")
+                {
+                    <a class="navigation-links" href="/home/dashboard">
+                        <i class="bi bi-stack"></i>
+                        <span>Dashboard</span>
+                    </a>
+                }
+                <a class="navigation-links" href="@($"/usermanagement/details/{UserManager.GetUserId(User)}")">
+                    <i class="bi bi-person-fill-gear"></i>
+                    <span>Account Details</span>
+                </a>
+                <a class="navigation-links" href="/annualleave/index">
+                    <i class="bi bi-calendar-check-fill"></i>
+                    <span>Book Time Off</span>
+                </a>
+                <a class="navigation-links" href="/goal/index">
+                    <i class="bi bi-trophy-fill"></i>
+                    <span>Goals</span>
+                </a>
+                <a class="navigation-links" href="@companyDetailsHref">
+                    <i class="bi bi-building-fill"></i>
+                    <span>Company Details</span>
+                </a>
             </nav>
+
+            <div id="header-buffer"></div>
+
+            <div id="button-container">
+                <button class="btn" type="button" id="mobile-menu-toggle" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-nav" >
+                    <i class="bi bi-list h1"></i>
+                </button>
+            </div>
+
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas-nav" aria-labelledby="offcanvasExampleLabel">
+
+                <div class="offcanvas-header">
+                    <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+
+                <div class="offcanvas-body">
+                    <nav id="mobile-nav">
+                        @if (Context.Request.Path != "/Home/Dashboard")
+                        {
+                            <a class="navigation-links" href="/home/dashboard">
+                                <i class="bi bi-stack"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        }
+                        <a class="navigation-links" href="@($"/usermanagement/details/{UserManager.GetUserId(User)}")">
+                            <i class="bi bi-person-fill-gear"></i>
+                            <span>Account Details</span>
+                        </a>
+                        <a class="navigation-links" href="/annualleave/index">
+                            <i class="bi bi-calendar-check-fill"></i>
+                            <span>Book Time Off</span>
+                        </a>
+                        <a class="navigation-links" href="/goal/index">
+                            <i class="bi bi-trophy-fill"></i>
+                            <span>Goals</span>
+                        </a>
+                        <a class="navigation-links" href="@companyDetailsHref">
+                            <i class="bi bi-building-fill"></i>
+                            <span>Company Details</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
         }
 
-        <div id="header-buffer"></div>
-
-        <div id="button-container">
-            <button class="btn" type="button" id="mobile-menu-toggle" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-nav" >
-                <i class="bi bi-list h1"></i>
-            </button>
-        </div>
-
-        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas-nav" aria-labelledby="offcanvasExampleLabel">
-
-            <div class="offcanvas-header">
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-
-            <div class="offcanvas-body">
-                <nav>
-                    <a class="nav-link text-white" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
-                    <a class="nav-link text-white" asp-controller="UserManagement" asp-action="Details" asp-route-userId="@UserManager.GetUserId(User)">Account Details</a>
-                    <a class="nav-link text-white" asp-controller="AnnualLeave" asp-action="Index">Book Time Off</a>
-                    <a class="nav-link text-white" asp-controller="Goal" asp-action="Index">Goals</a>
-                    <a class="nav-link text-white" asp-controller="Company" asp-action="Details" asp-route-companyReference="@companyReferenceClaim">Company Details</a>
-                </nav>
-            </div>
-        </div>
-
-        <div id="main-content-container">
+        <div @(authenticationPaths.Contains(path) ? "" : "id=main-content-container")>
             <main role="main">
                 @RenderBody()
             </main>

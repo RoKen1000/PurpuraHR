@@ -6,11 +6,11 @@
 
 
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  background-color: ghostwhite;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    background-color: ghostwhite;
 }
 
 #page-container {
@@ -40,20 +40,20 @@
 }
 
 footer {
-    padding-left: 160px;
+    padding-left: 200px;
 }
 
 
 
 header{
-    width: 0;
-    height: 0;
     position: sticky;
     text-align: right;
     width: 100%;
     background-color: mediumpurple;
     z-index: 1;
-    visibility: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 header h4{
@@ -62,16 +62,26 @@ header h4{
     margin: 0;
 }
 
+#header-profile-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#header-profile-container i{
+    color: white;
+    font-size: x-large;
+    margin-right: 1rem;
+}
 
 
 #side-nav {
     height: 100%;
-    width: 160px;
+    top: 50px;
+    width: 200px;
     position: fixed;
     z-index: 1;
-    background-color: mediumpurple;
-    overflow-x: hidden;
-    padding-top: 20px;
+    background-color: #232323;
 }
 
 #side-nav a:not(#site-name) {
@@ -111,8 +121,8 @@ header h4{
     border-radius: 20px;
 }
 
-#offcanvas-nav{
-    background-color: mediumpurple;
+#offcanvas-nav {
+    background-color: #232323;
 }
 
 #site-name-mobile {
@@ -132,7 +142,7 @@ header h4{
 }
 
 
-main{
+#main-content-container main {
     background-color: white;
     border-radius: 5px;
     padding: 20px;
@@ -141,12 +151,48 @@ main{
 }
 
 
+#side-nav .navigation-links {
+    text-decoration: none;
+    margin: 0 auto 0 auto !important;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+}
+
+#side-nav .navigation-links i {
+    color: mediumpurple;
+    padding: 0 0.5rem 0 0.5rem;
+}
+
+#mobile-nav .navigation-links {
+    text-decoration: none;
+    margin: 0 auto 0 auto !important;
+    display: flex;
+    align-items: center;
+    padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+    color: white;
+    font-size: large;
+}
+
+#mobile-nav .navigation-links i {
+    color: mediumpurple;
+    padding: 0 1rem 0 1rem;
+}
+
+
+
 @media screen and (max-width: 768px) {
     #side-nav{
         width:0;
         position: center;
     }
-    footer{
+
+    #side-nav .navigation-links{
+        display: none;
+    }
+
+    footer {
         padding-left: 10px;
     }
     #button-container{
@@ -168,7 +214,6 @@ main{
     }
 
     header {
-        visibility: visible;
         width: 100%;
         height: 100%;
     }
@@ -181,9 +226,30 @@ main{
     #mobile-menu-toggle {
         visibility: hidden;
     }
-    main{
-        margin-left: 160px;
+
+    #main-content-container main {
+        margin-left: 200px;
     }
-   
+
+    #header-profile-container i{
+        font-size: xx-large;
+    }
+
+    header h4 {
+        padding-left: 2.5rem;
+    }
+
+    #header-buffer {
+        height: 4.5rem;
+    }
+
+    #button-container {
+        height: 0;
+    }
+
+    header {
+        position: fixed;
+        z-index: 2;
+    }
 }
 
