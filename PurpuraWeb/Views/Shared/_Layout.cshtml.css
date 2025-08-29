@@ -81,7 +81,7 @@ header h4{
     width: 200px;
     position: fixed;
     z-index: 1;
-    background-color: mediumpurple;
+    background-color: #232323;
 }
 
 #side-nav a:not(#site-name) {
@@ -121,8 +121,8 @@ header h4{
     border-radius: 20px;
 }
 
-#offcanvas-nav{
-    background-color: mediumpurple;
+#offcanvas-nav {
+    background-color: #232323;
 }
 
 #site-name-mobile {
@@ -161,7 +161,7 @@ header h4{
 }
 
 #side-nav .navigation-links i {
-    color: white;
+    color: mediumpurple;
     padding: 0 0.5rem 0 0.5rem;
 }
 
@@ -176,7 +176,7 @@ header h4{
 }
 
 #mobile-nav .navigation-links i {
-    color: white;
+    color: mediumpurple;
     padding: 0 1rem 0 1rem;
 }
 
