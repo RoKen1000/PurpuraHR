@@ -1,9 +1,9 @@
 ﻿@model ApplicationUserViewModel;
 
 <div class="user-management-content">
-    <h1>Edit User Details</h1>
+    <h1 class="form-title">Edit User Details</h1>
 
-    <form method="post" asp-controller="UserManagement" asp-action="Edit">
+    <form method="post" class="post-forms" asp-controller="UserManagement" asp-action="Edit">
         <div class="form-floating mb-3">
             <select class="form-select" asp-for="@Model.Title" asp-items="@Model.TitleList" name="Title"></select>
             <label asp-for="@Model.Title">Title</label>
@@ -75,8 +75,8 @@
         </div>
 
         <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-success">Edit Details</button>
-            <a class="btn btn-secondary" asp-controller="UserManagement" asp-action="Details" asp-route-userId="@Model.Id">Cancel</a>
+            <a class="btn btn-secondary" asp-controller="UserManagement" asp-action="Details" asp-route-userId="@Model.Id"><i class="bi bi-x button-icons"></i>Cancel</a>
+            <button type="submit" class="btn btn-success"><i class="bi bi-pencil-square button-icons"></i>Submit</button>
         </div>
 
         <input type="hidden" value="@Model.Id" name="Id" />

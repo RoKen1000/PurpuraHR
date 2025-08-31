@@ -10,8 +10,11 @@
         <dt>First Name</dt>
         <dd>@Model.FirstName</dd>
 
-        <dt>Middle Name(s)</dt>
-        <dd>@Model.MiddleName</dd>
+        @if (!string.IsNullOrEmpty(Model.MiddleName))
+        {
+            <dt>Middle Name(s)</dt>
+            <dd>@Model.MiddleName</dd>
+        }
 
         <dt>Last Name</dt>
         <dd>@Model.LastName</dd>
