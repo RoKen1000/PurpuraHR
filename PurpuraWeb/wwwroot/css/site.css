@@ -77,4 +77,8 @@ body {
     .post-forms {
         width: 60%;
     }
+
+    .form-title{
+        text-align: left;
+    }
 }
