@@ -6,7 +6,7 @@ using Purpura.Abstractions.RepositoryInterfaces;
 using Purpura.Abstractions.ServiceInterfaces;
 using Purpura.Common.Results;
 using Purpura.MappingProfiles;
-using Purpura.Repositories;
+using Purpura.Models.ViewModels;
 using Purpura.Services;
 using PurpuraWeb.Models.Entities;
 using System.Linq.Expressions;
@@ -188,9 +188,100 @@ namespace Purpura.Tests.ServiceTests
         }
 
         [Fact]
-        public async Task UpdateUser_()
+        public async Task UpdateUser_NoUserFound_ReturnsFailureResult()
         {
             //arrange
+            _userManagementRepositoryMock.Setup(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
+                .ReturnsAsync((ApplicationUser?)null);
+
+            //act
+            var result = await _userManagementService.UpdateUser(new Models.ViewModels.ApplicationUserViewModel());
+
+            //assert
+            Assert.False(result.IsSuccess);
+            Assert.NotNull(result.Error);
+            Assert.Equal("User not found.", result.Error);
+            _userManagementRepositoryMock.Verify(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task UpdateUser_UserFoundAndUpdated_ReturnsSuccessResult()
+        {
+            //arrange
+            _userManagementRepositoryMock.Setup(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
+                .ReturnsAsync(new ApplicationUser());
+            _unitOfWorkMock.Setup(a => a.SaveChangesAsync())
+                .ReturnsAsync(Result.Success);
+
+            //act
+            var result = await _userManagementService.UpdateUser(new Models.ViewModels.ApplicationUserViewModel());
+
+            //assert
+            Assert.True(result.IsSuccess);
+            Assert.Null(result.Error);
+            _userManagementRepositoryMock.Verify(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetUserEntityByIdAsync_UserNotFound_ReturnsNull()
+        {
+            //arrange
+            _userManagementRepositoryMock.Setup(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
+                .ReturnsAsync((ApplicationUser?)null);
+
+            //act
+            var result = await _userManagementService.GetUserEntityByIdAsync(Guid.NewGuid().ToString());
+
+            //assert
+            Assert.Null(result);
+            _userManagementRepositoryMock.Verify(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetUserEntityByIdAsync_UserFound_ReturnsUser()
+        {
+            //arrange
+            _userManagementRepositoryMock.Setup(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
+                .ReturnsAsync(new ApplicationUser());
+
+            //act
+            var result = await _userManagementService.GetUserEntityByIdAsync(Guid.NewGuid().ToString());
+
+            //assert
+            Assert.NotNull(result);
+            Assert.IsType<ApplicationUser>(result);
+            _userManagementRepositoryMock.Verify(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetUserViewModelByIdAsync_UserNotFound_ReturnsNull()
+        {
+            //arrange
+            _userManagementRepositoryMock.Setup(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
+                .ReturnsAsync((ApplicationUser?)null);
+
+            //act
+            var result = await _userManagementService.GetUserViewModelByIdAsync(Guid.NewGuid().ToString());
+
+            //assert
+            Assert.Null(result);
+            _userManagementRepositoryMock.Verify(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetUserViewModelByIdAsync_UserFound_ReturnsUserViewModel()
+        {
+            //arrange
+            _userManagementRepositoryMock.Setup(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
+                .ReturnsAsync(new ApplicationUser());
+
+            //act
+            var result = await _userManagementService.GetUserViewModelByIdAsync(Guid.NewGuid().ToString());
+
+            //assert
+            Assert.NotNull(result);
+            Assert.IsType<ApplicationUserViewModel>(result);
+            _userManagementRepositoryMock.Verify(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()), Times.Once);
         }
     }
 }

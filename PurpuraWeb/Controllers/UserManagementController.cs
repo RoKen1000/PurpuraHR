@@ -51,9 +51,14 @@ namespace PurpuraWeb.Controllers
             {
                 viewModel.Address = AddressHelpers.ConstructAddressString(new string[4] { viewModel.AddressLine1, viewModel.AddressLine2, viewModel.AddressLine3, viewModel.Postcode });
 
-                await _userManagementService.UpdateUser(viewModel);
+                var result = await _userManagementService.UpdateUser(viewModel);
 
-                return RedirectToAction($"Details", new { userId = viewModel.Id });
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction($"Details", new { userId = viewModel.Id });
+                }
+
+                viewModel.Result = result;
             }
 
             viewModel.GenderList = EnumHelpers.GenerateGenderSelectList();

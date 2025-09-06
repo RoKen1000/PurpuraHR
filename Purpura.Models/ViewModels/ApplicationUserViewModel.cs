@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Purpura.Models.ViewModels
 {
-    public class ApplicationUserViewModel
+    public class ApplicationUserViewModel : BaseViewModel
     {
         public string Id { get; set; }
         [Required]
