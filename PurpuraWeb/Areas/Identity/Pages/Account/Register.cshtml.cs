@@ -160,7 +160,7 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/Home/Index");
+            returnUrl ??= Url.Content("~/Home/Dashboard");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             this.Input.Address = AddressHelpers.ConstructAddressString(new string[4] {this.Input.AddressLine1, this.Input.AddressLine2, this.Input.AddressLine3, this.Input.PostCode});

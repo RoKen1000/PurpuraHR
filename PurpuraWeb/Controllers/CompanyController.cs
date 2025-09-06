@@ -11,12 +11,14 @@ namespace PurpuraWeb.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ICompanyService _companyService;
         private readonly IUserManagementService _userManagementService;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public CompanyController(UserManager<IdentityUser> userManager, ICompanyService companyService, IUserManagementService userManagementService)
+        public CompanyController(UserManager<IdentityUser> userManager, ICompanyService companyService, IUserManagementService userManagementService, SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _companyService = companyService;
             _userManagementService = userManagementService;
+            _signInManager = signInManager;
         }
 
         public async Task<IActionResult> Details(string? companyReference)
@@ -54,7 +56,7 @@ namespace PurpuraWeb.Controllers
                 if (result.IsSuccess)
                 {
                     //if successful then add claim for company id
-                    var user = await _userManagementService.GetUser(u => u.Id == _userManager.GetUserId(User));
+                    var user = await _userManagementService.GetUserEntityByIdAsync(_userManager.GetUserId(User));
 
                     if (user != null)
                     {
@@ -62,7 +64,8 @@ namespace PurpuraWeb.Controllers
 
                         if (claimResult.IsSuccess)
                         {
-                            return RedirectToAction("Details", new { companyReference = result.Data });
+                            await _signInManager.RefreshSignInAsync(user);
+                            return RedirectToAction("Details", new { companyReference = result.DataList.ElementAt(0) });
                         }
                     }
                 }

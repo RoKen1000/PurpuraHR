@@ -14,7 +14,7 @@
 
     var companyDetailsHref = "/company/details";
     var companyReferenceClaim = User.FindFirst("CompanyReference")?.Value;
-
+                                              
     if(companyReferenceClaim != null)
     {
         companyDetailsHref += $"?companyReference={companyReferenceClaim}";
