@@ -8,7 +8,7 @@ namespace Purpura.Abstractions.ServiceInterfaces
     public interface IUserManagementService
     {
         Task<ApplicationUserViewModel?> GetUser(Expression<Func<ApplicationUser, bool>> filter);
-        Task UpdateUser(ApplicationUserViewModel user);
+        Task<Result> UpdateUser(ApplicationUserViewModel user);
         Task<Result> AddUserCompanyReferenceClaimAsync(string userId, string companyReference, string companyId);
         Task<ApplicationUser?> GetUserEntityByIdAsync(string id);
         Task<ApplicationUserViewModel?> GetUserViewModelByIdAsync(string id);

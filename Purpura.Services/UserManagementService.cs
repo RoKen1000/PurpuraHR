@@ -74,7 +74,7 @@ namespace Purpura.Services
             return await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task UpdateUser(ApplicationUserViewModel userViewModel)
+        public async Task<Result> UpdateUser(ApplicationUserViewModel userViewModel)
         {
             var userEntity = await _unitOfWork.UserManagementRepository.GetSingleAsync(u => u.Id == userViewModel.Id);
 
@@ -85,24 +85,15 @@ namespace Purpura.Services
 
                 _unitOfWork.UserManagementRepository.Update(userEntity);
 
-                await _unitOfWork.SaveChangesAsync();
-
-                return;
+                return await _unitOfWork.SaveChangesAsync();
             }
 
-            throw new NullReferenceException();
+            return Result.Failure("User not found.");
         }
 
         public async Task<ApplicationUser?> GetUserEntityByIdAsync(string id)
         {
-            var user = await _unitOfWork.UserManagementRepository.GetSingleAsync(u => u.Id == id);
-
-            if(user == null)
-            {
-                return null;
-            }
-
-            return user;
+            return await _unitOfWork.UserManagementRepository.GetSingleAsync(u => u.Id == id);
         }
 
         public async Task<ApplicationUserViewModel?> GetUserViewModelByIdAsync(string id)
