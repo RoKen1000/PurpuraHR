@@ -54,31 +54,9 @@ namespace Purpura.DataAccess.DataContext
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
-            var preseededUserWithNoData = new ApplicationUser
-            {
-                Id = Guid.NewGuid().ToString(),
-                FirstName = "John",
-                LastName = "Doe",
-                DateOfBirth = predefinedDate,
-                Address = "456 Some Flat, Some Building, London, EFG 456",
-                Gender = Common.Enums.Genders.Unknown,
-                Title = Common.Enums.Titles.Unknown,
-                AnnualLeaveDays = 28,
-                DateCreated = predefinedDate,
-                Email = "john@testuser.com",
-                UserName = "john@testuser.com",
-                NormalizedEmail = "JOHN@TESTUSER.COM",
-                PhoneNumber = "123456789",
-                ConcurrencyStamp = Guid.NewGuid().ToString("N"),
-                LockoutEnabled = true,
-                NormalizedUserName = "JOHN@TESTUSER.COM",
-                SecurityStamp = Guid.NewGuid().ToString()
-            };
-
             preseededUser.PasswordHash = hasher.HashPassword(preseededUser, "Test123!");
-            preseededUserWithNoData.PasswordHash = hasher.HashPassword(preseededUserWithNoData, "Test123!");
 
-            modelBuilder.Entity<ApplicationUser>().HasData(preseededUser, preseededUserWithNoData);
+            modelBuilder.Entity<ApplicationUser>().HasData(preseededUser);
 
             modelBuilder.Entity<CompanyEmployee>().HasData(
                 new CompanyEmployee { Id = 1, FirstName = "Allan", LastName="Johnson", CompanyId = 1, JobTitle = "Chief Executive Officer", ExternalReference = Guid.NewGuid().ToString(), DateCreated = predefinedDate },
