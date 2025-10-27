@@ -44,7 +44,7 @@ else
 
         <div id="dashboard-annual-leave-section">
             @{
-                var leaveCountMessage = 28 - Model.AnnualLeaveRemaining > 0 ? $"You currently have {28 - Model.AnnualLeaveRemaining} days of annual leave to take." : "You currently have no more leave to take.";
+                var leaveCountMessage = 28 - Model.AnnualLeaveRemaining > 0 ? $"You currently have {Model.AnnualLeaveRemaining} days of annual leave to take." : "You currently have no more leave to take.";
             }
             <h3>@leaveCountMessage</h3>
             @if (Model.AnnualLeave.Any(al => al.StartDate > DateTime.Now))
