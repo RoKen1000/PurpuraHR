@@ -13,7 +13,8 @@ This project uses the following:
 - SQL Server
 - Entity Framework Core
 - AutoMapper
-- Moq for unit testing
+- xUnit
+- Moq
 - HTML
 - CSS
 
