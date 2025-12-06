@@ -17,7 +17,7 @@ This project uses the following:
 - HTML
 - CSS
 
-The project uses N-Tier architecture to separate the project into tiers and Repository Design Pattern using Unit Of Work to encapsulate database CRUD operations. All services have had unit tests written for them to make sure that the essential business logic is sound and bug-free. Most of the user registration system was set up using .NET's scaffolding system but has been further tailored for this project's use. The styling has been created with desktop, tablet and mobile views in mind and will responsively change depending on the viewport size.
+The project uses N-Tier architecture to separate the project into tiers and Repository Design Pattern using Unit Of Work to encapsulate database CRUD operations. All services have had unit tests written for them to make sure that the essential business logic is sound and bug-free. Most of the user registration system was set up using .NET's scaffolding system but has been further tailored for this project's use. The styling has been created with desktop, tablet and mobile views in mind and will responsively change depending on the viewport size. Authorisation measures are in place so that a user will be redirected to the login page if they try to access areas of the platform that require the user to be logged in and authenticated.
 
 ## Setup
 This project has been built with .NET version 8, so the .NET Software Development Kit will be required to run the project.
