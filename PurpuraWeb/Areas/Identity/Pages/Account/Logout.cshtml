@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/Logout"
 @model LogoutModel
 @{
     ViewData["Title"] = "Log out";
@@ -9,5 +9,5 @@
     <hr style="width: 100%;" />
     <p>You have successfully logged out of the application.</p>
 
-    <p><a href="/Identity/Account/Login" asp-asp-page="/Account/Login"> Click here to log in again.</a></p>
+    <p><a href="/Account/Login" asp-asp-page="/Account/Login"> Click here to log in again.</a></p>
 </div>

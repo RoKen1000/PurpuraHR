@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Purpura.Abstractions.ServiceInterfaces;
@@ -30,6 +31,7 @@ namespace PurpuraWeb.Controllers
             _goalService = goalService;
         }
 
+        [AllowAnonymous]
         public IActionResult Login()
         {
             if (User.Identity.IsAuthenticated)
@@ -37,7 +39,7 @@ namespace PurpuraWeb.Controllers
                 return RedirectToAction("Dashboard");
             }
 
-            return Redirect("/Identity/Account/Login");
+            return Redirect("/Account/Login");
         }
 
         public async Task<IActionResult> Dashboard()
