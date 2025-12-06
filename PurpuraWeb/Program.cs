@@ -9,6 +9,7 @@ using Purpura.Services;
 using Purpura.Utility.Factories;
 using Purpura.Abstractions.RepositoryInterfaces;
 using Purpura.Abstractions.ServiceInterfaces;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,19 +25,33 @@ builder.Services.AddDbContext<PurpuraDbContext>(
     );
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<PurpuraDbContext>().AddDefaultTokenProviders();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+});
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+});
+
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<IdentityUser>, CustomUserClaimsPrincipalFactory>();
 builder.Services.AddHttpContextAccessor();
 
+#region Repositories
 builder.Services.AddScoped<IUserManagementRepository, UserManagementRepository>();
 builder.Services.AddScoped<IAnnualLeaveRepository, AnnualLeaveRepository>();
 builder.Services.AddScoped<IGoalRepository, GoalRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+#endregion
 
+#region Services
 builder.Services.AddScoped<IAnnualLeaveService, AnnualLeaveService>();
 builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 builder.Services.AddScoped<IGoalService, GoalService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
+#endregion
+
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -52,13 +67,13 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseRouting();
 app.UseAuthentication();
+app.UseRouting();
 app.UseAuthorization();
 app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Login}/{id?}");
+    pattern: "{controller=Home}/{action=Login}");
 
 app.Run();
