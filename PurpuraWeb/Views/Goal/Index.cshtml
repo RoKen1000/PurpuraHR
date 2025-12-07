@@ -3,6 +3,8 @@
 
 @if (Model.Goals.Any())
 {
+    var uneevenGoalCount = Model.Goals.Count % 2 > 0;
+
     <h1 class="page-heading">Goals</h1>
 
     <a asp-controller="Goal" asp-action="Create" class="btn btn-purpura mb-3 mt-3" id="create-goal-button-with-goals"><i class="bi bi-plus-lg button-icons"></i>Create New Goal</a>
@@ -21,7 +23,7 @@
 
                 var barPercentageStyle = $"style=width:{goal.PercentageComplete}%";
 
-                <div class="card goal-cards mb-3 mb-xs-3 m-md-2">
+                <div class="card goal-cards mb-3 mb-xs-3 m-md-2" @(uneevenGoalCount && goal == Model.Goals.Last() ? "id=last-card" : "")>
                     <div class="card-header">
                         <i class="bi bi-trophy"></i> @goal.Name
                     </div>
