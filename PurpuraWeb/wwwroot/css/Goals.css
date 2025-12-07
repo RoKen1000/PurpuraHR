@@ -4,6 +4,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    max-width: 1999px;
 }
 
 .goal-cards {
@@ -76,11 +77,5 @@
 
     .goal-cards {
         max-width: 650px;
-    }
-}
-
-@media screen and (min-width: 1604px) { /*breakpoint for showing cards in two rows*/
-    #last-card {
-        margin-left: 21.5rem !important;
     }
 }
