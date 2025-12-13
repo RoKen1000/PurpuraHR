@@ -9,6 +9,11 @@
     flex-grow: 0;
 }
 
+#building-error-icon-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
 
 .employee-cards {
     margin: 1rem;
@@ -21,7 +26,7 @@
     box-shadow: 0 2px 8px 0 grey;
 }
 
-.employee-cards > i{
+.employee-cards > i, #building-error-icon-container i {
     font-size: 6rem;
 }
 

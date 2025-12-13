@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Purpura.Abstractions.ServiceInterfaces;
 using Purpura.Models.ViewModels;
@@ -23,9 +24,13 @@ namespace PurpuraWeb.Controllers
 
         public async Task<IActionResult> Details(string? companyReference)
         {
-            if(companyReference == null)
+            if(companyReference == null && User.IsInRole("Manager"))
             {
                 return RedirectToAction("Create");
+            }
+            else if(companyReference == null && !User.IsInRole("Manager"))
+            {
+                return View(new CompanyViewModel { NotManagerAndNoCompany = true });
             }
 
             var companyViewModel = await _companyService.GetByExternalReferenceWithCompanyEmployeesAsync(companyReference);
@@ -38,6 +43,7 @@ namespace PurpuraWeb.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize(Roles = "Manager")]
         public IActionResult Create()
         {
             var viewModel = new CompanyViewModel();
@@ -47,6 +53,7 @@ namespace PurpuraWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create(CompanyViewModel viewModel)
         {
             if (ModelState.IsValid)
@@ -74,6 +81,7 @@ namespace PurpuraWeb.Controllers
             return View(viewModel);
         }
 
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(string reference)
         {
             var companyViewModel = await _companyService.GetByExternalReferenceAsync(reference);
@@ -88,6 +96,7 @@ namespace PurpuraWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(CompanyViewModel viewModel)
         {
             if (ModelState.IsValid)
