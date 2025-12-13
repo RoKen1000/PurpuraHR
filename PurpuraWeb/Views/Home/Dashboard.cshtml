@@ -16,7 +16,14 @@ else
         }
         else
         {
-            <h2>You are currently not assigned to a company. Contact a manager or create a new company from the Company Details page.</h2>
+            if (User.IsInRole("Manager"))
+            {
+                <h2>You are currently not assigned to a company. You can create a new company from the Company Details page.</h2>
+            }
+            else
+            {
+                <h2>You are currently not assigned to a company. Please contact your line Manager.</h2>
+            }
         }
     </div>
 

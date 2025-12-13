@@ -6,17 +6,20 @@ using System.Security.Claims;
 
 namespace Purpura.Utility.Factories
 {
-    public class CustomUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<IdentityUser>
+    public class CustomUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<IdentityUser, IdentityRole>
     {
         private readonly IUserManagementService _userManagementService;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public CustomUserClaimsPrincipalFactory(UserManager<IdentityUser> userManager, 
             IOptions<IdentityOptions> options,
-            IUserManagementService userManagementService) : base(userManager, options)
+            IUserManagementService userManagementService,
+            RoleManager<IdentityRole> roleManager) : base(userManager, roleManager, options)
         {
             _userManager = userManager;
             _userManagementService = userManagementService;
+            _roleManager = roleManager;
         }
 
         protected override async Task<ClaimsIdentity> GenerateClaimsAsync(IdentityUser user)
