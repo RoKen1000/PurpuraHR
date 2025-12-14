@@ -15,13 +15,15 @@ namespace PurpuraWeb.Controllers
         private readonly ICompanyService _companyService;
         private readonly IAnnualLeaveService _annualLeaveService;
         private readonly IGoalService _goalService;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
         public HomeController(ILogger<HomeController> logger,
             UserManager<IdentityUser> userManager,
             IUserManagementService userManagementService,
             ICompanyService companyService,
             IAnnualLeaveService annualLeaveService,
-            IGoalService goalService)
+            IGoalService goalService,
+            SignInManager<IdentityUser> signInManager)
         {
             _logger = logger;
             _userManager = userManager;
@@ -29,6 +31,7 @@ namespace PurpuraWeb.Controllers
             _companyService = companyService;
             _annualLeaveService = annualLeaveService;
             _goalService = goalService;
+            _signInManager = signInManager;
         }
 
         [AllowAnonymous]
@@ -51,10 +54,9 @@ namespace PurpuraWeb.Controllers
             {
                 viewModel.User = await _userManagementService.GetUserViewModelByIdAsync(_userManager.GetUserId(User));
 
-                var userClaims = await _userManager.GetClaimsAsync(user);
-                var companyClaim = userClaims.FirstOrDefault(c => c.Type == "CompanyReference");
+                var companyClaim = User.Claims.FirstOrDefault(c => c.Type == "CompanyReference");
 
-                if(companyClaim != null)
+                if (companyClaim != null)
                 {
                     viewModel.Company = await _companyService.GetByExternalReferenceAsync(companyClaim.Value);
                 }

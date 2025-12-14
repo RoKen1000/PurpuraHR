@@ -9,17 +9,16 @@ namespace Purpura.Utility.Factories
     public class CustomUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<IdentityUser, IdentityRole>
     {
         private readonly IUserManagementService _userManagementService;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ICompanyService _companyService;
 
         public CustomUserClaimsPrincipalFactory(UserManager<IdentityUser> userManager, 
             IOptions<IdentityOptions> options,
             IUserManagementService userManagementService,
-            RoleManager<IdentityRole> roleManager) : base(userManager, roleManager, options)
+            RoleManager<IdentityRole> roleManager,
+            ICompanyService companyService) : base(userManager, roleManager, options)
         {
-            _userManager = userManager;
             _userManagementService = userManagementService;
-            _roleManager = roleManager;
+            _companyService = companyService;
         }
 
         protected override async Task<ClaimsIdentity> GenerateClaimsAsync(IdentityUser user)
@@ -34,6 +33,18 @@ namespace Purpura.Utility.Factories
             {
                 var nameString = applicationUserEntity.MiddleName != null ? $"{applicationUserEntity.FirstName} {applicationUserEntity.MiddleName} {applicationUserEntity.LastName}" : $"{applicationUserEntity.FirstName} {applicationUserEntity.LastName}";
                 identity.AddClaim(new Claim("Name", nameString));
+            }
+
+            var companyRefClaim = identity.FindFirst("CompanyReference");
+
+            if(companyRefClaim == null && (applicationUserEntity != null && applicationUserEntity.CompanyId != null))
+            {
+                var companyRef = await _companyService.GetExternalReferenceByIdAsync((int)applicationUserEntity.CompanyId);
+
+                if (!string.IsNullOrEmpty(companyRef))
+                {
+                    identity.AddClaim(new Claim("CompanyReference", companyRef));
+                }
             }
 
             return identity;
