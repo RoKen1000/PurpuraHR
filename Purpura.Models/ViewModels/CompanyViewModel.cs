@@ -20,5 +20,6 @@ namespace Purpura.Models.ViewModels
         [StringLength(500)]
         public string Details { get; set; }
         public List<CompanyEmployeeViewModel> Employees { get; set; } = new();
+        public bool NotManagerAndNoCompany { get; set; }
     }
 }
