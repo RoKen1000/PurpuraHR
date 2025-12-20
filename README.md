@@ -31,9 +31,9 @@ Then open the folder using the code editor of your choice.
 
 Because this project uses Entity Framework Core and has several migrations in place, these will need to be seeded. This can be done by running `update-database` in the terminal (Package Manager Console if using Visual Studio). This will seed a user that has data already set up. The login details for this user are:
 
->Email: joe@testuser.com
+`Email: joe@testuser.com`
 
->Password: Test123!
+`Password: Test123!`
 
 If desired, a brand new user can register and login to start from scratch. 
 
