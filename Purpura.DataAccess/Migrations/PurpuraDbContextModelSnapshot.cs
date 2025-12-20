@@ -47,6 +47,14 @@ namespace Purpura.DataAccess.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "F9B314A8-3844-47B4-B9A5-CC3DB2DE35AE",
+                            Name = "Manager",
+                            NormalizedName = "MANAGER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -177,8 +185,8 @@ namespace Purpura.DataAccess.Migrations
                         {
                             Id = 1,
                             ClaimType = "CompanyReference",
-                            ClaimValue = "8ef56a7d-3680-4ade-a318-f622eed03e0f",
-                            UserId = "76e3fd12-3bfb-4b17-8e9c-d423bc4db479"
+                            ClaimValue = "0AFA8D32-5A1F-4B32-9429-452A59523B27",
+                            UserId = "18267BE3-DD54-45C4-8842-EEE2BAC13B3F"
                         });
                 });
 
@@ -217,6 +225,13 @@ namespace Purpura.DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "18267BE3-DD54-45C4-8842-EEE2BAC13B3F",
+                            RoleId = "F9B314A8-3844-47B4-B9A5-CC3DB2DE35AE"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -276,7 +291,7 @@ namespace Purpura.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AnnualLeave");
+                    b.ToTable("AnnualLeave", (string)null);
 
                     b.HasData(
                         new
@@ -284,10 +299,10 @@ namespace Purpura.DataAccess.Migrations
                             Id = 1,
                             DateCreated = new DateTime(2025, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndDate = new DateTime(2025, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ExternalReference = "7ee66d63-c023-464b-b9e6-843b3b572b7c",
+                            ExternalReference = "C06B1BA6-AB02-4B1D-A7D9-08F9A430844E",
                             StartDate = new DateTime(2025, 11, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = "76e3fd12-3bfb-4b17-8e9c-d423bc4db479"
+                            UserId = "18267BE3-DD54-45C4-8842-EEE2BAC13B3F"
                         },
                         new
                         {
@@ -295,10 +310,10 @@ namespace Purpura.DataAccess.Migrations
                             DateCreated = new DateTime(2025, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec augue a arcu aliquam consequat a sit amet ante. Nullam eget tincidunt ante. Donec sed malesuada nibh. Cras rhoncus auctor lorem, vel ullamcorper ipsum egestas in. Cras lobortis justo enim, sed vulputate magna sagittis ac. Ut imperdiet sapien sed ante posuere porta. Praesent ultricies sagittis venenatis. Suspendisse potenti. Nulla viverra, mi ac pellentesque fringilla, purus tortor blandit enim, non lacinia augue lacus et felis.",
                             EndDate = new DateTime(2025, 11, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ExternalReference = "5b7b7216-47e0-414c-9c1f-9b3f23e1864d",
+                            ExternalReference = "042005B1-AA6B-49CA-8AB5-32A291C3D2C4",
                             StartDate = new DateTime(2025, 12, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 4,
-                            UserId = "76e3fd12-3bfb-4b17-8e9c-d423bc4db479"
+                            UserId = "18267BE3-DD54-45C4-8842-EEE2BAC13B3F"
                         });
                 });
 
@@ -334,7 +349,7 @@ namespace Purpura.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies");
+                    b.ToTable("Companies", (string)null);
 
                     b.HasData(
                         new
@@ -343,7 +358,7 @@ namespace Purpura.DataAccess.Migrations
                             Address = "123 Some Street, Some Business Estate, London, ABC 123",
                             DateCreated = new DateTime(2025, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec augue a arcu aliquam consequat a sit amet ante. Nullam eget tincidunt ante. Donec sed malesuada nibh. Cras rhoncus auctor lorem, vel ullamcorper ipsum egestas in. Cras lobortis justo enim, sed vulputate magna sagittis ac. Ut imperdiet sapien sed ante posuere porta. Praesent ultricies sagittis venenatis. Suspendisse potenti. Nulla viverra, mi ac pellentesque fringilla, purus tortor blandit enim, non lacinia augue lacus et felis.",
-                            ExternalReference = "8ef56a7d-3680-4ade-a318-f622eed03e0f",
+                            ExternalReference = "0AFA8D32-5A1F-4B32-9429-452A59523B27",
                             Name = "JLB Finance"
                         });
                 });
@@ -388,7 +403,7 @@ namespace Purpura.DataAccess.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("CompanyEmployees");
+                    b.ToTable("CompanyEmployees", (string)null);
 
                     b.HasData(
                         new
@@ -396,7 +411,7 @@ namespace Purpura.DataAccess.Migrations
                             Id = 1,
                             CompanyId = 1,
                             DateCreated = new DateTime(2025, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ExternalReference = "d3a90eeb-f595-499e-9922-259a23415d1a",
+                            ExternalReference = "64B9D90F-FADC-461D-96B8-C9467AF44894",
                             FirstName = "Allan",
                             JobTitle = "Chief Executive Officer",
                             LastName = "Johnson"
@@ -406,7 +421,7 @@ namespace Purpura.DataAccess.Migrations
                             Id = 2,
                             CompanyId = 1,
                             DateCreated = new DateTime(2025, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ExternalReference = "fa51f9f1-d340-44e3-88f1-a3c70791b212",
+                            ExternalReference = "7CCEFDF3-89CF-4CFA-B641-1394EECB39D9",
                             FirstName = "Sophie",
                             JobTitle = "Customer Service Representative",
                             LastName = "Chapman",
@@ -417,7 +432,7 @@ namespace Purpura.DataAccess.Migrations
                             Id = 3,
                             CompanyId = 1,
                             DateCreated = new DateTime(2025, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ExternalReference = "ef4b775e-7e2e-4f67-a0f7-5b22448af2ac",
+                            ExternalReference = "63454D95-3087-4681-A93A-6E2C8ED761F0",
                             FirstName = "Mark",
                             JobTitle = "Account Manager",
                             LastName = "Corrigan"
@@ -427,7 +442,7 @@ namespace Purpura.DataAccess.Migrations
                             Id = 4,
                             CompanyId = 1,
                             DateCreated = new DateTime(2025, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ExternalReference = "6975061e-bef8-447d-9018-236c85983edd",
+                            ExternalReference = "57DA2F16-7990-4E6E-A47B-EC7949FB8B39",
                             FirstName = "Gerrard",
                             JobTitle = "Finance Auditor",
                             LastName = "Matthew"
@@ -474,7 +489,7 @@ namespace Purpura.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Goals");
+                    b.ToTable("Goals", (string)null);
 
                     b.HasData(
                         new
@@ -483,10 +498,10 @@ namespace Purpura.DataAccess.Migrations
                             DateCreated = new DateTime(2025, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec augue a arcu aliquam consequat a sit amet ante. Nullam eget tincidunt ante. Donec sed malesuada nibh. Cras rhoncus auctor lorem, vel ullamcorper ipsum egestas in. Cras lobortis justo enim, sed vulputate magna sagittis ac. Ut imperdiet sapien sed ante posuere porta. Praesent ultricies sagittis venenatis. Suspendisse potenti. Nulla viverra, mi ac pellentesque fringilla, purus tortor blandit enim, non lacinia augue lacus et felis.",
                             DueDate = new DateTime(2025, 11, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ExternalReference = "89fb78d1-2d15-4985-bc50-6922a75c5a97",
+                            ExternalReference = "4BF723F7-1BB7-4595-87A2-84F220882927",
                             Name = "Goal 1",
                             PercentageComplete = 75,
-                            UserId = "76e3fd12-3bfb-4b17-8e9c-d423bc4db479"
+                            UserId = "18267BE3-DD54-45C4-8842-EEE2BAC13B3F"
                         },
                         new
                         {
@@ -494,10 +509,10 @@ namespace Purpura.DataAccess.Migrations
                             DateCreated = new DateTime(2025, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec augue a arcu aliquam consequat a sit amet ante. Nullam eget tincidunt ante. Donec sed malesuada nibh. Cras rhoncus auctor lorem, vel ullamcorper ipsum egestas in. Cras lobortis justo enim, sed vulputate magna sagittis ac. Ut imperdiet sapien sed ante posuere porta. Praesent ultricies sagittis venenatis. Suspendisse potenti. Nulla viverra, mi ac pellentesque fringilla, purus tortor blandit enim, non lacinia augue lacus et felis.",
                             DueDate = new DateTime(2025, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ExternalReference = "4ba5e837-ba4a-4e7b-9599-52c295a5000d",
+                            ExternalReference = "6BC4C3EE-5A44-4AA9-B9D7-DBE55597CB6B",
                             Name = "Goal 2",
                             PercentageComplete = 30,
-                            UserId = "76e3fd12-3bfb-4b17-8e9c-d423bc4db479"
+                            UserId = "18267BE3-DD54-45C4-8842-EEE2BAC13B3F"
                         },
                         new
                         {
@@ -505,10 +520,10 @@ namespace Purpura.DataAccess.Migrations
                             DateCreated = new DateTime(2025, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec augue a arcu aliquam consequat a sit amet ante. Nullam eget tincidunt ante. Donec sed malesuada nibh. Cras rhoncus auctor lorem, vel ullamcorper ipsum egestas in. Cras lobortis justo enim, sed vulputate magna sagittis ac. Ut imperdiet sapien sed ante posuere porta. Praesent ultricies sagittis venenatis. Suspendisse potenti. Nulla viverra, mi ac pellentesque fringilla, purus tortor blandit enim, non lacinia augue lacus et felis.",
                             DueDate = new DateTime(2025, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ExternalReference = "0441a8b1-2778-475b-99aa-3cd5bbdb16c2",
+                            ExternalReference = "5441F99B-A8D7-4F73-A065-85935986749E",
                             Name = "Goal 3",
                             PercentageComplete = 0,
-                            UserId = "76e3fd12-3bfb-4b17-8e9c-d423bc4db479"
+                            UserId = "18267BE3-DD54-45C4-8842-EEE2BAC13B3F"
                         });
                 });
 
@@ -559,18 +574,18 @@ namespace Purpura.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "76e3fd12-3bfb-4b17-8e9c-d423bc4db479",
+                            Id = "18267BE3-DD54-45C4-8842-EEE2BAC13B3F",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "547882807f6b46178371d130e78ad82f",
+                            ConcurrencyStamp = "27B9DBA7-2167-4E33-8699-8CF850F7788F",
                             Email = "joe@testuser.com",
                             EmailConfirmed = false,
                             LockoutEnabled = true,
                             NormalizedEmail = "JOE@TESTUSER.COM",
                             NormalizedUserName = "JOE@TESTUSER.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMDLGEfJC5d1G0oUxl/+O1sEv5+rHV+q2zEIdSq+7YLPHPFpZBWVtdfZJupJjb2v7g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPlmXdK35aJhUN8CUUlPCQE0kZRpiBqCQI1cGUCvonoV0jC0MTUgLdiP3sVl3nug/Q==",
                             PhoneNumber = "123456789",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c8973de7-c6fe-4e96-a302-4ef7e5a1ab3a",
+                            SecurityStamp = "9F317C5D-F614-4E5F-A30C-1DD85A685D6E",
                             TwoFactorEnabled = false,
                             UserName = "joe@testuser.com",
                             Address = "456 Some Flat, Some Building, London, EFG 456",
