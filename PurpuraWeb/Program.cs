@@ -45,6 +45,7 @@ builder.Services.AddScoped<IUserManagementRepository, UserManagementRepository>(
 builder.Services.AddScoped<IAnnualLeaveRepository, AnnualLeaveRepository>();
 builder.Services.AddScoped<IGoalRepository, GoalRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<ICompanyEmployeeRepository, CompanyEmployeeRepository>();
 #endregion
 
 #region Services
@@ -52,6 +53,7 @@ builder.Services.AddScoped<IAnnualLeaveService, AnnualLeaveService>();
 builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 builder.Services.AddScoped<IGoalService, GoalService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<ICompanyEmployeeService, CompanyEmployeeService>();
 #endregion
 
 

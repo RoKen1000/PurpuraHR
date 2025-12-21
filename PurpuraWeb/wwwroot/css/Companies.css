@@ -1,6 +1,7 @@
 ﻿#company-details-header{
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 }
 
 #company-details-header > a {

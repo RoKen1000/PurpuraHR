@@ -18,7 +18,10 @@
 
             @if (User.IsInRole("Manager"))
             {
-                <a asp-action="Edit" asp-controller="Company" asp-route-reference="@Model.ExternalReference" class="btn btn-purpura"><i class="bi bi-pencil-square button-icons"></i>Edit</a>
+                <div>
+                    <a asp-action="Edit" asp-controller="Company" asp-route-reference="@Model.ExternalReference" class="btn btn-purpura"><i class="bi bi-pencil-square button-icons"></i>Edit Company Details</a>
+                    <a asp-action="Create" asp-controller="CompanyEmployee" asp-route-companyReference="@Model.ExternalReference" class="btn btn-purpura"><i class="bi bi-person-plus-fill button-icons"></i>Add Employee</a>
+                </div>
             }
         </div>
 
