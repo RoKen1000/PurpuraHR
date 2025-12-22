@@ -12,5 +12,6 @@ namespace Purpura.Models.Entities
         public string JobTitle { get; set; }
         public ApplicationUser? ApplicationUser { get; set; }
         public int? ApplicationUserId { get; set; }
+        public string Email { get; set; }
     }
 }

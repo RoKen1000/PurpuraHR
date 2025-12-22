@@ -65,10 +65,10 @@ namespace Purpura.DataAccess.DataContext
             );
 
             modelBuilder.Entity<CompanyEmployee>().HasData(
-                new CompanyEmployee { Id = 1, FirstName = "Allan", LastName="Johnson", CompanyId = 1, JobTitle = "Chief Executive Officer", ExternalReference = "64B9D90F-FADC-461D-96B8-C9467AF44894", DateCreated = predefinedDate },
-                new CompanyEmployee { Id = 2, FirstName = "Sophie", MiddleName = "Hortensia", LastName = "Chapman", CompanyId = 1, JobTitle = "Customer Service Representative", ExternalReference = "7CCEFDF3-89CF-4CFA-B641-1394EECB39D9", DateCreated = predefinedDate },
-                new CompanyEmployee { Id = 3, FirstName = "Mark", LastName = "Corrigan", CompanyId = 1, JobTitle = "Account Manager", ExternalReference = "63454D95-3087-4681-A93A-6E2C8ED761F0", DateCreated = predefinedDate },
-                new CompanyEmployee { Id = 4, FirstName = "Gerrard", LastName = "Matthew", CompanyId = 1, JobTitle = "Finance Auditor", ExternalReference = "57DA2F16-7990-4E6E-A47B-EC7949FB8B39", DateCreated = predefinedDate }
+                new CompanyEmployee { Id = 1, FirstName = "Allan", LastName="Johnson", CompanyId = 1, JobTitle = "Chief Executive Officer", ExternalReference = "64B9D90F-FADC-461D-96B8-C9467AF44894", DateCreated = predefinedDate, Email = "allan@jlb.com" },
+                new CompanyEmployee { Id = 2, FirstName = "Sophie", MiddleName = "Hortensia", LastName = "Chapman", CompanyId = 1, JobTitle = "Customer Service Representative", ExternalReference = "7CCEFDF3-89CF-4CFA-B641-1394EECB39D9", DateCreated = predefinedDate, Email = "sophie@jlb.com" },
+                new CompanyEmployee { Id = 3, FirstName = "Mark", LastName = "Corrigan", CompanyId = 1, JobTitle = "Account Manager", ExternalReference = "63454D95-3087-4681-A93A-6E2C8ED761F0", DateCreated = predefinedDate, Email = "mark@jlb.com" },
+                new CompanyEmployee { Id = 4, FirstName = "Gerrard", LastName = "Matthew", CompanyId = 1, JobTitle = "Finance Auditor", ExternalReference = "57DA2F16-7990-4E6E-A47B-EC7949FB8B39", DateCreated = predefinedDate, Email = "gerrard@jlb.com" }
             );
 
             modelBuilder.Entity<Goal>().HasData(
