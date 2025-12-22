@@ -5,27 +5,35 @@
 <form asp-action="Create" asp-controller="CompanyEmployee" class="post-forms">
 
     <input type="hidden" asp-for="CompanyExternalReference" />
+    <input type="hidden" asp-for="EmailExists" />
 
     <div class="form-floating mb-3">
-        <input class="form-control" type="text" asp-for="FirstName" />
+        <input class="form-control" type="text" asp-for="FirstName" placeholder="" />
         <label asp-for="FirstName">First Name</label>
         <span asp-validation-for="FirstName"></span>
     </div>
 
     <div class="form-floating mb-3">
-        <input class="form-control" type="text" asp-for="MiddleName" />
+        <input class="form-control" type="text" asp-for="MiddleName" placeholder="" />
         <label asp-for="MiddleName">Middle Name(s)</label>
         <span asp-validation-for="MiddleName"></span>
     </div>
 
     <div class="form-floating mb-3">
-        <input class="form-control" type="text" asp-for="LastName" />
+        <input class="form-control" type="text" asp-for="LastName" placeholder="" />
         <label asp-for="LastName">Last Name</label>
         <span asp-validation-for="LastName"></span>
     </div>
 
+    <div id="existing-email-validation"></div>
     <div class="form-floating mb-3">
-        <input class="form-control" type="text" asp-for="JobTitle" />
+        <input class="form-control" type="email" asp-for="Email" placeholder="" />
+        <label asp-for="Email">Email</label>
+        <span asp-validation-for="Email"></span>
+    </div>
+    
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" asp-for="JobTitle" placeholder="" />
         <label asp-for="JobTitle">Job Title</label>
         <span asp-validation-for="JobTitle"></span>
     </div>
@@ -43,5 +51,6 @@
 
 @section Scripts {
     <script>
+        initialiseEmailCheckAjax('@Url.Action("CheckUserEmailExists", "UserManagement")');
     </script>
 }
