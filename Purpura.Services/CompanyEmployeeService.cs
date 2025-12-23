@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Purpura.Abstractions.RepositoryInterfaces;
 using Purpura.Abstractions.ServiceInterfaces;
 using Purpura.Common.Results;
@@ -15,8 +16,8 @@ namespace Purpura.Services
         private readonly ICompanyRepository _companyRepository;
         private readonly IUserManagementRepository _userManagementRepository;
 
-        public CompanyEmployeeService(IMapper mapper, 
-            IUnitOfWork unitOfWork, 
+        public CompanyEmployeeService(IMapper mapper,
+            IUnitOfWork unitOfWork,
             ICompanyEmployeeRepository companyEmployeeRepository,
             ICompanyRepository companyRepository,
             IUserManagementRepository userManagementRepository) : base(mapper, unitOfWork)
@@ -26,11 +27,11 @@ namespace Purpura.Services
             _userManagementRepository = userManagementRepository;
         }
 
-        public async Task<Result> Create(CompanyEmployeeViewModel viewModel)
+        public async Task<Result> CreateAsync(CompanyEmployeeViewModel viewModel)
         {
             var company = await _companyRepository.GetSingleAsync(c => c.ExternalReference == viewModel.CompanyExternalReference);
 
-            if(company == null)
+            if (company == null)
             {
                 return Result.Failure("Company not found.");
             }
@@ -44,7 +45,7 @@ namespace Purpura.Services
             {
                 var appUser = await _userManagementRepository.GetSingleAsync(u => u.NormalizedEmail == viewModel.Email.ToUpper());
 
-                if(appUser == null)
+                if (appUser == null)
                 {
                     return Result.Failure("User not found.");
                 }
@@ -55,6 +56,43 @@ namespace Purpura.Services
             _companyEmployeeRepository.Create(newEntity);
 
             return await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<Result> EditAsync(CompanyEmployeeViewModel viewModel)
+        {
+            var entity = await _companyEmployeeRepository.GetSingleAsync(ce => ce.ExternalReference == viewModel.ExternalReference);
+
+            if (entity == null)
+            {
+                return Result.Failure("Employee not found.");
+            }
+
+            _mapper.Map<CompanyEmployeeViewModel, CompanyEmployee>(viewModel, entity);
+            entity.DateEdited = DateTime.Now;
+
+            _companyEmployeeRepository.Update(entity);
+            return await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<CompanyEmployeeViewModel?> GetByExternalReferenceAsync(string extRef)
+        {
+            var entity = await _companyEmployeeRepository.GetSingleAsync(ce => ce.ExternalReference == extRef);
+
+            if (entity != null)
+            {
+                var companyEmployeeViewModel = _mapper.Map<CompanyEmployeeViewModel>(entity);
+
+                var company = await _companyRepository.GetSingleAsync(c => c.Id == entity.CompanyId);
+
+                if (company != null)
+                {
+                    companyEmployeeViewModel.CompanyExternalReference = company.ExternalReference;
+                }
+
+                return companyEmployeeViewModel;
+            }
+
+            return null;
         }
     }
 }

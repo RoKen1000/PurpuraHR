@@ -17,7 +17,7 @@ namespace PurpuraWeb.Controllers
             _companyEmployeeService = companyEmployeeService;
         }
 
-        [HttpGet("Create/{companyReference}")]
+        [HttpGet]
         public IActionResult Create(string companyReference)
         {
             var viewModel = new CompanyEmployeeViewModel { CompanyExternalReference = companyReference };
@@ -25,12 +25,12 @@ namespace PurpuraWeb.Controllers
             return View(viewModel);
         }
 
-        [HttpPost("Create/{companyReference}")]
+        [HttpPost]
         public async Task<IActionResult> Create(CompanyEmployeeViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var result = await _companyEmployeeService.Create(viewModel);
+                var result = await _companyEmployeeService.CreateAsync(viewModel);
 
                 if (result.IsSuccess)
                 {
@@ -41,6 +41,40 @@ namespace PurpuraWeb.Controllers
             }
 
             return View(viewModel);
+        }
+
+        [HttpGet("Edit/{companyEmployeeRef}")]
+        public async Task<IActionResult> Edit(string companyEmployeeRef)
+        {
+            var employee = await _companyEmployeeService.GetByExternalReferenceAsync(companyEmployeeRef);
+
+            return View(employee);
+        }
+
+        [HttpPost("Edit/{companyEmployeeRef}")]
+        public async Task<IActionResult> Edit(CompanyEmployeeViewModel viewModel)
+        {
+            if(ModelState.IsValid)
+            {
+                var result = await _companyEmployeeService.EditAsync(viewModel);
+
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction("Details", "Company", new { companyReference = viewModel.CompanyExternalReference });
+                }
+
+                viewModel.Result = result;
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpGet("Details/{companyEmployeeRef}")]
+        public async Task<IActionResult> Details(string companyEmployeeRef)
+        {
+            var employee = await _companyEmployeeService.GetByExternalReferenceAsync(companyEmployeeRef);
+
+            return View(employee);
         }
     }
 }

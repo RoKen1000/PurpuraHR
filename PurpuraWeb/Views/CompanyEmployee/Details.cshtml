@@ -1,0 +1,23 @@
+﻿@model CompanyEmployeeViewModel;
+
+<h1 class="form-title">Employee Details</h1>
+
+<div class="details-container">
+    <dl>
+        <dt>First Name</dt>
+        <dd>@Model.FirstName</dd>
+
+        <dt>Middle Name(s)</dt>
+        <dd>@Model.MiddleName</dd>
+
+        <dt>Last Name</dt>
+        <dd>@Model.LastName</dd>
+
+        <dt>Job Title</dt>
+        <dd>@Model.JobTitle</dd>
+    </dl>
+    <div>
+        <a asp-action="Details" asp-controller="Company" asp-route-companyReference="@Model.CompanyExternalReference" class="btn btn-secondary"><i class="bi bi-x button-icons"></i>Cancel</a>
+        <a asp-action="Edit" asp-controller="CompanyEmployee" asp-route-companyEmployeeRef="@Model.ExternalReference" class="btn btn-purpura"><i class="bi bi-pencil-square button-icons"></i>Edit</a>
+    </div>
+</div>

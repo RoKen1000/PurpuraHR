@@ -8,7 +8,9 @@ namespace Purpura.MappingProfiles
     {
         public CompanyEmployeeMappingProfile()
         {
-            CreateMap<CompanyEmployee, CompanyEmployeeViewModel>().ReverseMap();
+            CreateMap<CompanyEmployee, CompanyEmployeeViewModel>();
+            CreateMap<CompanyEmployeeViewModel, CompanyEmployee>()
+                .ForMember(dest => dest.Company, src => src.Ignore());
         }
     }
 }

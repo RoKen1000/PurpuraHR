@@ -5,6 +5,8 @@ namespace Purpura.Abstractions.ServiceInterfaces
 {
     public interface ICompanyEmployeeService
     {
-        Task<Result> Create(CompanyEmployeeViewModel viewModel);
+        Task<Result> CreateAsync(CompanyEmployeeViewModel viewModel);
+        Task<CompanyEmployeeViewModel?> GetByExternalReferenceAsync(string extRef);
+        Task<Result> EditAsync(CompanyEmployeeViewModel viewModel);
     }
 }

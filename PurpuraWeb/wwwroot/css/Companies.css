@@ -25,9 +25,11 @@
     padding: 1rem;
     border: solid 1px rgba(0, 0, 0, .125);
     box-shadow: 0 2px 8px 0 grey;
+    text-decoration: none;
+    color: black;
 }
 
-.employee-cards > i, #building-error-icon-container i {
+.employee-cards i, #building-error-icon-container i {
     font-size: 6rem;
 }
 
