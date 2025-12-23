@@ -19,7 +19,7 @@ function initialiseEmailCheckAjax(url) {
                     $emailExistsField.val(true);
                 }
                 else {
-                    $validationDiv.html("<i class='bi bi-info-circle'></i> Email does not exist. If employee is created now then the user will be automatically assigned to this company after registering.");
+                    $validationDiv.html("<i class='bi bi-info-circle'></i> Email does not exist. If employee is created now then the user will be automatically assigned to this company once registered.");
                 }
             });
         }

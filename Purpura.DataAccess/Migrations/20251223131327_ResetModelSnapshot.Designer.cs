@@ -12,8 +12,8 @@ using Purpura.DataAccess.DataContext;
 namespace Purpura.DataAccess.Migrations
 {
     [DbContext(typeof(PurpuraDbContext))]
-    [Migration("20251221124422_AddForeignKeysBetweenApplicationUserAndCompanyEmployee")]
-    partial class AddForeignKeysBetweenApplicationUserAndCompanyEmployee
+    [Migration("20251223131327_ResetModelSnapshot")]
+    partial class ResetModelSnapshot
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -374,9 +374,6 @@ namespace Purpura.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ApplicationUserId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
@@ -385,6 +382,10 @@ namespace Purpura.DataAccess.Migrations
 
                     b.Property<DateTime?>("DateEdited")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ExternalReference")
                         .IsRequired()
@@ -417,6 +418,7 @@ namespace Purpura.DataAccess.Migrations
                             Id = 1,
                             CompanyId = 1,
                             DateCreated = new DateTime(2025, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "allan@jlb.com",
                             ExternalReference = "64B9D90F-FADC-461D-96B8-C9467AF44894",
                             FirstName = "Allan",
                             JobTitle = "Chief Executive Officer",
@@ -427,6 +429,7 @@ namespace Purpura.DataAccess.Migrations
                             Id = 2,
                             CompanyId = 1,
                             DateCreated = new DateTime(2025, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "sophie@jlb.com",
                             ExternalReference = "7CCEFDF3-89CF-4CFA-B641-1394EECB39D9",
                             FirstName = "Sophie",
                             JobTitle = "Customer Service Representative",
@@ -438,6 +441,7 @@ namespace Purpura.DataAccess.Migrations
                             Id = 3,
                             CompanyId = 1,
                             DateCreated = new DateTime(2025, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "mark@jlb.com",
                             ExternalReference = "63454D95-3087-4681-A93A-6E2C8ED761F0",
                             FirstName = "Mark",
                             JobTitle = "Account Manager",
@@ -448,6 +452,7 @@ namespace Purpura.DataAccess.Migrations
                             Id = 4,
                             CompanyId = 1,
                             DateCreated = new DateTime(2025, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "gerrard@jlb.com",
                             ExternalReference = "57DA2F16-7990-4E6E-A47B-EC7949FB8B39",
                             FirstName = "Gerrard",
                             JobTitle = "Finance Auditor",
@@ -544,9 +549,6 @@ namespace Purpura.DataAccess.Migrations
                     b.Property<int>("AnnualLeaveDays")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CompanyEmployeeId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
@@ -575,10 +577,6 @@ namespace Purpura.DataAccess.Migrations
 
                     b.Property<int>("Title")
                         .HasColumnType("int");
-
-                    b.HasIndex("CompanyEmployeeId")
-                        .IsUnique()
-                        .HasFilter("[CompanyEmployeeId] IS NOT NULL");
 
                     b.HasIndex("CompanyId");
 
@@ -699,27 +697,16 @@ namespace Purpura.DataAccess.Migrations
 
             modelBuilder.Entity("PurpuraWeb.Models.Entities.ApplicationUser", b =>
                 {
-                    b.HasOne("Purpura.Models.Entities.CompanyEmployee", "CompanyEmployee")
-                        .WithOne("ApplicationUser")
-                        .HasForeignKey("PurpuraWeb.Models.Entities.ApplicationUser", "CompanyEmployeeId");
-
                     b.HasOne("Purpura.Models.Entities.Company", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId");
 
                     b.Navigation("Company");
-
-                    b.Navigation("CompanyEmployee");
                 });
 
             modelBuilder.Entity("Purpura.Models.Entities.Company", b =>
                 {
                     b.Navigation("Employees");
-                });
-
-            modelBuilder.Entity("Purpura.Models.Entities.CompanyEmployee", b =>
-                {
-                    b.Navigation("ApplicationUser");
                 });
 #pragma warning restore 612, 618
         }
