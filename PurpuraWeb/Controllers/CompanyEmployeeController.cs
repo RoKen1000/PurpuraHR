@@ -28,6 +28,13 @@ namespace PurpuraWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CompanyEmployeeViewModel viewModel)
         {
+            var companyEmployee = await _companyEmployeeService.GetAsync(ce => ce.Email == viewModel.Email);
+
+            if(companyEmployee != null)
+            {
+                ModelState.AddModelError("Email", "A Company Employee has already been created with this email.");
+            }
+
             if (ModelState.IsValid)
             {
                 var result = await _companyEmployeeService.CreateAsync(viewModel);
@@ -54,7 +61,14 @@ namespace PurpuraWeb.Controllers
         [HttpPost("Edit/{companyEmployeeRef}")]
         public async Task<IActionResult> Edit(CompanyEmployeeViewModel viewModel)
         {
-            if(ModelState.IsValid)
+            var companyEmployee = await _companyEmployeeService.GetAsync(ce => ce.Email == viewModel.Email);
+
+            if (companyEmployee != null && (companyEmployee.Email != viewModel.Email))
+            {
+                ModelState.AddModelError("Email", "A Company Employee has already been created with this email.");
+            }
+
+            if (ModelState.IsValid)
             {
                 var result = await _companyEmployeeService.EditAsync(viewModel);
 

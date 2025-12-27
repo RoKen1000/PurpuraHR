@@ -7,6 +7,7 @@ using Purpura.Common.Results;
 using Purpura.Models.Entities;
 using Purpura.Models.ViewModels;
 using PurpuraWeb.Models.Entities;
+using System.Linq.Expressions;
 
 namespace Purpura.Services
 {
@@ -72,6 +73,18 @@ namespace Purpura.Services
 
             _companyEmployeeRepository.Update(entity);
             return await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<CompanyEmployeeViewModel?> GetAsync(Expression<Func<CompanyEmployee, bool>> expression)
+        {
+            var entity = await _companyEmployeeRepository.GetSingleAsync(expression);
+
+            if (entity == null)
+            {
+                return null;
+            }
+
+            return _mapper.Map<CompanyEmployeeViewModel>(entity);
         }
 
         public async Task<CompanyEmployeeViewModel?> GetByExternalReferenceAsync(string extRef)
