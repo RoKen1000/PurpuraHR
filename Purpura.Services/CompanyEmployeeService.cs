@@ -16,16 +16,61 @@ namespace Purpura.Services
         private readonly ICompanyEmployeeRepository _companyEmployeeRepository;
         private readonly ICompanyRepository _companyRepository;
         private readonly IUserManagementRepository _userManagementRepository;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public CompanyEmployeeService(IMapper mapper,
             IUnitOfWork unitOfWork,
             ICompanyEmployeeRepository companyEmployeeRepository,
             ICompanyRepository companyRepository,
-            IUserManagementRepository userManagementRepository) : base(mapper, unitOfWork)
+            IUserManagementRepository userManagementRepository,
+            UserManager<IdentityUser> userManager) : base(mapper, unitOfWork)
         {
             _companyEmployeeRepository = companyEmployeeRepository;
             _companyRepository = companyRepository;
             _userManagementRepository = userManagementRepository;
+            _userManager = userManager;
+        }
+
+        public async Task<Result> AssignUserToCompanyEmployeeAsync(string email)
+        {
+            var companyEmployee = await _companyEmployeeRepository.GetSingleAsync(ce => ce.Email.ToUpper() == email.ToUpper());
+            var user = await _userManagementRepository.GetSingleAsync(u => u.NormalizedEmail == email.ToUpper());
+            
+            if(companyEmployee == null || user == null)
+            {
+                var errorMessage = "";
+
+                if(companyEmployee == null)
+                {
+                    errorMessage += "No company employee found with this email. ";
+                }
+                if(user == null)
+                {
+                    errorMessage += "No user found with this email.";
+                }
+
+                return Result.Failure(errorMessage);
+            }
+
+            companyEmployee.ApplicationUser = user;
+            user.CompanyId = companyEmployee.CompanyId;
+
+            _companyEmployeeRepository.Update(companyEmployee);
+            _userManagementRepository.Update(user);
+
+            var result = await _unitOfWork.SaveChangesAsync();
+
+            if (result.IsSuccess)
+            {
+                var company = await _companyRepository.GetSingleAsync(c => c.Id == companyEmployee.CompanyId);
+
+                if(company != null)
+                {
+                    _ = await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("CompanyReference", company.ExternalReference));
+                }
+            }
+
+            return result;
         }
 
         public async Task<Result> CreateAsync(CompanyEmployeeViewModel viewModel)

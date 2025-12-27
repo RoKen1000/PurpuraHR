@@ -11,5 +11,6 @@ namespace Purpura.Abstractions.ServiceInterfaces
         Task<CompanyEmployeeViewModel?> GetByExternalReferenceAsync(string extRef);
         Task<Result> EditAsync(CompanyEmployeeViewModel viewModel);
         Task<CompanyEmployeeViewModel?> GetAsync(Expression<Func<CompanyEmployee, bool>> expression);
+        Task<Result> AssignUserToCompanyEmployeeAsync(string email);
     }
 }
