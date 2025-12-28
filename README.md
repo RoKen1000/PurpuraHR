@@ -1,8 +1,8 @@
-# PurpuraHR
+# Purpura HR
 
 ## Project Summary
 
-This portfolio project is an HR system where users can register, sign in and view essential information about the company they work at. Users can view the details of their current company or create a new one. Other employees of the company can also be seen. Goals can be set up and Annual Leave can be booked. Users can also view and update their own details.
+This portfolio project is an HR system where users can register, sign in and view essential information about the company they work at. Users can view the details of their current company, or create a new one if they are a Manager and not currently assigned to one. Other employees of the company can also be seen, with Managers able to add new employees to the current company. Goals can be set up and Annual Leave can be booked. Users can also view and update their own details.
 
 ## Tech Stack and Design
 This project uses the following:
