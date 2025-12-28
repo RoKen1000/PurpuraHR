@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Purpura.DataAccess.DataContext;
 
@@ -11,9 +12,11 @@ using Purpura.DataAccess.DataContext;
 namespace Purpura.DataAccess.Migrations
 {
     [DbContext(typeof(PurpuraDbContext))]
-    partial class PurpuraDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251222100805_AddEmailPropertyToCompanyEmployeeAndUpdateSeedData")]
+    partial class AddEmailPropertyToCompanyEmployeeAndUpdateSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -371,8 +374,8 @@ namespace Purpura.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("ApplicationUserId")
+                        .HasColumnType("int");
 
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
@@ -407,8 +410,6 @@ namespace Purpura.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("CompanyId");
 
@@ -551,6 +552,9 @@ namespace Purpura.DataAccess.Migrations
                     b.Property<int>("AnnualLeaveDays")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CompanyEmployeeId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
@@ -579,6 +583,10 @@ namespace Purpura.DataAccess.Migrations
 
                     b.Property<int>("Title")
                         .HasColumnType("int");
+
+                    b.HasIndex("CompanyEmployeeId")
+                        .IsUnique()
+                        .HasFilter("[CompanyEmployeeId] IS NOT NULL");
 
                     b.HasIndex("CompanyId");
 
@@ -677,17 +685,11 @@ namespace Purpura.DataAccess.Migrations
 
             modelBuilder.Entity("Purpura.Models.Entities.CompanyEmployee", b =>
                 {
-                    b.HasOne("PurpuraWeb.Models.Entities.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("Purpura.Models.Entities.Company", "Company")
                         .WithMany("Employees")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Company");
                 });
@@ -705,16 +707,27 @@ namespace Purpura.DataAccess.Migrations
 
             modelBuilder.Entity("PurpuraWeb.Models.Entities.ApplicationUser", b =>
                 {
+                    b.HasOne("Purpura.Models.Entities.CompanyEmployee", "CompanyEmployee")
+                        .WithOne("ApplicationUser")
+                        .HasForeignKey("PurpuraWeb.Models.Entities.ApplicationUser", "CompanyEmployeeId");
+
                     b.HasOne("Purpura.Models.Entities.Company", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId");
 
                     b.Navigation("Company");
+
+                    b.Navigation("CompanyEmployee");
                 });
 
             modelBuilder.Entity("Purpura.Models.Entities.Company", b =>
                 {
                     b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("Purpura.Models.Entities.CompanyEmployee", b =>
+                {
+                    b.Navigation("ApplicationUser");
                 });
 #pragma warning restore 612, 618
         }

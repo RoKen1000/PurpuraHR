@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Purpura.Abstractions.ServiceInterfaces;
 using Purpura.Models.ViewModels;
 using Purpura.Utility.Helpers;
@@ -9,10 +10,12 @@ namespace PurpuraWeb.Controllers
     public class UserManagementController : Controller
     {
         private readonly IUserManagementService _userManagementService;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public UserManagementController(IUserManagementService userManagementService)
+        public UserManagementController(IUserManagementService userManagementService, UserManager<IdentityUser> userManager)
         {
             _userManagementService = userManagementService;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -65,6 +68,19 @@ namespace PurpuraWeb.Controllers
             viewModel.TitleList = EnumHelpers.GenerateTitleSelectList();
 
             return View(viewModel);
+        }
+
+        [HttpPost("CheckUserEmailExists")]
+        public async Task<IActionResult> CheckUserEmailExists(string input)
+        {
+            if (!string.IsNullOrEmpty(input))
+            {
+                var normalisedEmail = _userManager.NormalizeEmail(input);
+                var user = await _userManager.FindByEmailAsync(normalisedEmail);
+                return Json(user != null);
+            }
+
+            return Json(false);
         }
     }
 }

@@ -1,14 +1,16 @@
 ﻿@model List<CompanyEmployeeViewModel>
 
+<h2>Company Employees</h2>
+
 <div id="employee-cards-container">
     @foreach(var employee in Model)
     {
-        <div class="employee-cards">
+        <a class="employee-cards" asp-action="Details" asp-controller="CompanyEmployee" asp-route-companyEmployeeRef="@employee.ExternalReference">
             <i class="bi bi-person-circle"></i>
             <div class="employee-card-body">
                 <span><strong>@(employee.MiddleName != null ? $"{employee.FirstName} {employee.MiddleName} {employee.LastName}" : $"{employee.FirstName} {employee.LastName}")</strong></span>
                 <span>@employee.JobTitle</span>
             </div>
-        </div>
+        </a>
     }   
 </div>

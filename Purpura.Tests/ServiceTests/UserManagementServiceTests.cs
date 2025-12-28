@@ -23,7 +23,6 @@ namespace Purpura.Tests.ServiceTests
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
         private readonly IMapper _mapper;
-        //private readonly UserManager<IdentityUser> _userManager;
         private readonly IUserManagementService _userManagementService;
 
         public UserManagementServiceTests()

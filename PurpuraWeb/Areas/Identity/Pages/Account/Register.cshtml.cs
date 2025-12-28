@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using Purpura.Abstractions.ServiceInterfaces;
 using Purpura.Common.Enums;
 using Purpura.Utility;
 using Purpura.Utility.Helpers;
@@ -30,6 +31,7 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ICompanyEmployeeService _companyEmployeeService;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -37,7 +39,8 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            ICompanyEmployeeService companyEmployeeService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -46,6 +49,7 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
+            _companyEmployeeService = companyEmployeeService;
         }
 
         /// <summary>
@@ -183,7 +187,18 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    if(!String.IsNullOrEmpty(Input.Role))
+                    var companyEmployeeLinkResult = await _companyEmployeeService.AssignUserToCompanyEmployeeAsync(user.Email);
+
+                    if (!companyEmployeeLinkResult.IsSuccess)
+                    {
+                        _logger.LogWarning(companyEmployeeLinkResult.Error);
+                    }
+                    else
+                    {
+                        _logger.LogInformation("User has been matched to a pre-existing Company Employee.");
+                    }
+
+                    if (!String.IsNullOrEmpty(Input.Role))
                     {
                         await _userManager.AddToRoleAsync(user, Input.Role);
                     }
@@ -201,8 +216,8 @@ namespace PurpuraWeb.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

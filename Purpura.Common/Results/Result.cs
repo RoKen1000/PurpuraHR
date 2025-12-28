@@ -21,8 +21,6 @@
             return new Result();
         }
 
-        
-
         public static Result Failure(string error)
         {
             return new Result(error);
