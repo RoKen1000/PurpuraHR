@@ -8,7 +8,7 @@
 else
 {
     <div id="dashboard-welcome-headings">
-        <h1>@($"Welcome {Model.User.FirstName} {Model.User.LastName}!")</h1>
+        <h1>@($"Hello {Model.User.FirstName} {Model.User.LastName}!")</h1>
 
         @if(Model.Company != null)
         {
@@ -32,20 +32,22 @@ else
         <div id="dashboard-goal-section">
             @if (Model.Goals.Any())
             {
-                    <h3>Current goals:</h3>
-                    <div id="dashboard-goal-container">
-                        @foreach(var goal in Model.Goals)
-                        {
-                            <div class="dashboard-goal-widget">
-                                <span>@goal.Name</span>
-                                <span>@($"{goal.PercentageComplete}% complete")</span>
-                            </div>
-                        }
+                <h3>Current goals:</h3>
+                <div id="dashboard-goal-container">
+                    @foreach(var goal in Model.Goals)
+                    {
+                        <div class="dashboard-goal-widget">
+                            <span>@goal.Name</span>
+                            <span>@($"{goal.PercentageComplete}% complete")</span>
+                        </div>
+                    }
                 </div>
             }
             else
             {
+                <i class="bi bi-trophy-fill"></i>
                 <h3>You currently do not have any goals set.</h3>
+                <a class="btn btn-success" asp-action="Create" asp-controller="Goal"><i class="bi-plus-lg button-icons"></i>Create Goals</a>
             }
         </div>
 
@@ -53,12 +55,13 @@ else
             @{
                 var leaveCountMessage = 28 - Model.AnnualLeaveRemaining >= 0 ? $"You currently have {Model.AnnualLeaveRemaining} days of annual leave to take." : "You currently have no more leave to take.";
             }
-            <h3>@leaveCountMessage</h3>
-            @if (Model.AnnualLeave.Any(al => al.StartDate > DateTime.Now))
+            
+            @if (Model.AnnualLeave.Any(al => al.StartDate.Date >= DateTime.Now.Date))
             {
+                <h3>@leaveCountMessage</h3>
                 <h3>Upcoming Annual Leave:</h3>
                 <div id="dashboard-annual-leave-container">
-                    @foreach(var leave in Model.AnnualLeave.Where(al => al.StartDate > DateTime.Now))
+                    @foreach(var leave in Model.AnnualLeave.Where(al => al.StartDate.Date >= DateTime.Now.Date))
                     {
                         <div class="dashboard-annual-leave-widget">
                             <strong>@($"{leave.StartDate.ToShortDateString()} - {leave.EndDate.ToShortDateString()}")</strong>
@@ -69,7 +72,10 @@ else
             }
             else
             {
+                <i class="bi bi-calendar-check-fill"></i>
+                <h3>@leaveCountMessage</h3>
                 <h3>You currently do not have any upcoming annual leave.</h3>
+                <a class="btn btn-success" asp-action="Index" asp-controller="AnnualLeave"><i class="bi-plus-lg button-icons"></i>Book Time Off</a>
             }
         </div>
 
