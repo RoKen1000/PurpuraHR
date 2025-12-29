@@ -3,13 +3,30 @@
     margin: 1rem 1rem 2rem 1rem;
 }
 
-#dashboard-welcome-headings, #dashboard-goal-section h3, #dashboard-annual-leave-section h3 {
+#dashboard-welcome-headings, #dashboard-goal-section h3, #dashboard-goal-section h3 {
     text-align: center;
 }
 
 #dashboard-goal-container {
     display: flex;
     flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#dashboard-goal-section, #dashboard-goal-section{
+    margin-bottom: 2rem;
+}
+
+#dashboard-annual-leave-section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#dashboard-annual-leave-section a {
+    display: block;
+    width: 10rem;
     margin-left: auto;
     margin-right: auto;
 }
@@ -45,6 +62,16 @@
 #dashboard-annual-leave-container div:nth-child(even) {
     background-color: #bf7de8;
     color: white;
+}
+
+#no-goals-set-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#no-goals-set-container a {
+    width: 9rem;
 }
 
 @media screen and (min-width: 768px) {

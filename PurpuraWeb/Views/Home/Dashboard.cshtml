@@ -32,20 +32,23 @@ else
         <div id="dashboard-goal-section">
             @if (Model.Goals.Any())
             {
-                    <h3>Current goals:</h3>
-                    <div id="dashboard-goal-container">
-                        @foreach(var goal in Model.Goals)
-                        {
-                            <div class="dashboard-goal-widget">
-                                <span>@goal.Name</span>
-                                <span>@($"{goal.PercentageComplete}% complete")</span>
-                            </div>
-                        }
+                <h3>Current goals:</h3>
+                <div id="dashboard-goal-container">
+                    @foreach(var goal in Model.Goals)
+                    {
+                        <div class="dashboard-goal-widget">
+                            <span>@goal.Name</span>
+                            <span>@($"{goal.PercentageComplete}% complete")</span>
+                        </div>
+                    }
                 </div>
             }
             else
             {
-                <h3>You currently do not have any goals set.</h3>
+                <div id="no-goals-set-container">
+                    <h3>You currently do not have any goals set.</h3>
+                    <a class="btn btn-purpura" asp-action="Create" asp-controller="Goal"><i class="bi-plus-lg button-icons"></i>Create Goals</a>
+                </div>
             }
         </div>
 
@@ -70,6 +73,7 @@ else
             else
             {
                 <h3>You currently do not have any upcoming annual leave.</h3>
+                <a class="btn btn-purpura" asp-action="Index" asp-controller="AnnualLeave"><i class="bi-plus-lg button-icons"></i>Book Time Off</a>
             }
         </div>
 
