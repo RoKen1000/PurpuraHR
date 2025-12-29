@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Purpura.Abstractions.RepositoryInterfaces;
 using Purpura.Abstractions.ServiceInterfaces;
 using Purpura.Common.Results;
@@ -10,11 +11,14 @@ namespace Purpura.Services
 {
     public class AnnualLeaveService : BaseService<AnnualLeave>, IAnnualLeaveService
     {
+        private readonly IUserManagementRepository _userManagementRepository;
 
         public AnnualLeaveService(
             IMapper mapper, 
-            IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
+            IUnitOfWork unitOfWork,
+            IUserManagementRepository userManagementRepository) : base(mapper, unitOfWork)
         {
+            _userManagementRepository = userManagementRepository;
         }
 
         public async Task<Result> CreateAsync(AnnualLeaveViewModel annualLeavePeriod)
@@ -99,6 +103,20 @@ namespace Purpura.Services
 
             if(leaveEntity != null)
             {
+                var user = await _userManagementRepository.GetSingleAsync(u => u.Id == viewModel.UserId);
+
+                if(user == null)
+                {
+                    return Result.Failure("User not found.");
+                }
+
+                if(viewModel.StartDate.Date >= DateTime.Now.Date)
+                {
+                    //only add the days back to the user if the deleted leave is not in the past
+                    user.AnnualLeaveDays += (viewModel.EndDate.Date - viewModel.StartDate.Date).Days;
+                    _unitOfWork.UserManagementRepository.Update(user);
+                }
+
                 _unitOfWork.AnnualLeaveRepository.Delete(leaveEntity);
                 return await _unitOfWork.SaveChangesAsync();
             }
