@@ -114,6 +114,7 @@ namespace Purpura.Services
                 {
                     //only add the days back to the user if the deleted leave is not in the past
                     user.AnnualLeaveDays += (viewModel.EndDate.Date - viewModel.StartDate.Date).Days;
+                    user.DateEdited = DateTime.Now;
                     _unitOfWork.UserManagementRepository.Update(user);
                 }
 
@@ -136,15 +137,32 @@ namespace Purpura.Services
             if (user == null)
                 return Result.Failure("User not found.");
 
-            var daysUsed = (viewModel.EndDate - viewModel.StartDate).Days;
-            var newAnnualLeaveTotal = user.AnnualLeaveDays - daysUsed;
-            var validBookingErrors = AnnualLeaveResolver.IsValidBooking(user.AnnualLeaveDays, newAnnualLeaveTotal, viewModel.StartDate, viewModel.EndDate);
+            var daysUsed = (viewModel.EndDate.Date - viewModel.StartDate.Date).Days;
+            var originalDaysUsed = (annualLeaveEntity.EndDate.Date - annualLeaveEntity.StartDate.Date).Days;
 
-            if (!String.IsNullOrEmpty(validBookingErrors))
+            var validBookingErrors = AnnualLeaveResolver.IsValidBooking(user.AnnualLeaveDays, (user.AnnualLeaveDays - daysUsed), viewModel.StartDate, viewModel.EndDate);
+
+            if (!string.IsNullOrEmpty(validBookingErrors))
                 return Result.Failure(validBookingErrors);
+
+            if(daysUsed > originalDaysUsed || originalDaysUsed > daysUsed)
+            {
+                if(daysUsed > originalDaysUsed)
+                {
+                    user.AnnualLeaveDays -= (daysUsed - originalDaysUsed);
+                }
+                else if(originalDaysUsed > daysUsed)
+                {
+                    user.AnnualLeaveDays += (originalDaysUsed - daysUsed);
+                }
+
+                user.DateEdited = DateTime.Now;
+                _unitOfWork.UserManagementRepository.Update(user);
+            }
 
             var updatedEntity = _mapper.Map<AnnualLeaveViewModel, AnnualLeave>(viewModel, annualLeaveEntity);
             updatedEntity.DateEdited = DateTime.Now;
+            _unitOfWork.AnnualLeaveRepository.Update(updatedEntity);
 
             return await _unitOfWork.SaveChangesAsync();
         }

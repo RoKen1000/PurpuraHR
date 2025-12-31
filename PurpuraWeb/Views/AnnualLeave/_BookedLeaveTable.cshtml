@@ -23,7 +23,7 @@
                         <td>@leave.StartDate.ToShortDateString()</td>
                         <td>@leave.EndDate.ToShortDateString()</td>
                         <td>@EnumHelpers.GetEnumDescription(leave.Type)</td>
-                        <td>@(leave.Details != null && leave.Details.Length > 15 ? leave.Details.Substring(0, 15) + "..." : leave.Details)</td>
+                        <td>@(leave.Details != null && leave.Details.Length > 30 ? leave.Details.Substring(0, 30) + "..." : leave.Details)</td>
                         <td>
                             <a class="edit-buttons" data-crud-method="edit" data-external-reference="@leave.ExternalReference" data-bs-toggle="modal" data-bs-target="#annual-leave-form-modal">
                                 <i class="bi bi-pencil-square" style="color: darkkhaki;"></i>
