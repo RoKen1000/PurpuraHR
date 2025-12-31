@@ -74,7 +74,8 @@ namespace Purpura.Tests.ServiceTests
 
             _annualLeaveService = new AnnualLeaveService(
                 _mapper,
-                _unitOfWorkMock.Object);
+                _unitOfWorkMock.Object,
+                _userManagementRepositoryMock.Object);
         }
 
         #region EditAsync
@@ -200,6 +201,82 @@ namespace Purpura.Tests.ServiceTests
             Assert.Equal("Booking is invalid and would either exceed remaining leave or there is no more leave to take.", exceedsDaysResult.Error);
             Assert.True(noDaysAndInvalidDatesResult.IsSuccess == false);
             Assert.Equal("Booking is invalid and would either exceed remaining leave or there is no more leave to take. End date can not be before the start date.", noDaysAndInvalidDatesResult.Error);
+        }
+
+        [Fact]
+        public async void EditAsync_WithUserFound_CorrectlySubtractsAnnualLeaveTotalWhenTimeExpands()
+        {
+            //arrange
+            var annualLeaveViewModelWithIncreasedTime = new AnnualLeaveViewModel
+            {
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(6),
+            };
+            var entity = new AnnualLeave
+            {
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5)
+            };
+            var user = new ApplicationUser
+            {
+                AnnualLeaveDays = 22
+            };
+
+            _annualLeaveRepositoryMock.Setup(a => a.GetSingleAsync(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
+                .ReturnsAsync(entity);
+            _userManagementRepositoryMock.Setup(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
+                .ReturnsAsync(user);
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync())
+                .ReturnsAsync(Result.Success());
+
+            //act
+            _ = await _annualLeaveService.EditAsync(annualLeaveViewModelWithIncreasedTime);
+
+            //assert
+            Assert.NotEqual(22, user.AnnualLeaveDays);
+            Assert.Equal(21, user.AnnualLeaveDays);
+
+            _annualLeaveRepositoryMock.Verify(a => a.GetSingleAsync(It.IsAny<Expression<Func<AnnualLeave, bool>>>()), Times.Once);
+            _userManagementRepositoryMock.Verify(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()), Times.Once);
+            _unitOfWorkMock.Verify(a => a.SaveChangesAsync(), Times.Once);
+        }
+
+        [Fact]
+        public async void EditAsync_WithUserFound_CorrectlyAddsToAnnualLeaveTotalWhenTimeIsReduced()
+        {
+            //arrange
+            var annualLeaveViewModelWithIncreasedTime = new AnnualLeaveViewModel
+            {
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(4),
+            };
+            var entity = new AnnualLeave
+            {
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5)
+            };
+            var user = new ApplicationUser
+            {
+                AnnualLeaveDays = 22
+            };
+
+            _annualLeaveRepositoryMock.Setup(a => a.GetSingleAsync(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
+                .ReturnsAsync(entity);
+            _userManagementRepositoryMock.Setup(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
+                .ReturnsAsync(user);
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync())
+                .ReturnsAsync(Result.Success());
+
+            //act
+            _ = await _annualLeaveService.EditAsync(annualLeaveViewModelWithIncreasedTime);
+
+            //assert
+            Assert.NotEqual(22, user.AnnualLeaveDays);
+            Assert.Equal(23, user.AnnualLeaveDays);
+
+            _annualLeaveRepositoryMock.Verify(a => a.GetSingleAsync(It.IsAny<Expression<Func<AnnualLeave, bool>>>()), Times.Once);
+            _userManagementRepositoryMock.Verify(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()), Times.Once);
+            _unitOfWorkMock.Verify(a => a.SaveChangesAsync(), Times.Once);
         }
 
         [Fact]
@@ -491,17 +568,48 @@ namespace Purpura.Tests.ServiceTests
         }
 
         [Fact]
-        public async void DeleteAsync_WithAnnualLeaveFound_ReturnsSuccess()
+        public async void DeleteAsync_WithUserNotFound_ReturnsFailure()
+        {
+            //arrange
+            var annualLeave = _fixture.Create<AnnualLeaveViewModel>();
+            _userManagementRepositoryMock.Setup(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
+                .ReturnsAsync((ApplicationUser?)null);
+            _annualLeaveRepositoryMock.Setup(a => a.GetSingleAsync(It.IsAny<Expression<Func<AnnualLeave, bool>>>()))
+                .ReturnsAsync(new AnnualLeave());
+
+            //act
+            var failureResult = await _annualLeaveService.DeleteAsync(annualLeave);
+
+            //assert
+            Assert.False(failureResult.IsSuccess);
+            Assert.NotNull(failureResult.Error);
+            Assert.Equal("User not found.", failureResult.Error);
+
+            _userManagementRepositoryMock.Verify(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()), Times.Once);
+            _annualLeaveRepositoryMock.Verify(a => a.GetSingleAsync(It.IsAny<Expression<Func<AnnualLeave, bool>>>()), Times.Once);
+        }
+
+        [Fact]
+        public async void DeleteAsync_WithAnnualLeaveAndUserFound_ReturnsSuccessAndAddsBackToUserLeaveTotal()
         {
             //arrange
             var annualLeaveViewModel = _fixture.Build<AnnualLeaveViewModel>()
                 .With(a => a.ExternalReference, annualLeaveExtRef)
+                .With(a => a.StartDate, DateTime.Now)
+                .With(a => a.EndDate, DateTime.Now.AddDays(2))
                 .Create();
             var annualLeaveEntity = _fixture.Build<AnnualLeave>()
                 .With(a => a.ExternalReference, annualLeaveExtRef)
+                .With(a => a.StartDate, DateTime.Now)
+                .With(a => a.EndDate, DateTime.Now.AddDays(2))
                 .Create();
+            var user = new ApplicationUser { AnnualLeaveDays = 28 };
+            var daysTaken = (annualLeaveViewModel.EndDate.Date - annualLeaveEntity.StartDate.Date).Days;
+            var expectedLeaveTotal = user.AnnualLeaveDays + daysTaken;
 
             _annualLeaveRepositoryMock.Setup(a => a.Delete(It.IsAny<AnnualLeave>()));
+            _userManagementRepositoryMock.Setup(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
+                .ReturnsAsync(user);
             _unitOfWorkMock.Setup(a => a.SaveChangesAsync())
                 .ReturnsAsync(Result.Success());
 
@@ -509,9 +617,48 @@ namespace Purpura.Tests.ServiceTests
             var successResult = await _annualLeaveService.DeleteAsync(annualLeaveViewModel);
 
             //assert
-            Assert.True(successResult.IsSuccess == true);
+            Assert.True(successResult.IsSuccess);
             Assert.Null(successResult.Error);
+            Assert.Equal(expectedLeaveTotal, user.AnnualLeaveDays);
+
             _unitOfWorkMock.Verify(a => a.SaveChangesAsync(), Times.Once);
+            _annualLeaveRepositoryMock.Verify(a => a.Delete(It.IsAny<AnnualLeave>()), Times.Once);
+            _userManagementRepositoryMock.Verify(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()), Times.Once);
+        }
+
+        [Fact]
+        public async void DeleteAsync_WithAnnualLeaveInPast_DoesNotAddBackToUserLeaveTotal()
+        {
+            //arrange
+            var annualLeaveViewModel = _fixture.Build<AnnualLeaveViewModel>()
+                .With(a => a.ExternalReference, annualLeaveExtRef)
+                .With(a => a.StartDate, DateTime.Now.AddDays(-4))
+                .With(a => a.EndDate, DateTime.Now.AddDays(-2))
+                .Create();
+            var annualLeaveEntity = _fixture.Build<AnnualLeave>()
+                .With(a => a.ExternalReference, annualLeaveExtRef)
+                .With(a => a.StartDate, DateTime.Now.AddDays(-4))
+                .With(a => a.EndDate, DateTime.Now.AddDays(-2))
+                .Create();
+            var user = new ApplicationUser { AnnualLeaveDays = 28 };
+            var daysTaken = (annualLeaveViewModel.EndDate.Date - annualLeaveEntity.StartDate.Date).Days;
+
+            _annualLeaveRepositoryMock.Setup(a => a.Delete(It.IsAny<AnnualLeave>()));
+            _userManagementRepositoryMock.Setup(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()))
+                .ReturnsAsync(user);
+            _unitOfWorkMock.Setup(a => a.SaveChangesAsync())
+                .ReturnsAsync(Result.Success());
+
+            //act
+            var successResult = await _annualLeaveService.DeleteAsync(annualLeaveViewModel);
+
+            //assert
+            Assert.Equal(28, user.AnnualLeaveDays);
+            Assert.False(user.AnnualLeaveDays > 28);
+
+            _unitOfWorkMock.Verify(a => a.SaveChangesAsync(), Times.Once);
+            _annualLeaveRepositoryMock.Verify(a => a.Delete(It.IsAny<AnnualLeave>()), Times.Once);
+            _userManagementRepositoryMock.Verify(a => a.GetSingleAsync(It.IsAny<Expression<Func<ApplicationUser, bool>>>()), Times.Once);
         }
 
         #endregion

@@ -133,6 +133,7 @@ namespace PurpuraWeb.Controllers
             else
             {
                 viewModel.LeaveTypeSelectList = EnumHelpers.GenerateLeaveTypeSelectList();
+                viewModel.UserId = _userManager.GetUserId(User);
             }
 
             return PartialView("_BookTimeOffForm", viewModel);
