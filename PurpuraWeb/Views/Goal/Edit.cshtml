@@ -2,10 +2,15 @@
 
 <h1 class="form-title">Edit Goal</h1>
 
-<form asp-action="Edit" asp-controller="Goal" class="post-forms">
+<form asp-action="Edit" asp-controller="Goal" asp-route-reference="@Model.ExternalReference" method="post" class="post-forms">
 
-    <div class="form-floating mb-3">
-        <input class="form-control" type="date" asp-for="DueDate" readonly placeholder="1" />
+    <div class="form-check form-switch due-date-switch-container">
+        <input class="form-check-input form-control" type="checkbox" role="switch" id="due-date-switch" asp-for="IsDateRequired">
+        <label class="form-check-label" for="switchCheckDefault">Due Date Required</label>
+    </div>
+
+    <div class="form-floating mb-3 due-date-field-container" style="display: none;">
+        <input class="form-control" type="date" asp-for="DueDate" placeholder="1" />
         <label asp-for="DueDate">Due Date</label>
         <span asp-validation-for="DueDate"></span>
     </div>
@@ -41,4 +46,14 @@
         <button type="submit" class="btn btn-success"><i class="bi bi-pencil-square button-icons"></i>Submit</button>
     </div>
 </form>
+
+@section Scripts {
+    <script>
+        if(@Model.OperationFailure.ToString().ToLower()){
+            toastr.error("Edit failed.")
+        }
+
+        goalCreateEditForms();
+    </script>
+}
 

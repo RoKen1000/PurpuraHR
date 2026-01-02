@@ -54,6 +54,11 @@
     margin-bottom: 0.8rem;
 }
 
+.due-date-switch-container > input:checked{
+    background-color: mediumpurple !important;
+    border-color: mediumpurple !important;
+}
+
 @media screen and (min-width: 768px) {
     .goal-cards {
         max-width: 500px;
