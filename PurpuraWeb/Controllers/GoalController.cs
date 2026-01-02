@@ -44,6 +44,11 @@ namespace PurpuraWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(GoalViewModel viewModel)
         {
+            if(viewModel.IsDateRequired && (viewModel.DueDate == null || viewModel.DueDate == DateTime.MinValue))
+            {
+                ModelState.AddModelError("DueDate", "Please provide a due date.");
+            }
+
             if (ModelState.IsValid)
             {
                 var result = await _goalService.CreateAsync(viewModel);
@@ -75,6 +80,11 @@ namespace PurpuraWeb.Controllers
         {
             var goalViewModel = await _goalService.GetByExternalReferenceAsync(reference);
 
+            if (goalViewModel.DueDate != null)
+            {
+                goalViewModel.IsDateRequired = true;
+            }
+
             return View(goalViewModel);
         }
 
@@ -82,6 +92,15 @@ namespace PurpuraWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(GoalViewModel goalViewModel)
         {
+            if (goalViewModel.IsDateRequired && (goalViewModel.DueDate == null || goalViewModel.DueDate == DateTime.MinValue))
+            {
+                ModelState.AddModelError("DueDate", "Please provide a due date.");
+            }
+            else
+            {
+                goalViewModel.DueDate = null;
+            }
+
             if (ModelState.IsValid)
             {
                 var result = await _goalService.EditAsync(goalViewModel);

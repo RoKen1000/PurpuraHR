@@ -5,7 +5,7 @@ namespace Purpura.Models.Entities
 {
     public class Goal : BaseEntity
     {
-        public DateTime DueDate { get; set; }
+        public DateTime? DueDate { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 

@@ -18,5 +18,6 @@ namespace Purpura.Models.ViewModels
         public int? PercentageComplete { get; set; }
 
         public bool OperationFailure { get; set; }
+        public bool IsDateRequired { get; set; }
     }
 }
