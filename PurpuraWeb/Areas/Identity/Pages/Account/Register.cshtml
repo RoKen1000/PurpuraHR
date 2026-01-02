@@ -80,7 +80,7 @@
         </div>
 
         <div class="form-floating mb-3">
-            <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="" />
+            <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="" type="tel" minlength="9" maxlength="14" />
             <label asp-for="Input.PhoneNumber">Phone Number</label>
             <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
         </div>
