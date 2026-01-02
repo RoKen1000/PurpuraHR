@@ -50,7 +50,11 @@
     padding: 1rem;
 }
 
-@media screen and (min-width: 768px){
+.due-date-switch-container{
+    margin-bottom: 0.8rem;
+}
+
+@media screen and (min-width: 768px) {
     .goal-cards {
         max-width: 500px;
     }

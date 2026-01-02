@@ -27,3 +27,20 @@
         resizeObserver.observe(goalCardContainer);
     }
 }
+
+function goalCreateEditForms() {
+    const $dueDateSwitch = $("#due-date-switch");
+
+    if ($dueDateSwitch.is(":checked")) {
+        $(".due-date-field-container").show();
+    }
+
+    $dueDateSwitch.on("change", function () {
+        if ($(this).is(":checked")) {
+            $(".due-date-field-container").show();
+        }
+        else {
+            $(".due-date-field-container").hide(); 
+        }
+    })
+}

@@ -4,7 +4,12 @@
 
 <form asp-action="Create" asp-controller="Goal" class="post-forms">
 
-    <div class="form-floating mb-3">
+    <div class="form-check form-switch due-date-switch-container">
+        <input class="form-check-input form-control" type="checkbox" role="switch" id="due-date-switch" asp-for="IsDateRequired">
+        <label class="form-check-label" for="switchCheckDefault">Add Due Date</label>
+    </div>
+
+    <div class="form-floating mb-3 due-date-field-container" style="display: none;">
         <input class="form-control" type="date" asp-for="DueDate" placeholder="1" />
         <label asp-for="DueDate">Due Date</label>
         <span asp-validation-for="DueDate"></span>
@@ -35,5 +40,7 @@
         if(@Model.OperationFailure.ToString().ToLower()){
             toastr.error("Create failed.")
         }
+
+        goalCreateEditForms();
     </script>
 }

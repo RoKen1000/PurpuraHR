@@ -44,6 +44,11 @@ namespace PurpuraWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(GoalViewModel viewModel)
         {
+            if(viewModel.IsDateRequired && (viewModel.DueDate == null || viewModel.DueDate == DateTime.MinValue))
+            {
+                ModelState.AddModelError("DueDate", "Please provide a due date.");
+            }
+
             if (ModelState.IsValid)
             {
                 var result = await _goalService.CreateAsync(viewModel);
