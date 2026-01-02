@@ -21,7 +21,7 @@
         }
     });
 
-    if ($goalCards.length) {
+    if ($goalCards.length > 1) {
         resizeObserver.observe($goalCardContainer);
     }
 }
