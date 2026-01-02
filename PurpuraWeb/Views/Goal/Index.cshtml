@@ -7,7 +7,7 @@
 
     <a asp-controller="Goal" asp-action="Create" class="btn btn-purpura mb-3 mt-3" id="create-goal-button-with-goals"><i class="bi bi-plus-lg button-icons"></i>Create New Goal</a>
 
-    <div id="goal-card-container">
+    <div id="goal-card-container" style="visibility: hidden;">
 
             @foreach(var goal in Model.Goals)
             {

@@ -1,5 +1,5 @@
 ﻿function goalCardContainerListener() {
-    let $goalCardContainer = document.getElementById("goal-card-container");
+    let goalCardContainer = document.getElementById("goal-card-container");
     let $goalCards = $(".goal-cards");
 
     let resizeObserver = new ResizeObserver(obs => {
@@ -19,9 +19,11 @@
                 $goalCards[$goalCards.length - 2].style.setProperty("margin-left", "21.5rem", "important");
             }
         }
+
+        goalCardContainer.style.visibility = "visible";
     });
 
     if ($goalCards.length > 1) {
-        resizeObserver.observe($goalCardContainer);
+        resizeObserver.observe(goalCardContainer);
     }
 }
