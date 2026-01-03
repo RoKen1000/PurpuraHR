@@ -11,11 +11,15 @@ namespace PurpuraWeb.Controllers
     {
         private readonly IUserManagementService _userManagementService;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public UserManagementController(IUserManagementService userManagementService, UserManager<IdentityUser> userManager)
+        public UserManagementController(IUserManagementService userManagementService, 
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
         {
             _userManagementService = userManagementService;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [HttpGet]
@@ -58,6 +62,15 @@ namespace PurpuraWeb.Controllers
 
                 if (result.IsSuccess)
                 {
+                    var nameString = viewModel.MiddleName != null ? $"{viewModel.FirstName} {viewModel.MiddleName} {viewModel.LastName}" : $"{viewModel.FirstName} {viewModel.LastName}";
+                    var nameClaim = User.Claims.FirstOrDefault(c => c.Type == "Name");
+
+                    if(nameClaim != null && (nameString.ToLower() != nameClaim.Value.ToLower()))
+                    {
+                        var user = await _userManager.GetUserAsync(User);
+                        await _signInManager.RefreshSignInAsync(user);
+                    }
+
                     return RedirectToAction($"Details", new { userId = viewModel.Id });
                 }
 
