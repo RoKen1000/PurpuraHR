@@ -7,6 +7,7 @@ using Purpura.Models.ViewModels;
 using Purpura.Utility.Helpers;
 using PurpuraWeb.Models.Entities;
 using System.Linq.Expressions;
+using System.Security.Claims;
 
 namespace Purpura.Services
 {
@@ -57,7 +58,7 @@ namespace Purpura.Services
                 return updateResult;
             }
 
-            var result = await _userManager.AddClaimAsync(userEntity, new System.Security.Claims.Claim("CompanyReference", companyReference));
+            var result = await _userManager.AddClaimAsync(userEntity, new Claim("CompanyReference", companyReference));
 
             if (result.Succeeded)
             {
